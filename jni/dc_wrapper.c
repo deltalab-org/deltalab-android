@@ -347,6 +347,15 @@ JNIEXPORT jstring Java_com_b44t_messenger_DcContext_getBlobdir(JNIEnv *env, jobj
 }
 
 
+JNIEXPORT jstring Java_com_b44t_messenger_DcContext_getLastError(JNIEnv *env, jobject obj)
+{
+    char* temp = dc_get_last_error(get_dc_context(env, obj));
+        jstring ret = JSTRING_NEW(temp);
+    dc_str_unref(temp);
+    return ret;
+}
+
+
 JNIEXPORT void Java_com_b44t_messenger_DcContext_configure(JNIEnv *env, jobject obj)
 {
     dc_configure(get_dc_context(env, obj));
@@ -752,6 +761,14 @@ JNIEXPORT jlong Java_com_b44t_messenger_DcContext_checkQrCPtr(JNIEnv *env, jobje
 JNIEXPORT jstring Java_com_b44t_messenger_DcContext_getSecurejoinQr(JNIEnv *env, jobject obj, jint chat_id)
 {
     char* temp = dc_get_securejoin_qr(get_dc_context(env, obj), chat_id);
+        jstring ret = JSTRING_NEW(temp);
+    dc_str_unref(temp);
+    return ret;
+}
+
+JNIEXPORT jstring Java_com_b44t_messenger_DcContext_getSecurejoinQrSvg(JNIEnv *env, jobject obj, jint chat_id)
+{
+    char* temp = dc_get_securejoin_qr_svg(get_dc_context(env, obj), chat_id);
         jstring ret = JSTRING_NEW(temp);
     dc_str_unref(temp);
     return ret;
@@ -1719,6 +1736,12 @@ JNIEXPORT jstring Java_com_b44t_messenger_DcContact_getStatus(JNIEnv *env, jobje
         jstring ret = JSTRING_NEW(temp);
     dc_str_unref(temp);
     return ret;
+}
+
+
+JNIEXPORT jlong Java_com_b44t_messenger_DcContact_getLastSeen(JNIEnv *env, jobject obj)
+{
+    return JTIMESTAMP(dc_contact_get_last_seen(get_dc_contact(env, obj)));
 }
 
 

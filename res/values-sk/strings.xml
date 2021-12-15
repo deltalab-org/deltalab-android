@@ -18,6 +18,8 @@
     <string name="automatic">Automatický</string>
     <string name="strict">Striktný</string>
     <string name="open">Otvoriť</string>
+    <string name="download">Stiahnuť</string>
+    <string name="downloading">Sťahujem...</string>
     <string name="open_attachment">Otvoriť prílohu</string>
     <string name="join">Spojiť</string>
     <string name="rejoin">Znovu spojiť</string>
@@ -29,7 +31,9 @@
     <string name="back">Späť</string>
     <string name="close">Zatvoriť</string>
     <string name="forward">Vpred</string>
+    <!-- In the meaning of "To archive", "Put a chat to the archive". This string does not mean "The Archive". -->
     <string name="archive">Archivovať</string>
+    <!-- In the meaning of "To unarchive", "Remove a chat from the archive", opposite of the previous string -->
     <string name="unarchive">Zrušiť archiváciu</string>
     <string name="mute">Stíšiť</string>
     <string name="ephemeral_messages">Miznúce správy</string>
@@ -119,12 +123,21 @@
         <item quantity="many">%d používatelia</item>
         <item quantity="other">%d používateľ</item>
     </plurals>
+    <plurals name="n_recipients">
+        <item quantity="one">%d príjemca</item>
+        <item quantity="few">%d príjemcovia</item>
+        <item quantity="many">%d príjemcovia</item>
+        <item quantity="other">%d príjemcovia</item>
+    </plurals>
+
     <string name="self">Ja</string>
     <string name="draft">Návrh</string>
     <string name="image">Obrázok</string>
     <!-- Translators: Used in summaries as "Draft: Reply", similar as "Draft: Image". Use a noun here, not a verb (not: "to reply") -->
     <string name="reply_noun">Odpovedať</string>
     <string name="gif">Gif</string>
+    <!-- "Stickers" as known from other messengers, please pick up the wording from there; in some languages, "Sticker" in english is just fine. -->
+    <string name="sticker">Nálepka</string>
     <string name="images">Snímky</string>
     <string name="audio">Zvuk</string>
     <string name="voice_message">Hlasová správa</string>
@@ -167,15 +180,18 @@
     <string name="fast">Rýchlo</string>
     <string name="slow">Pomaly</string>
 
-    <string name="message_delivered">Správa doručená</string>
-    <string name="message_read">Správa prečítaná</string>
-
-
     <!-- menu labels (or icon, buttons...) -->
     <string name="menu_new_contact">Nový kontakt</string>
     <string name="menu_new_chat">Nový čet</string>
     <string name="menu_new_group">Nová skupina</string>
+    <!-- "Subject" here must be the same wording as used in the e-mail context, so. eg. "Betreff" in german (the idea is to help people coming from the e-mail context) -->
+    <string name="new_group_or_subject">Nová Skupina alebo Predmet </string>
     <string name="menu_new_verified_group">Nová overená skupina</string>
+    <!-- consider keeping the term "broadcast"; check how these lists are called eg. on whatsapp in the destination language -->
+    <string name="broadcast_list">Zoznam Rozosielania</string>
+    <string name="broadcast_lists">Zoznamy Rozosielania</string>
+    <string name="new_broadcast_list">Nový Zoznam Rozosielania</string>
+    <string name="add_recipients">Pridať Príjemcov</string>
     <string name="menu_send">Poslať</string>
     <string name="menu_toggle_keyboard">Prepnúť klávesnicu emodži</string>
     <string name="menu_edit_group">Upraviť skupinu</string>
@@ -189,9 +205,7 @@
     <string name="menu_delete_chat">Odstrániť čet</string>
     <string name="ask_delete_named_chat">Naozaj chcete položku odstrániť  \"%1$s\" ?</string>
     <string name="menu_delete_messages">Odstrániť správy</string>
-    <string name="menu_delete_image">Odstrániť obrázok</string>
     <string name="delete_contact">Odstrániť kontakt</string>
-    <string name="menu_delete_locations">Odstrániť všetky miesta?</string>
     <string name="menu_delete_location">Odstrániť toto miesto?</string>
     <string name="menu_message_details">Podrobnosti správy</string>
     <string name="menu_copy_to_clipboard">Skopírovať do schránky</string>
@@ -201,7 +215,6 @@
     <string name="menu_copy_image_to_clipboard">Kopírovať obrázok</string>
     <string name="paste_from_clipboard">Prilepiť zo schránky</string>
     <string name="menu_forward">Preposlať správu</string>
-    <string name="menu_resend">Znova odoslať správu</string>
     <string name="menu_reply">Odpovedať na správu</string>
     <string name="menu_mute">Ignorovať upozornenia</string>
     <string name="menu_unmute">Zapnúť zvuk</string>
@@ -224,17 +237,16 @@
     <string name="privacy_policy">Zásady súkromia</string>
     <string name="menu_select_all">Vybrať všetko</string>
     <string name="select_more">Vyberte viac</string>
-    <string name="menu_expand">Rozbaliť</string>
     <string name="menu_edit_name">Upraviť meno</string>
     <string name="menu_settings">Nastavenia</string>
     <string name="menu_advanced">Pokročilé</string>
-    <string name="menu_deaddrop">Žiadosti o kontakt</string>
-    <string name="menu_deaddrop_subtitle">Stlačením správy začnete četovať</string>
     <string name="menu_view_profile">Prezrieť profil</string>
     <string name="menu_zoom_in">Priblížiť</string>
     <string name="menu_zoom_out">Oddialiť</string>
     <string name="menu_save_log">Uložiť záznam</string>
     <string name="menu_more_options">Ďalšie možnosti</string>
+    <string name="menu_learn_spelling">Naučiť sa pravopis</string>
+    <string name="menu_chat_audit_log">Protokol auditu chatu</string>
     <string name="jump_to_message">Prejsť na správu</string>
     <string name="copy_json">Kopírovať JSON</string>
     <string name="replace_draft">Nahradiť koncept</string>
@@ -261,7 +273,6 @@
     <string name="mute_for_seven_days">Stíšiť 7 dní</string>
     <string name="mute_forever">Stlmiť navždy</string>
 
-    <string name="share_location_once">raz</string>
     <string name="share_location_for_5_minutes">po dobu 5 minút</string>
     <string name="share_location_for_30_minutes">po dobu 30 minút</string>
     <string name="share_location_for_one_hour">po dobu 1 hodiny</string>
@@ -281,7 +292,6 @@
     <string name="videochat_invite_user_hint">Vyžaduje to kompatibilnú aplikáciu alebo kompatibilný prehliadač na oboch stranách.</string>
     <string name="videochat_contact_invited_hint">%1$s pozvaný na videorozhovor.</string>
     <string name="videochat_you_invited_hint">Pozvali ste na videorozhovor.</string>
-    <string name="videochat_will_open_in_your_browser">Tento videorozhovor sa otvorí vo vašom prehliadači.</string>
     <string name="videochat_tap_to_join">Klepnutím sa pripojíte</string>
     <string name="videochat_tap_to_open">Otvoríte klepnutím</string>
     <string name="videochat_instance">Inštancia videorozhovoru</string>
@@ -306,6 +316,12 @@
         <item quantity="many">Odstrániť %d správy tu a na serveri?</item>
         <item quantity="other">Odstrániť %d správy tu a na serveri?</item>
     </plurals>
+    <plurals name="ask_delete_messages_simple">
+        <item quantity="one">Odstrániť %d správu?</item>
+        <item quantity="few">Odstrániť %d správy?</item>
+        <item quantity="many">Odstrániť %d správy?</item>
+        <item quantity="other">Odstrániť %d správy?</item>
+    </plurals>
     <string name="ask_forward">Preposielať správy na %1$s?</string>
     <string name="ask_forward_multiple">Preposielať správy do %1$d chatu?</string>
     <string name="ask_export_attachment">Exportovať prílohu? Exportovanie príloh umožní prístup k nim všetkým ďalším aplikáciám na vašom zariadení.\n\nChcete pokračovať?</string>
@@ -318,6 +334,8 @@
     <string name="ask_delete_value">Odstrániť %s?</string>
     <!-- Translators: %1$s will be replaces by a comma separated list of names -->
     <string name="ask_remove_members">Odstrániť %1$s zo skupiny?</string>
+    <!-- Translators: %1$s will be replaced by a comma separated list of names -->
+    <string name="ask_remove_from_broadcast">Odstrániť %1$s zo zoznamu rozosielania?</string>
     <string name="open_url_confirmation">Chcete otvoriť tento odkaz?</string>
 
 
@@ -351,7 +369,7 @@
         <item quantity="many">%dnové správy</item>
         <item quantity="other">%d nové správy</item>
     </plurals>
-    <string name="chat_no_messages_hint">Pošlite správu na %1$s:\n\n • Je v poriadku, ak %2$s nepoužívate program Delta Chat.\n\n• Doručenie prvej správy môže chvíľu trvať a môže byť nezašifrované.</string>
+    <string name="chat_new_broadcast_hint">V zozname rozosielania, ostatní budú dostávať správy do ich osobných chatov s vami.\n\nPríjemcovia sa navzájom o sebe nedozvedia.</string>
     <string name="chat_new_group_hint">Vytvorte prvú správu a umožnite ostatným odpovedať v rámci tejto skupiny.\n\n• Je v poriadku, ak nie všetci členovia používajú Delta Chat.\n\n• Doručenie prvej správy môže chvíľu trvať.</string>
     <string name="chat_record_slide_to_cancel">Posunutím akciu zrušíte</string>
     <string name="chat_record_explain">Klepnutím a podržaním nahráte hlasovú správu, uvoľnením ju odošlete</string>
@@ -369,14 +387,10 @@
     <string name="saved_messages_explain">• Preposielajte správy sem, aby ste k nim mali ľahký prístup\n\n• Robte si poznámky alebo hlasové poznámky\n\n• Pripojte médiá, aby ste ich uložili</string>
     <!-- this "Saved" should match the "Saved" from "Saved messages" -->
     <string name="saved">Uložené</string>
-    <string name="chat_contact_request">Kontaktná žiadosť</string>
-    <string name="chat_no_contact_requests">Žiadne žiadosti o kontakt.\n\nAk chcete, aby sa tu klasické e-maily zobrazovali ako žiadosti o kontakt, môžete príslušné nastavenie zmeniť v nastaveniach aplikácie.</string>
     <string name="retry_send">Skúste správu odoslať znova</string>
-    <string name="send_failed">Správu sa nepodarilo odoslať</string>
     <!-- reasons for a disabled message composer -->
     <string name="messaging_disabled_not_in_group">Nemôžete písať, pretože nie ste v tejto skupine. Ak sa chcete pripojiť, požiadajte iného člena.</string>
     <string name="messaging_disabled_device_chat">Tento čet obsahuje miestne generované správy. Preto nemôžete písať žiadne správy.</string>
-    <string name="messaging_disabled_deaddrop">Kliknutím na správu prijmete alebo odmietnete žiadosť o kontakt</string>
     <string name="messaging_disabled_mailing_list">Posielanie správ do diskusných skupín (mailing list) zatiaľ nie je podporované.</string>
     <string name="cannot_display_unsuported_file_type">Nie je možné zobraziť tento typ súboru: %s</string>
     <string name="attachment_failed_to_load">Prílohu sa nepodarilo načítať</string>
@@ -385,11 +399,17 @@
 
     <!-- mailing lists -->
     <string name="mailing_list">Zoznam adries</string>
-    <string name="ask_show_mailing_list">Zobraziť zoznam adries%1$s?</string>
+    <string name="mailing_list_profile_info">Zmeny v zozname adries a obrázku sa vzťahujú iba na toto zariadenie.</string>
+
     <!-- map -->
     <string name="filter_map_on_time">Zobraziť polohy v časovom rámci</string>
     <string name="show_location_traces">Zobraziť stopy</string>
     <string name="add_poi">Pošlite zaujímavé miesto</string>
+
+    <!-- chat audit log -->
+    <string name="chat_audit_log_empty_message">Tu sa zobrazia systémové správy tohto chatu</string>
+    <string name="chat_audit_log_title">Protokol auditu chatu pre %1$s</string>
+    <string name="chat_audit_log_description">Toto zobrazenie zobrazuje iba systémové a informačné správy. Je užitočné na nájdenie posledných akcií chatu bez prezerania množstva bežných správ. </string>
 
     <!-- punycode warning / labeled links -->
     <!-- placeholder is domain/hostname that should be trusted -->
@@ -397,6 +417,10 @@
     <string name="puny_code_warning_header">Zistené podozrivé prepojenie</string>
     <!-- placeholder contains the hostname converted to ascii -->
     <string name="puny_code_warning_question">Naozaj chcete navštíviť %1$s?</string>
+    <!-- this message is shown whenever a link with non-latin characters is clicked. first placeholder is original hostname with special chars, second placeholder is hostname encoded in ascii -->
+    <string name="puny_code_warning_description">Sledovali ste odkaz, ktorý by mohol skresľovať znaky použitím podobne vyzerajúcich znakov z rôznych abecied. Sledovanie odkazu označeného %1$s povedie k %2$s, čo je normálne pre znaky mimo latinky. Ak ste takéto znaky nečakali, tento odkaz môže byť škodlivý</string>
+
+
     <!-- search -->
     <string name="search">Vyhľadávanie</string>
     <string name="search_explain">Vyhľadajte čety, kontakty a správy</string>
@@ -411,7 +435,6 @@
     <string name="group_create_button">Vytvorte skupinu</string>
     <string name="group_please_enter_group_name">Zadajte názov skupiny.</string>
     <string name="group_add_members">Pridajte členov</string>
-    <string name="group_hello_draft">Dobrý deň, práve som pre nás vytvoril skupinu \"%1$s\"</string>
     <string name="group_self_not_in_group">Ak chcete vykonať túto akciu, musíte byť členom skupiny.</string>
     <string name="profile_encryption">Šifrovanie</string>
     <string name="profile_shared_chats">Zdieľané čety</string>
@@ -428,6 +451,13 @@
     <string name="send_message">Poslať správu</string>
 
 
+    <!-- Connectivity -->
+    <!-- Used as a headline for the "Inbox" eg. in the "Connectivity" view -->
+    <string name="incoming_messages">Prichádzajúce Správy</string>
+    <!-- Used as a headline for the "Outbox" eg. in the "Connectivity" view -->
+    <string name="outgoing_messages">Odchádzajúce Správy</string>
+    <!-- Used as a headline in the "Connectivity" view. The placeholder will be replaced by the domain of the configured email-address. -->
+    <string name="storage_on_domain">Dáta o %1$s</string>
     <string name="connectivity">Pripojenie</string>
     <!-- Shown eg. in the title bar if the app is "Not connected"; as there is very few room, try to be as short as possible. -->
     <string name="connectivity_not_connected">Nepripojené</string>
@@ -437,6 +467,15 @@
     <string name="connectivity_updating">Aktualizujem…</string>
     <!-- Shown eg. in the setting if the app is "Connected" -->
     <string name="connectivity_connected">Pripojené</string>
+    <string name="sending">Odosielam...</string>
+    <string name="last_msg_sent_successfully">Posledná správa odoslaná úspešne.</string>
+    <string name="not_supported_by_provider">Nie je podporovaná vaším poskytovateľom.</string>
+    <!-- Used as a subtitle in quota context of "Connetivity" view. Should be be plural always, no number is prefixed or so. -->
+    <string name="messages">Správy</string>
+    <!-- Used for describing resource usage, resulting string will be eg. "1.2 GiB of 3 GiB used" -->
+    <string name="part_of_total_used">%1$s z %2$svyužitých </string>
+
+
     <!-- welcome and login -->
     <string name="welcome_intro1_message">Posol s najširším publikom na svete. Slobodný a nezávislý.</string>
     <string name="login_title">Prihlásiť sa</string>
@@ -456,6 +495,13 @@
     <string name="login_smtp_port">Port SMTP</string>
     <string name="login_smtp_security">Zabezpečenie SMTP</string>
     <string name="login_auth_method">Metóda autorizácie</string>
+    <!-- the word "SOCKS5" here and in the following strings should not be translated in most cases -->
+    <string name="login_socks5">SOCKS5</string>
+    <string name="login_socks5_use_socks5">Použiť SOCKS5</string>
+    <string name="login_socks5_host">SOCKS5 Host</string>
+    <string name="login_socks5_port">SOCKS5 Port</string>
+    <string name="login_socks5_user">SOCKS5 Používateľ</string>
+    <string name="login_socks5_password">SOCKS5 Heslo</string>
     <!-- Translators: %1$s will be replaced by an e-mail address -->
     <string name="login_oauth2_checking_addr">Prebieha kontrola %1$s</string>
     <string name="login_info_oauth2_title">Pokračovať v zjednodušenom nastavovaní?</string>
@@ -470,8 +516,6 @@
     <string name="import_backup_no_backup_found">Neboli nájdené žiadne zálohy.\n\nSkopírujte zálohu na „%1$s“ a skúste to znova. Prípadne stlačte tlačidlo „Spustiť zasielanie správ“ a pokračujte v bežnom procese nastavenia.</string>
     <!-- Translators: %1$s will be replaced by the e-mail address -->
     <string name="login_error_cannot_login">Nie je možné prihlásiť sa ako „%1$s“. Skontrolujte správnosť e-mailovej adresy a hesla.</string>
-    <!-- Translators: %1$s will be replaced by the server name (eg. imap.somewhere.org) and %2$s will be replaced by the human-readable response from the server. this response may be a single word or some sentences and may or may not be localized. -->
-    <string name="login_error_server_response">Odpoveď od %1$s:%2$s\n\nNiektorí poskytovatelia vám môžu poslať e-mailom ďalšie informácie o tomto probléme; mali by ste byť schopní skontrolovať svoju doručenú poštu pomocou svojej bežnej e-mailovej aplikácie alebo webovej stránky. Ak narazíte na problémy, obráťte sa na svojho poskytovateľa alebo priateľov.</string>
     <!-- TLS certificate checks -->
     <string name="accept_invalid_certificates">Prijmite neplatné certifikáty</string>
     <string name="used_settings">Použité nastavenia:</string>
@@ -480,8 +524,10 @@
     <string name="delete_account">Odstrániť účet</string>
     <string name="delete_account_ask">Naozaj chcete odstrániť údaje svojho účtu?</string>
     <string name="delete_account_explain_with_name">Budú odstránené všetky údaje účtu používateľa „%s“ z tohto zariadenia vrátane vášho kompletného nastavenia šifrovania, kontaktov, četov, správ a médií. Túto akciu nie je možné vrátiť späť.</string>
-    <string name="switching_account">Prepína sa účet ...</string>
+    <string name="unconfigured_account">Nekonfigurovaný účet</string>
+    <string name="unconfigured_account_hint">Otvorte účet aby ste ho nakonfigurovali.</string>
     <string name="try_connect_now">Skúste sa teraz pripojiť</string>
+    <string name="sync_all">Synchronizovať Všetko </string>
     <!-- Translations: %1$s will be replaced by a more detailed error message -->
     <string name="configuration_failed_with_error">Konfigurácia zlyhala. Chyba: %1$s</string>
 
@@ -501,7 +547,6 @@
     <string name="pref_profile_photo">Profilový obrázok</string>
     <string name="pref_blocked_contacts">Blokované kontakty</string>
     <string name="blocked_empty_hint">Ak zablokujete kontakty, zobrazia sa tu.</string>
-    <string name="pref_profile_photo_remove_ask">Odstrániť profilový obrázok?</string>
     <string name="pref_password_and_account_settings">Heslo a účet</string>
     <string name="pref_who_can_see_profile_explain">Pri komunikácii s ostatnými používateľmi sa vedľa vašich správ zobrazí váš profilový obrázok a meno. Už odoslané informácie nemožno vymazať ani odstrániť.</string>
     <string name="pref_your_name">Vaše meno</string>
@@ -589,6 +634,16 @@
     <string name="pref_background_custom_image">Vlastný obrázok</string>
     <string name="pref_background_custom_color">Vlastná farba</string>
     <string name="export_aborted">Export bol prerušený.</string>
+    <string name="auto_download_messages">Automaticky Sťahovať Správy</string>
+    <!-- %1$s will be replaced by a human-readable number of bytes, eg. 32 KiB, 1 MiB -->
+    <string name="up_to_x">Až do %1$s</string>
+    <string name="up_to_x_most_worse_quality_images">Až do %1$s, väčšina obrázkov v horšej kvalite</string>
+    <string name="up_to_x_most_balanced_quality_images">Až do %1$s, väčšina obrázkov vo vyváženej kvalite</string>
+    <string name="no_limit">Žiadny limit</string>
+    <!-- %1$s will be replaced by a human-readable number of bytes, eg. 32 KiB, 1 MiB. Resulting string eg. "1 MiB message" -->
+    <string name="n_bytes_message">%1$s správa</string>
+    <!-- %1$s will be replaced by human-readable date and time -->
+    <string name="download_max_available_until">Maximálny počet stiahnutí k dispozícii do %1$s</string>
     <string name="profile_image_select">Vyberte profilový obrázok</string>
     <string name="select_your_new_profile_image">Vyberte svoj nový profilový obrázok</string>
     <string name="profile_image_delete">Odstrániť profilový obrázok</string>
@@ -611,8 +666,6 @@
 
     <!-- automatically delete message -->
     <string name="delete_old_messages">Odstraňovať staré správy</string>
-    <!-- devs: autodel_title is deprecated, use delete_old_messages instead -->
-    <string name="autodel_title">Automaticky mazať správy</string>
     <string name="autodel_device_title">Odstráňte správy zo zariadenia</string>
     <string name="autodel_server_title">Odstraňovať správy zo servera</string>
     <!-- %1$d will be replaced by the number of messages, you can assume plural/lots here. %2$s will be replaced by a timespan option. -->
@@ -686,6 +739,13 @@
     <string name="systemmsg_chat_protection_disabled">Ochrana četov je vypnutá.</string>
     <string name="systemmsg_chat_protection_enabled">Ochrana četov je zapnutá.</string>
 
+    <string name="devicemsg_self_deleted">Vy ste odstránili chat \"Uložené správy\".\n\nℹ️ Aby ste využili funkciu \"Uložené správy\" znova, vytvorte nový chat so sebou.</string>
+    <!-- %1$s will be replaced by the number of storage already used, sth. as '500 MB'. CAVE: if you want to use a simple the percent sign, type in two, so eg. %1$s %% -->
+    <string name="devicemsg_storage_exceeding">⚠️ Úložisko vašeho poskytovateľa čoskoro prekročí limit, už%1$s%%  sú využité.\n\n Je možné, že nebudete môcť prijímať správy, ak bude úložisko 100 %% využité.\n\n👉 Prosím skontrolujte, či môžete vo webovom rozhraní poskytovateľa vymazať staré údaje, a zvážte aktiváciu „Nastavenia / Odstrániť Staré Správy“. Aktuálne využitie úložiska si môžete kedykoľvek skontrolovať v časti „Nastavenia / Pripojenie“. </string>
+    <!-- %1%s will be replaced by date and time in some human-readable format -->
+    <string name="devicemsg_bad_time">Zdá sa, že dátum alebo čas vášho zariadenia je nepresný (%1$s).\n\nUpravte si hodiny ⏰🔧, aby ste zaistili správne prijímanie správ. </string>
+    <string name="devicemsg_update_reminder">⚠️ Vaša verzia Delta Chat-u môže byť zastaraná.\n\nMôže to spôsobiť problémy, pretože vaši chatový partneri používajú novšie verzie – a vám chýbajú najnovšie funkcie 😳\nAktualizácie nájdete na https://get.delta.chat alebo obchode s aplikáciami . </string>
+
     <!-- Some options as "Manage keys" or "Backup" may require the system PIN/Fingerprint/Gesture/Etc. to be entered in a system dialog. This hint is added to the system dialog, below a title as "Manage keys" or "Backup". -->
     <string name="enter_system_secret_to_continue">Ak chcete pokračovať, zadajte heslo do systému.</string>
 
@@ -701,24 +761,34 @@
     <string name="qrscan_contains_text">Naskenovaný text QR kódu: \n\n%1$s</string>
     <string name="qrscan_contains_url">Naskenovaná adresa URL s QR kódom:\n\n%1$s</string>
     <string name="qrscan_fingerprint_label">Odtlačok prsta</string>
-    <string name="qrscan_x_verified_introduce_myself">%1$s overené, predstavte sa ...</string>
+    <string name="withdraw_verifycontact_explain">Tento QR kód môžu naskenovať iní, aby vás mohli kontaktovať.\n\nTu môžete deaktivovať QR kód a znova ho aktivovať opätovným naskenovaním.</string>
+    <string name="withdraw_verifygroup_explain">Tento QR kód môžu naskenovať ostatní, aby sa pripojili ku skupine \"%1$s\".\n\nTu môžete deaktivovať QR kód a znova ho aktivovať opätovným naskenovaním.</string>
     <string name="withdraw_qr_code">Vypnúť QR kód</string>
+    <!-- "could" in the meaning of "possible at some point in the past, but no longer possible today" -->
+    <string name="revive_verifycontact_explain">Tento QR kód mohol byť naskenovaný inými, aby vás mohli kontaktovať.\n\nQR kód nie je na tomto zariadení aktívny.</string>
+    <!-- "could" in the meaning of "possible at some point in the past, but no longer possible today" -->
+    <string name="revive_verifygroup_explain">Tento QR kód mohli naskenovať iní, aby sa pripojili ku skupine „%1$s“.\n\nQR kód nie je na tomto zariadení aktívny.</string>
     <string name="revive_qr_code">Povoliť QR kód.</string>
     <string name="qrshow_title">QR pozývací kód</string>
     <string name="qrshow_x_joining">%1$s pripája sa.</string>
     <string name="qrshow_x_verified">%1$s overené.</string>
     <string name="qrshow_x_has_joined_group">%1$s sa pripojil k skupine.</string>
     <string name="qrshow_join_group_title">QR pozývací kód</string>
+    <!-- This text is shown inside the "QR code card" with very limited space; please formulate the text as short as possible therefore. The placeholder will be replaced by the group name, eg. "Scan to join group \"Testing group\"" -->
     <string name="qrshow_join_group_hint">Naskenujte to a pripojte sa k skupine „%1$s“.</string>
     <string name="qrshow_join_contact_title">QR pozývací kód</string>
+    <!-- This text is shown inside the "QR code card" with very limited space; please formulate the text as short as possible therefore. The placeholder will be replaced by name and address eg. "Scan to chat with Alice (alice@example.org)" -->
     <string name="qrshow_join_contact_hint">Naskenujte to a vytvorte kontakt s %1$s .</string>
-    <string name="qrshow_join_contact_no_connection_hint">Nastavenie QR kódu vyžaduje pripojenie k internetu. Pred pokračovaním sa pripojte k sieti.</string>
     <string name="qrshow_join_contact_no_connection_toast">Nie je pripojenie na internet, nedá sa nastaviť kód QR.</string>
     <string name="qraccount_ask_create_and_login">Vytvoriť novú e-mailovú adresu na „%1$s“ a prihlásiť sa tam?</string>
     <string name="qraccount_ask_create_and_login_another">Vytvorte novú e-mailovú adresu na „%1$s“ a prihláste sa tam?\n\nVáš existujúci účet nebude odstránený. Medzi položkami môžete prepínať pomocou položky „Prepnúť účet“.</string>
     <string name="qraccount_success_enter_name">Prihlásenie bolo úspešné - vaša e-mailová adresa je %1$s\n\nlf chcete, teraz môžete zadať meno a profilový obrázok, ktoré sa zobrazia ľuďom, s ktorými si píšete.</string>
     <string name="qraccount_qr_code_cannot_be_used">Naskenovaný QR kód nie je možné použiť na založenie nového účtu.</string>
     <string name="qraccount_use_on_new_install">Naskenovaný QR kód slúži na založenie nového účtu. QR kód môžete naskenovať pri nastavovaní novej inštalácie Delta Chat.</string>
+    <!-- first placeholder will be replaced by name and address of the inviter, second placeholder will be replaced by the name of the inviter. -->
+    <string name="secure_join_started">%1$s vás pozval, aby ste sa pripojili k tejto skupine.\n\nČaká sa na odpoveď zo zariadenia používateľa %2$s...</string>
+    <!-- placeholder will be replaced by the name of the inviter. -->
+    <string name="secure_join_replies">%1$sodpovedal a čaká sa na pridanie do skupiny...</string>
     <string name="contact_verified">%1$s overené.</string>
     <string name="contact_not_verified">Cannot verify %1$s.</string>
     <!-- translators: "setup" is the "encryption setup" here, as in "Autocrypt Setup Message" -->
@@ -726,13 +796,10 @@
     <string name="verified_group_explain">Overené skupiny (experimentálne) poskytujú bezpečnosť proti aktívnym útokom. Členovia sú overovaní druhým faktorom ostatnými členmi a správy sú vždy šifrované end-to-end.</string>
     <string name="copy_qr_data_success">Skopírovaná adresa URL QR do schránky</string>
     <string name="mailto_dialog_header_select_chat">Vyberte čet, kam bude správa odoslaná</string>
-    <!-- first placeholder is the name of the chat -->
-    <string name="mailto_dialog_confirm_replace_draft">Pre %1$s už máte uložený koncept, chcete ho nahradiť?</string>
     <string name="mailto_link_could_not_be_decoded">prepojenie mailto sa nepodarilo dekódovať: %1$s</string>
 
     <!-- notifications  -->
-    <string name="notify_n_messages_in_m_chats">%1$d nové správy v %2$d četoch</string>
-    <string name="notify_mark_read">Označiť ako prečítané</string>
+    <string name="notify_dismiss">Odmietnuť</string>
     <string name="notify_reply_button">Odpovedať</string>
     <string name="notify_new_message">Nová správa</string>
     <string name="notify_background_connection_enabled">Pripojenie na pozadí je povolené</string>
@@ -792,52 +859,30 @@
     <string name="no_chat_selected_suggestion_desktop">Vyberte čet alebo vytvorte nový čet</string>
     <string name="write_message_desktop">Napíšte správu</string>
     <string name="encryption_info_title_desktop">Informácie o šifrovaní</string>
-    <string name="contact_detail_title_desktop">Kontaktné údaje</string>
-    <string name="contact_request_title_desktop">Kontaktná žiadosť</string>
     <string name="delete_message_desktop">Odstrániť správu</string>
     <string name="more_info_desktop">Viac informácií</string>
-    <string name="logout_desktop">Odhlásiť sa</string>
     <string name="timestamp_format_m_desktop">MMM D</string>
     <string name="encryption_info_desktop">Zobraziť informácie o šifrovaní</string>
-    <string name="verified_desktop">overené</string>
     <string name="remove_desktop">Odstrániť</string>
     <string name="save_desktop">Uložiť</string>
-    <string name="add_contact_desktop">Pridať kontakt</string>
-    <string name="login_required_desktop">požadovaný</string>
     <string name="name_desktop">Názov</string>
     <string name="autocrypt_key_transfer_desktop">Autocryptujte prenos kľúčov</string>
     <string name="initiate_key_transfer_desktop">Správa o nastavení automatického šifrovania bezpečne zdieľa vaše komplexné nastavenie s inými aplikáciami kompatibilnými s automatickým šifrovaním. Nastavenie bude šifrované tu zobrazeným nastavovacím kódom a musí byť zadané na druhom zariadení.</string>
-    <string name="reply_to_message_desktop">Odpovedať na správu</string>
     <string name="select_group_image_desktop">Vyberte skupinový obrázok</string>
     <string name="imex_progress_title_desktop">Priebeh zálohovania</string>
-    <string name="download_attachment_desktop">Stiahnutie prílohy</string>
     <string name="export_backup_desktop">Exportovať zálohu</string>
-    <string name="transfer_key_desktop">Kľúč na prenos</string>
     <string name="show_key_transfer_message_desktop">Váš kľúč vám bol odoslaný. Prepnite na druhé zariadenie a otvorte správu o nastavení. Mala by vám prísť požiadavka na kód. Zadajte nasledujúce číslice:</string>
-    <string name="new_message_from_desktop">Nová správa od používateľa</string>
-    <string name="unblock_contacts_desktop">Odblokujte kontakty</string>
-    <string name="none_blocked_desktop">Zatiaľ nemáte blokované kontakty</string>
     <string name="autocrypt_correct_desktop">Nastavenie automatického šifrovania bolo prenesené.</string>
     <string name="autocrypt_incorrect_desktop">Nesprávny kód nastavenia. Prosím skúste znova.</string>
     <string name="create_chat_error_desktop">Nepodarilo sa vytvoriť rozhovor.</string>
-    <string name="ask_delete_chat_desktop">Odstrániť tento rozhovor?</string>
-    <string name="email_validation_failed_desktop">Vyžaduje sa e-mailová adresa.</string>
     <string name="forget_login_confirmation_desktop">Odstrániť tieto prihlasovacie údaje? Odstráni sa všetko vrátane vášho kompletného nastavenia, kontaktov, četov, správ a médií. Túto akciu nie je možné vrátiť späť.</string>
-    <string name="account_info_hover_tooltip_desktop">E-mail: %1$s\nVeľkosť: %2$s\nCesta: %3$s</string>
-    <string name="me_desktop">ja</string>
-    <string name="in_this_group_desktop">Členovia skupiny</string>
-    <string name="not_in_this_group_desktop">Potenciálni členovia skupiny (nie sú v skupine)</string>
     <string name="message_detail_sent_desktop">odoslané</string>
     <string name="message_detail_received_desktop">prijaté</string>
-    <string name="message_detail_from_desktop">od</string>
-    <string name="message_detail_to_desktop">do</string>
     <string name="menu.view.developer.open.log.folder">Otvoriť priečinok denníka</string>
     <string name="menu.view.developer.open.current.log.file">Otvoriť aktuálny súbor protokolu</string>
-    <string name="user_location_permission_explanation">Delta Chat potrebuje na zobrazenie a zdieľanie vašej polohy povolenie na polohu.</string>
     <string name="explain_desktop_minimized_disabled_tray_pref">Ikonu v systémovej lište nie je možné vypnúť, pretože Delta Chat bol spustený s prepínačom --minimized.</string>
     <string name="no_spellcheck_suggestions_found">Neboli nájdené žiadne návrhy opravy preklepov.</string>
     <string name="show_window">Zobraziť okno</string>
-
     <!-- accessibility, the general idea is to use the normal strings for accessibility hints wherever possible -->
     <string name="a11y_delivery_status_error">Stav doručenia: Chyba</string>
     <string name="a11y_encryption_padlock">Šifrovací zámok</string>
@@ -870,4 +915,7 @@
     <string name="perm_enable_bg_already_done">Službe Delta Chat ste už povolili príjem správ na pozadí.\n\nAk správy stále neprichádzajú na pozadí, skontrolujte tiež svoje systémové nastavenia.</string>
 
 
+    <!-- device messages for updates -->
+    <string name="update_1_24_android">1.24 v skratke:\n\n• Uloženie klepnutím: Výber účtu v ľavom hornom rohu zoznamu četov\n• Uloženie viacerými klepnutiami: Dlhým klepnutím na ikonu aplikácie priamo otvoríte nedávne čety\n• Ušetrite premávku: sťahujte veľké súbory podľa potreby\n• Ušetrite nervy: rýchlejšie pripojenie QR kódu bez blokovania a nové možnosti kódu QR\n\nViac na 👉 </string>
+    <string name="update_1_24_ios">1.24 v skratke:\n\n• Spustite vyhľadávanie v čete z profilu četu\n• Ušetrite premávku: sťahujte veľké súbory podľa potreby\n• Ušetrite nervy: rýchlejšie pripájanie na QR kódy bez blokovania\n\nViac na 👉</string>
     </resources>

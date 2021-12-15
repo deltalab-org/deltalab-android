@@ -15,12 +15,12 @@ this will take some time - meanwhile we're doing some housekeeping:
    $ ./scripts/tx-pull-translations.sh
    $ ./scripts/create-local-help.sh
 
-4. add a device message to ConversationListActivity::onCreate()
-   and update CHANGELOG.md
-   (the core-changelog at
-   https://github.com/deltachat/deltachat-core-rust/blob/master/CHANGELOG.md
-   and the "N commits to master since last release" on
-   https://github.com/deltachat/deltachat-android/releases gives some hints)
+4. a) update CHANGELOG.md
+      from https://github.com/deltachat/deltachat-core-rust/blob/master/CHANGELOG.md
+      and https://github.com/deltachat/deltachat-android/pulls?q=is%3Apr+is%3Aclosed+sort%3Aupdated-desc
+   b) add used core version to CHANGELOG.md
+   c) add a device message to ConversationListActivity::onCreate()
+      or remove the old one
 
 in Android Studio:
 
@@ -32,18 +32,22 @@ in Android Studio:
       (not: App Bundle as this would require uploading the signing key)
    b) select flavor `gplayRelease` with V1 signature enabled
       (needed for easy APK verification), V2 is optional
+   c) if you want to use upload-testrun.sh, generate a debug apk additionally at
+      "Build / Build Bundle(s)/APK / Build APK(s)"
 
 on success, the generated APK is at
 `gplay/release/deltachat-gplay-release-VERSION.apk`
+and can be uploading for testing using:
+$ ./scripts/upload-testrun.sh VERSION
+The "Testing checklist" gives some hints about what should be always tested.
 
 
 # Upload APK to get.delta.chat
 
 7. $ ./scripts/upload-release.sh VERSION
 
-8. a) Test the APK yourself.
-      The "Testing checklist" gives some hints.
-   b) Give the APK to testing groups.
+8. bump `VERSION_ANDROID` (without leading `v`) on
+   `https://github.com/deltachat/deltachat-pages/blob/master/_includes/download-boxes.html`
 
 
 # Release on Play Store
