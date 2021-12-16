@@ -46,30 +46,21 @@ jobs:
           ANDROID_NDK_ROOT: ${{ steps.setup-ndk.outputs.ndk-path }}
         run: |
           export PATH="${PATH}:${ANDROID_NDK_ROOT}/toolchains/llvm/prebuilt/linux-x86_64/bin/:${ANDROID_NDK_ROOT}"
-          ./scripts/install-toolchains.sh && ./ndk-make.sh
+          #./scripts/install-toolchains.sh && ./ndk-make.sh
 
       - name: Build APK
-        run: ./gradlew --no-daemon assembleGplayRelease
-
-      - name: Sign APK
-        uses: r0adkll/sign-android-release@v1
-        # ID used to access action output
-        id: sign_app
-        with:
-          releaseDirectory: build/outputs/apk/gplay/release
-          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
-          alias: ${{ secrets.ALIAS }}
-          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
-          keyPassword: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          mkdir -p ~/.gradle
+          echo -n ${{ secrets.SIGNING_KEY }} | base64 -d >> ~/app.keystore
+          echo "DC_RELEASE_STORE_FILE=$HOME/app.keystore" >> ~/.gradle/gradle.properties
+          echo "DC_RELEASE_STORE_PASSWORD=${{ secrets.KEY_STORE_PASSWORD }}" >> ~/.gradle/gradle.properties
+          echo "DC_RELEASE_KEY_ALIAS=${{ secrets.ALIAS }}" >> ~/.gradle/gradle.properties
+          echo "DC_RELEASE_KEY_PASSWORD=${{ secrets.KEY_PASSWORD }}" >> ~/.gradle/gradle.properties
+          ./gradlew --no-daemon assembleGplayRelease
 
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
           token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: endsWith(github.ref, '-beta')
-          files: |
-            ${{ steps.sign_app.signedReleaseFile0 }}
-            ${{ steps.sign_app.signedReleaseFile1 }}
-            ${{ steps.sign_app.signedReleaseFile2 }}
-            ${{ steps.sign_app.signedReleaseFile3 }}
-            ${{ steps.sign_app.signedReleaseFile4 }}
+          files: build/outputs/apk/gplay/release/*.apk
