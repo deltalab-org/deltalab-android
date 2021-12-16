@@ -73,6 +73,6 @@ jobs:
         with:
           token: "${{ secrets.GITHUB_TOKEN }}"
           body: "Auto-generated release"
-          prerelease: contains(env.RELEASE_VERSION, '-beta')
+          prerelease: needs.check.outputs.beta == 'true'
           fail_on_unmatched_files: true
           files: build/outputs/apk/gplay/release/*.apk
