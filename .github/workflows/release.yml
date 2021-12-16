@@ -10,11 +10,15 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       match: ${{ steps.check-tag.outputs.match }}
+      beta: ${{ steps.check-tag.outputs.beta }}
     steps:
       - id: check-tag
         run: |
           if [[ "${{ github.event.ref }}" =~ ^refs/tags/v[0-9]+\.[0-9]+\.[0-9]+.*$ ]]; then
               echo ::set-output name=match::true
+          fi
+          if [[ "${{ github.event.ref }}" =~ ^refs/tags/v[0-9]+\.[0-9]+\.[0-9]+.*-beta$ ]]; then
+              echo ::set-output name=beta::true
           fi
 
   build:
@@ -63,5 +67,6 @@ jobs:
         with:
           token: "${{ secrets.GITHUB_TOKEN }}"
           body: "Auto-generated release"
-          prerelease: endsWith(github.event.ref, '-beta')
+          prerelease: needs.check.outputs.beta == 'true'
+          fail_on_unmatched_files: true
           files: build/outputs/apk/gplay/release/*.apk

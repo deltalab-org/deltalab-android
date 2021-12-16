@@ -189,6 +189,8 @@ android {
         variant.outputs.all { output ->
             output.outputFileName = output.outputFileName
                 .replace("deltalab-android", "deltachat-lite")
+		.replace("-gplay", "")
+		.replace("-release", "")
                 .replace(".apk", "-${variant.versionName}.apk")
             output.versionCodeOverride =
                 project.ext.versionCodes.get(output.getFilter(
