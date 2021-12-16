@@ -10,11 +10,15 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       match: ${{ steps.check-tag.outputs.match }}
+      beta: ${{ steps.check-tag.outputs.beta }}
     steps:
       - id: check-tag
         run: |
           if [[ "${{ github.event.ref }}" =~ ^refs/tags/v[0-9]+\.[0-9]+\.[0-9]+.*$ ]]; then
               echo ::set-output name=match::true
+          fi
+          if [[ "${{ github.event.ref }}" =~ ^refs/tags/v[0-9]+\.[0-9]+\.[0-9]+.*-beta$ ]]; then
+              echo ::set-output name=beta::true
           fi
 
   build:
@@ -63,23 +67,13 @@ jobs:
           keyPassword: ${{ secrets.KEY_PASSWORD }}
 
       - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: "marvinpinto/action-automatic-releases@latest"
         with:
-          tag_name: ${{ github.ref }}
-          release_name: ${{ env.RELEASE_VERSION }}
-          draft: false
-          prerelease: false
-
-      - name: Upload Release Asset
-        id: upload-release-asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{steps.sign_app.outputs.signedReleaseFile}}
-          asset_name: ${{ env.RELEASE_VERSION }}.apk
-          asset_content_type: application/zip
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: needs.check.outputs.beta == 'true'
+          files: |
+            ${{ steps.sign_app.signedReleaseFile0 }}
+            ${{ steps.sign_app.signedReleaseFile1 }}
+            ${{ steps.sign_app.signedReleaseFile2 }}
+            ${{ steps.sign_app.signedReleaseFile3 }}
+            ${{ steps.sign_app.signedReleaseFile4 }}

@@ -111,10 +111,6 @@ android {
         buildConfigField "boolean", "DEV_BUILD", "false"
         buildConfigField "String", "MAP_ACCESS_TOKEN", '"pk.eyJ1IjoiZGVsdGFjaGF0IiwiYSI6ImNqc3c1aWczMzBjejY0M28wZmU0a3cwMzMifQ.ZPTH9dFJaav06RAu4rTYHw"'
 
-        ndk {
-            abiFilters "armeabi-v7a", "arm64-v8a" //, "x86", "x86_64"
-        }
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField("String", "TEST_ADDR", buildConfigProperty("TEST_ADDR"))
@@ -139,12 +135,6 @@ android {
 
     signingConfigs {
         signingConfigs {
-            debug {
-                // add `DC_DEBUG_STORE_FILE=/path/to/debug.keystore` to `~/.gradle/gradle.properties`
-                if(project.hasProperty("DC_DEBUG_STORE_FILE" )) {
-                    storeFile file(DC_DEBUG_STORE_FILE )
-                }
-            }
             release {
                 // can be defined at `~/.gradle/gradle.properties` or at "Build/Generate signed APK"
                 if(project.hasProperty("DC_RELEASE_STORE_FILE")) {
@@ -159,10 +149,6 @@ android {
     }
 
     buildTypes {
-        debug {
-            minifyEnabled false
-            applicationIdSuffix ".beta"
-        }
         release {
 	    applicationIdSuffix ".lite2"
             // minification and proguard disabled for now.
@@ -182,20 +168,31 @@ android {
     }
 
     productFlavors {
-        fat {
-            dimension "none"
-        }
         gplay {
             dimension "none"
             applicationId "chat.delta"
         }
     }
 
+    splits {
+        abi {
+            enable true
+            reset()
+            include "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
+            universalApk true
+        }
+    }
+
+    project.ext.versionCodes = ['armeabi': 1, 'armeabi-v7a': 2, 'arm64-v8a': 3, 'mips': 5, 'mips64': 6, 'x86': 8, 'x86_64': 9]
+
     android.applicationVariants.all { variant ->
-        variant.outputs.all {
-            outputFileName = outputFileName
+        variant.outputs.all { output ->
+            output.outputFileName = output.outputFileName
                 .replace("deltalab-android", "deltachat-lite")
                 .replace(".apk", "-${variant.versionName}.apk")
+            output.versionCodeOverride =
+                project.ext.versionCodes.get(output.getFilter(
+                    com.android.build.OutputFile.ABI), 0) * 10000000 + android.defaultConfig.versionCode
         }
     }
 
