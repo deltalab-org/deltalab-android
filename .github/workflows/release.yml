@@ -10,15 +10,11 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       match: ${{ steps.check-tag.outputs.match }}
-      beta: ${{ steps.check-tag.outputs.beta }}
     steps:
       - id: check-tag
         run: |
           if [[ "${{ github.event.ref }}" =~ ^refs/tags/v[0-9]+\.[0-9]+\.[0-9]+.*$ ]]; then
               echo ::set-output name=match::true
-          fi
-          if [[ "${{ github.event.ref }}" =~ ^refs/tags/v[0-9]+\.[0-9]+\.[0-9]+.*-beta$ ]]; then
-              echo ::set-output name=beta::true
           fi
 
   build:
@@ -66,11 +62,11 @@ jobs:
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_PASSWORD }}
 
-      - name: Create Release
-        uses: marvinpinto/action-automatic-releases@v1.2.1
+      - name: Release
+        uses: softprops/action-gh-release@v1
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          prerelease: needs.check.outputs.beta == 'true'
+          token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: endsWith(github.ref, '-beta')
           files: |
             ${{ steps.sign_app.signedReleaseFile0 }}
             ${{ steps.sign_app.signedReleaseFile1 }}
