@@ -24,7 +24,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-
 public class Prefs {
 
   private static final String TAG = Prefs.class.getSimpleName();
@@ -33,6 +32,9 @@ public class Prefs {
   public  static final String THEME_PREF                       = "pref_theme";
   public  static final String LANGUAGE_PREF                    = "pref_language";
   public  static final String BACKGROUND_PREF                  = "pref_chat_background";
+
+  private static final String DATABASE_ENCRYPTED_SECRET        = "pref_database_encrypted_secret_"; // followed by account-id
+  private static final String DATABASE_UNENCRYPTED_SECRET      = "pref_database_unencrypted_secret_"; // followed by account-id
 
   public  static final String RINGTONE_PREF                    = "pref_key_ringtone";
   private static final String VIBRATE_PREF                     = "pref_key_vibrate";
@@ -80,6 +82,22 @@ public class Prefs {
 
   public static void setScreenLockEnabled(@NonNull Context context, boolean value) {
     setBooleanPreference(context, SCREEN_LOCK, value);
+  }
+
+  public static void setDatabaseEncryptedSecret(@NonNull Context context, @NonNull String secret, int accountId) {
+    setStringPreference(context, DATABASE_ENCRYPTED_SECRET + accountId, secret);
+  }
+
+  public static void setDatabaseUnencryptedSecret(@NonNull Context context, @Nullable String secret, int accountId) {
+    setStringPreference(context, DATABASE_UNENCRYPTED_SECRET + accountId, secret);
+  }
+
+  public static @Nullable String getDatabaseUnencryptedSecret(@NonNull Context context, int accountId) {
+    return getStringPreference(context, DATABASE_UNENCRYPTED_SECRET + accountId, null);
+  }
+
+  public static @Nullable String getDatabaseEncryptedSecret(@NonNull Context context, int accountId) {
+    return getStringPreference(context, DATABASE_ENCRYPTED_SECRET + accountId, null);
   }
 
   public static boolean isIncognitoKeyboardEnabled(Context context) {
@@ -169,6 +187,10 @@ public class Prefs {
 
   public static boolean isLocationStreamingEnabled(Context context) {
       return false;
+  }
+
+  public static boolean isDeveloperModeEnabled(Context context) {
+    return getBooleanPreference(context, "pref_developer_mode_enabled", false);
   }
 
   public static boolean isNewBroadcastListAvailable(Context context) {

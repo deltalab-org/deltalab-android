@@ -12,10 +12,12 @@ import android.webkit.JavascriptInterface;
 import android.webkit.MimeTypeMap;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.b44t.messenger.DcChat;
 import com.b44t.messenger.DcContext;
 import com.b44t.messenger.DcEvent;
 import com.b44t.messenger.DcMsg;
@@ -23,6 +25,7 @@ import com.b44t.messenger.DcMsg;
 import org.json.JSONObject;
 import org.thoughtcrime.securesms.connect.DcEventCenter;
 import org.thoughtcrime.securesms.connect.DcHelper;
+import org.thoughtcrime.securesms.util.Prefs;
 import org.thoughtcrime.securesms.util.Util;
 
 import java.io.ByteArrayInputStream;
@@ -30,13 +33,15 @@ import java.io.InputStream;
 
 public class WebxdcActivity extends WebViewActivity implements DcEventCenter.DcEventDelegate  {
   private static final String TAG = WebxdcActivity.class.getSimpleName();
-  private static final String INTERNAL_SCHEMA = "webxdc";
-  private static final String INTERNAL_DOMAIN = "local.app";
   private DcContext dcContext;
   private DcMsg dcAppMsg;
 
   public static void openWebxdcActivity(Context context, DcMsg instance) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+      if (Prefs.isDeveloperModeEnabled(context)) {
+        WebView.setWebContentsDebuggingEnabled(true);
+      }
+
       Intent intent =new Intent(context, WebxdcActivity.class);
       intent.putExtra("appMessageId", instance.getId());
       context.startActivity(intent);
@@ -67,7 +72,11 @@ public class WebxdcActivity extends WebViewActivity implements DcEventCenter.DcE
     webSettings.setAllowUniversalAccessFromFileURLs(false);
     webView.addJavascriptInterface(new InternalJSApi(), "InternalJSApi");
 
-    webView.loadUrl(INTERNAL_SCHEMA + "://" + INTERNAL_DOMAIN + "/index.html");
+    // `msg_id` in the subdomain makes sure, different apps using same files do not share the same cache entry
+    // (WebView may use a global cache shared across objects).
+    // (a random-id would also work, but would need maintenance and does not add benefits as we regard the file-part interceptRequest() only,
+    // also a random-id is not that useful for debugging)
+    webView.loadUrl("webxdc://msg" + appMessageId + ".localhost/index.html");
 
     Util.runOnAnyBackgroundThread(() -> {
       JSONObject info = this.dcAppMsg.getWebxdcInfo();
@@ -160,7 +169,16 @@ public class WebxdcActivity extends WebViewActivity implements DcEventCenter.DcE
     @JavascriptInterface
     public boolean sendStatusUpdate(String payload, String descr) {
       Log.i(TAG, "sendStatusUpdate");
-      return WebxdcActivity.this.dcContext.sendWebxdcStatusUpdate(WebxdcActivity.this.dcAppMsg.getId(), payload, descr);
+      if (!WebxdcActivity.this.dcContext.sendWebxdcStatusUpdate(WebxdcActivity.this.dcAppMsg.getId(), payload, descr)) {
+        DcChat dcChat =  WebxdcActivity.this.dcContext.getChat(WebxdcActivity.this.dcAppMsg.getChatId());
+        Toast.makeText(WebxdcActivity.this,
+                      dcChat.isContactRequest() ?
+                          WebxdcActivity.this.getString(R.string.accept_request_first) :
+                          WebxdcActivity.this.dcContext.getLastError(),
+                      Toast.LENGTH_LONG).show();
+        return false;
+      }
+      return true;
     }
 
     @JavascriptInterface

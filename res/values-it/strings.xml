@@ -379,6 +379,12 @@
     <string name="mailing_list">Mailing List</string>
     <string name="mailing_list_profile_info">Le modifiche al nome e all\'immagine della mailing list si applicano solo a questo dispositivo.</string>
 
+    <!-- webxdc -->
+    <!-- "Start..." button for an app -->
+    <string name="start_app">Avvia...</string>
+    <!-- this is a warning that is shown when one tries to send something to a chat that is not yet accepted. -->
+    <string name="accept_request_first">Per favore, accetta prima la richiesta di chat.</string>
+
     <!-- map -->
     <string name="filter_map_on_time">Mostra le posizioni nel tempo</string>
     <string name="show_location_traces">Mostra tracce</string>
@@ -607,6 +613,8 @@
     <string name="pref_show_emails_all">Sì</string>
     <string name="pref_experimental_features">Funzionalità Sperimentali</string>
     <string name="pref_on_demand_location_streaming">Trasmissione Posizione su Richiesta</string>
+    <string name="pref_developer_mode">Modalità sviluppatore</string>
+    <string name="pref_developer_mode_explain">Attiva le opzioni di debug e può rendere l\'app meno stabile. Solo per sviluppatori.</string>
     <string name="pref_background_default">Sfondo predefinito</string>
     <string name="pref_background_default_color">Colore predefinito</string>
     <string name="pref_background_custom_image">Immagine personalizzata</string>
@@ -754,7 +762,7 @@
     <string name="qrshow_x_has_joined_group">%1$s è entrato nel gruppo.</string>
     <string name="qrshow_join_group_title">Codice QR di Invito</string>
     <!-- This text is shown inside the "QR code card" with very limited space; please formulate the text as short as possible therefore. The placeholder will be replaced by the group name, eg. "Scan to join group \"Testing group\"" -->
-    <string name="qrshow_join_group_hint">Scansionalo per entrare nel gruppo \"%1$s\".</string>
+    <string name="qrshow_join_group_hint">Scansionalo per entrare nel gruppo \"%1$s\"</string>
     <string name="qrshow_join_contact_title">Codice QR di Invito</string>
     <!-- This text is shown inside the "QR code card" with very limited space; please formulate the text as short as possible therefore. The placeholder will be replaced by name and address eg. "Scan to chat with Alice (alice@example.org)" -->
     <string name="qrshow_join_contact_hint">Scansionalo per chattare con %1$s</string>

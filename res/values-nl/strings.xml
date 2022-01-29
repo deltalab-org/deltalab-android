@@ -379,6 +379,12 @@
     <string name="mailing_list">Mailinglijst</string>
     <string name="mailing_list_profile_info">Wijzigingen aan de mailinglijstnaam en -afbeelding worden alleen op dit apparaat getoond.</string>
 
+    <!-- webxdc -->
+    <!-- "Start..." button for an app -->
+    <string name="start_app">Starten…</string>
+    <!-- this is a warning that is shown when one tries to send something to a chat that is not yet accepted. -->
+    <string name="accept_request_first">Accepteer eerst het gespreksverzoek.</string>
+
     <!-- map -->
     <string name="filter_map_on_time">Locaties tonen in tijdsbeeld</string>
     <string name="show_location_traces">Sporen tonen</string>
@@ -607,6 +613,8 @@
     <string name="pref_show_emails_all">Alles</string>
     <string name="pref_experimental_features">Experimentele functies</string>
     <string name="pref_on_demand_location_streaming">Locatie continue doorgeven (op verzoek)</string>
+    <string name="pref_developer_mode">Ontwikkelaarsmodus</string>
+    <string name="pref_developer_mode_explain">Schakelt foutopsporingspoties in die de app mogelijk minder stabiel maken. Alléén voor ontwikkelaars.</string>
     <string name="pref_background_default">Standaardachtergrond</string>
     <string name="pref_background_default_color">Standaardkleur</string>
     <string name="pref_background_custom_image">Eigen afbeelding</string>
