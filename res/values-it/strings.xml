@@ -86,7 +86,7 @@
     <string name="last_week">Ultima settimana</string>
     <string name="last_month">Ultimo mese</string>
     <!-- the placeholder will be replaced by a date or time, resulting eg. in "Last seen at 12:13 AM" or "Last seen Nov 12" -->
-    <string name="last_seen_at">Visto l\'ultima volta alle %1$s</string>
+    <string name="last_seen_at">Visto l\'ultima volta %1$s</string>
     <string name="last_seen_unknown">Visto l\'ultima volta: Sconosciuto</string>
     <!-- Translators: show beside messages that are "N minutes old". prefer a short string, prefer abbreviations if they're well-known -->
     <plurals name="n_minutes">
@@ -605,8 +605,10 @@
     <string name="pref_watch_sent_folder">Controlla Cartella Inviata</string>
     <string name="pref_watch_mvbox_folder">Controlla Cartella DeltaChat</string>
     <string name="pref_send_copy_to_self">Auto-invia Copia</string>
-    <string name="pref_auto_folder_moves">Sposta Automaticamente nella Cartella DeltaChat</string>
+    <string name="pref_auto_folder_moves">Sposta nella Cartella DeltaChat</string>
     <string name="pref_auto_folder_moves_explain">Le chat vengono spostate per evitare di riempire la cartella In Arrivo</string>
+    <string name="pref_only_fetch_mvbox_title">Recupera dalla Cartella DeltaChat</string>
+    <string name="pref_only_fetch_mvbox_explain">Ignora altre cartelle. Richiede che il tuo server sposti i messaggi di chat nella cartella DeltaChat.</string>
     <string name="pref_show_emails">Mostra E-mail Tradizionali</string>
     <string name="pref_show_emails_no">No, solo chat</string>
     <string name="pref_show_emails_accepted_contacts">Per i contatti accettati</string>
@@ -911,4 +913,7 @@
     <string name="update_1_24_android">1.24 a colpo d\'occhio:\n\n• Salva tocchi: selezione dell\'account nell\'angolo in alto a sinistra dell\'elenco chat\n• Salva più tocchi: tocca a lungo l\'icona dell\'app per aprire direttamente le chat recenti\n• Salva traffico: scarica i grandi file in base alle proprie esigenze\n• Risparmiate nervosismo: unioni con codici QR più veloci e non bloccanti e nuove opzioni per i codici QR\n\nAltro su 👉</string>
     <string name="update_1_24_ios">1.24 a colpo d\'occhio:\n\n• Avvia una ricerca in-chat dal profilo della chat\n• Salva traffico: scarica file di grandi dimensioni in base alle esigenze\n• Risparmia nervosismo: ci si unisce con codici QR più veloci e non bloccanti\n\nAltro su 👉</string>
     <string name="update_1_26">1.26 rifinitura 💅\n\n• Dopo aver reso i codici QR non bloccanti nella 1.24, ora hanno anche un aspetto molto più bello - su tutte le piattaforme\n• Gli avatar e i badge sono simili su tutte le piattaforme\n• Molti bug risolti</string>
+    <string name="update_1_28_android">1.28 In evidenza:\n\n🔒 Crittografia: Una nuova opzione sperimentale per mantenere i contatti, le chiavi crittografiche e i messaggi di testo crittografati sul tuo dispositivo. Disponibile solo per la creazione di account e l\'importazione di file di backup.\n\n📫 Scrivi nella mailing list\n\n💫 Configurazione iniziale più rapida per più server di posta elettronica e opzioni di rete semplificate per prevenire configurazioni errate accidentali\n\n🐜 Moooooolti problemi riportati dagli utenti risolti</string>
+    <string name="update_1_28_ios_extra_line">... e ora puoi selezionare uno sfondo in \"Impostazioni / Sfondo\" :)</string>
+
 </resources>

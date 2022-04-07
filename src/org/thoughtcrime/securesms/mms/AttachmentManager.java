@@ -309,7 +309,7 @@ public class AttachmentManager {
           } else if (slide.hasDocument()) {
             if (slide.isWebxdcDocument()) {
               DcMsg instance = msg != null ? msg : DcHelper.getContext(context).getMsg(slide.dcMsgId);
-              webxdcView.setWebxdc(instance);
+              webxdcView.setWebxdc(instance, context.getString(R.string.videochat_tap_to_open));
               webxdcView.setWebxdcClickListener((v, s) -> {
                 WebxdcActivity.openWebxdcActivity(context, instance);
               });
@@ -397,6 +397,18 @@ public class AttachmentManager {
     }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
     return result;
+  }
+
+  // should be called when the attachement manager comes into view again.
+  // if the attachment manager contains a webxdc, its summary is updated.
+  public void onResume() {
+    if (slide.isPresent()) {
+      if (slide.get().isWebxdcDocument()) {
+        if (webxdcView != null) {
+          webxdcView.setWebxdc(DcHelper.getContext(context).getMsg(slide.get().dcMsgId), context.getString(R.string.videochat_tap_to_open));
+        }
+      }
+    }
   }
 
   public boolean isAttachmentPresent() {

@@ -58,6 +58,7 @@ public class DcHelper {
     public static final String CONFIG_SENTBOX_WATCH = "sentbox_watch";
     public static final String CONFIG_MVBOX_WATCH = "mvbox_watch";
     public static final String CONFIG_MVBOX_MOVE = "mvbox_move";
+    public static final String CONFIG_ONLY_FETCH_MVBOX = "only_fetch_mvbox";
     public static final String CONFIG_BCC_SELF = "bcc_self";
     public static final String CONFIG_SHOW_EMAILS = "show_emails";
     public static final String CONFIG_MEDIA_QUALITY = "media_quality";
@@ -200,7 +201,11 @@ public class DcHelper {
     dcContext.setStockTranslation(117, context.getString(R.string.secure_join_started));
     dcContext.setStockTranslation(118, context.getString(R.string.secure_join_replies));
     dcContext.setStockTranslation(119, context.getString(R.string.qrshow_join_contact_hint));
-    dcContext.setStockTranslation(120, context.getString(R.string.qrshow_join_group_hint));
+
+    // HACK: svg does not handle entities correctly and shows `&quot;` as the text `quot;`.
+    // until that is fixed, we fix the most obvious errors (core uses encode_minimal, so this does not affect so many characters)
+    // cmp. https://github.com/deltachat/deltachat-android/issues/2187
+    dcContext.setStockTranslation(120, context.getString(R.string.qrshow_join_group_hint).replace("\"", ""));
   }
 
   public static File getImexDir() {
