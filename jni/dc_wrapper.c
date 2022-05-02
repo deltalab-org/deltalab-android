@@ -711,6 +711,16 @@ JNIEXPORT void Java_com_b44t_messenger_DcContext_forwardMsgs(JNIEnv *env, jobjec
 }
 
 
+JNIEXPORT jboolean Java_com_b44t_messenger_DcContext_resendMsgs(JNIEnv *env, jobject obj, jintArray msg_ids)
+{
+    int msg_ids_cnt = 0;
+    uint32_t* msg_ids_ptr = jintArray2uint32Pointer(env, msg_ids, &msg_ids_cnt);
+        jboolean ret = dc_resend_msgs(get_dc_context(env, obj), msg_ids_ptr, msg_ids_cnt) != 0;
+    free(msg_ids_ptr);
+    return ret;
+}
+
+
 JNIEXPORT jint Java_com_b44t_messenger_DcContext_prepareMsg(JNIEnv *env, jobject obj, jint chat_id, jobject msg)
 {
     return dc_prepare_msg(get_dc_context(env, obj), chat_id, get_dc_msg(env, msg));
@@ -967,10 +977,10 @@ JNIEXPORT void Java_com_b44t_messenger_DcContext_deleteAllLocations(JNIEnv *env,
 }
 
 
-JNIEXPORT jlong Java_com_b44t_messenger_DcContext_getProviderFromEmailCPtr(JNIEnv *env, jobject obj, jstring email)
+JNIEXPORT jlong Java_com_b44t_messenger_DcContext_getProviderFromEmailWithDnsCPtr(JNIEnv *env, jobject obj, jstring email)
 {
     CHAR_REF(email);
-        jlong ret = (jlong)dc_provider_new_from_email(get_dc_context(env, obj), emailPtr);
+        jlong ret = (jlong)dc_provider_new_from_email_with_dns(get_dc_context(env, obj), emailPtr);
     CHAR_UNREF(email);
     return ret;
 }

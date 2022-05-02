@@ -8,16 +8,19 @@
     tools:context=".WelcomeActivity">
 
     <androidx.legacy.widget.Space
-        android:layout_weight="4"
+        android:layout_weight="3"
         android:layout_width="match_parent"
         android:layout_height="0dp"/>
 
     <ImageView
         android:id="@+id/welcome_icon"
-        android:layout_width="128dp"
+        android:layout_width="wrap_content"
         android:layout_height="128dp"
+        android:layout_weight="16"
+        android:gravity="bottom"
         android:src="@drawable/intro1"
-        android:padding="8dp"
+        android:paddingLeft="32dp"
+        android:paddingRight="32dp"
         tools:ignore="contentDescription"/>
 
     <TextView
@@ -25,69 +28,54 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:padding="16dp"
-        android:text="@string/welcome_desktop"
+        android:padding="8dp"
+        android:layout_marginBottom="24dp"
+        android:text="@string/welcome_chat_over_email"
         android:textSize="22sp"
         android:textStyle="bold"/>
 
-    <TextView
-        android:id="@+id/welcome_sub_header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="16dp"
-        android:text="@string/welcome_intro1_message"
-        android:textSize="18sp"/>
-
-    <androidx.legacy.widget.Space
-        android:layout_weight="1"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"/>
-
-    <Button
-        style="@style/ButtonPrimary"
-        android:id="@+id/login_button"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:paddingLeft="24dp"
-        android:paddingRight="24dp"
-        android:text="@string/login_header" />
-
-    <androidx.legacy.widget.Space
-        android:layout_weight="4"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"/>
-
     <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:gravity="center_horizontal">
 
-        <TextView
-            android:id="@+id/scan_qr_button"
-            android:layout_width="wrap_content"
+        <Button
+            style="@style/ButtonPrimary"
+            android:id="@+id/login_button"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:gravity="center"
-            android:text="@string/qrscan_title"
-            android:textSize="16sp"
-            android:textColor="@color/delta_accent"/>
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/login_header"/>
 
-        <TextView
+        <Button
+            style="@style/ButtonSecondary"
             android:id="@+id/backup_button"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:gravity="center"
-            android:text="@string/import_backup_title"
-            android:textSize="16sp"
-            android:textColor="@color/delta_accent"/>
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/import_backup_title"/>
+
+        <Button
+            style="@style/ButtonSecondary"
+            android:id="@+id/scan_qr_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            android:text="@string/scan_invitation_code"/>
 
     </LinearLayout>
+
+    <androidx.legacy.widget.Space
+        android:layout_weight="5"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"/>
 
 </LinearLayout>
 
