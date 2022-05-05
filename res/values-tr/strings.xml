@@ -893,7 +893,6 @@
     <string name="a11y_background_preview_label">Arka plan önizlemesi</string>
     <string name="a11y_disappearing_messages_activated">Kaybolan iletiler etkinleştirildi</string>
 
-
     <!-- iOS permissions, copy from "deltachat-ios/Info.plist", which is used on missing translations in "deltachat-ios/LANG.lproj/InfoPlist.strings" -->
     <string name="InfoPlist_NSCameraUsageDescription">Delta Chat, fotoğraflar ve videolar çekmek ve göndermek için ve QR kodları taramak için kameranızı kullanır.</string>
     <string name="InfoPlist_NSContactsUsageDescription">Delta Chat, yazabileceğiniz e-posta adreslerinin bir listesini göstermek için kişilerinizi kullanır. Delta Chat sunucusu yoktur; kişileriniz herhangi bir yere gönderilmez.</string>
@@ -914,10 +913,8 @@
 
 
     <!-- device messages for updates -->
-    <string name="update_1_24_android">Bir bakışta 1.24:\n\n• Dokunmaları kaydedin: Sohbet listesinin sol üst köşesinden hesap seçimi\n• Daha fazla dokunmayı kaydedin: Son sohbetleri doğrudan açmak için uygulama simgesine uzun dokunun\n• Akışı kaydedin: Gerektiğinde büyük dosyaları indirin\n• Sinirleri kaydedin: Daha hızlı, engellenmeyen QR kod katılımları ve yeni QR kod seçenekleri\n\nDaha fazlası 👉</string>
-    <string name="update_1_24_ios">Bir bakışta 1.24:\n\n• Sohbetin profilinden bir sohbet içi arama başlatın\n• \n• Akışı kaydedin: Gerektiğinde büyük dosyaları indirin\n• Sinirleri kaydedin: Daha hızlı, engellenmeyen QR kod katılımları\n\nDaha fazlası 👉</string>
-    <string name="update_1_26">1.26\'dan öne çıkanlar 💅\n\n• 1.24\'te QR kodları engelsiz yaptıktan sonra, artık daha güzel görünüyorlar - tüm platformlarda\n• Avatarlar ve rozetler, platform genelinde benzer görünüyor\n• Hataların çoğu düzeltildi</string>
     <string name="update_1_28_android">1.28 Öne Çıkanlar:\n\n🔒 Şifreleme: Kişilerinizi, şifreleme sırlarınızı ve metin iletilerinizi aygıtınızda şifreli tutmak için yeni bir deneysel seçenek. Yalnızca hesap oluşturma ve yedek dosyaları içe aktarma sırasında kullanılabilir.\n\n📫 Posta listelerine yazma\n\n💫 Daha fazla e-posta sunucusu için daha hızlı ilk kurulum ve kazara yanlış yapılandırmayı önlemek için düzenlenen ağ seçenekleri\n\n🐜 Kullanıcıların raporladığı çoğu sorun çözüldü</string>
     <string name="update_1_28_ios_extra_line">… ve şimdi \"Ayarlar / Arka Plan\"dan bir duvar kâğıdı seçebilirsiniz :)</string>
+    <string name="update_1_30">Daha hızlı. Daha kararlı.\n\n1.30 sürümleri için hıza ve güvenilirliğe odaklandık, düzinelerce hata düzeltildi. Favorilerinizden biri düzeltildiyse değişiklik günlüklerimizi denetleyin: https://get.delta.chat/#changelogs 🚀</string>
 
 </resources>

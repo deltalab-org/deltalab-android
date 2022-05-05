@@ -888,7 +888,6 @@
     <string name="a11y_background_preview_label">Aperçu de l\'arrière-plan</string>
     <string name="a11y_disappearing_messages_activated">Messages éphémères activés</string>
 
-
     <!-- iOS permissions, copy from "deltachat-ios/Info.plist", which is used on missing translations in "deltachat-ios/LANG.lproj/InfoPlist.strings" -->
     <string name="InfoPlist_NSCameraUsageDescription">Delta Chat utilise votre appareil photo pour pendre et envoyer des photos et des vidéos et pour scanner des QR codes.</string>
     <string name="InfoPlist_NSContactsUsageDescription">Delta Chat utilise vos contacts pour montrer une liste d\'adresses de courriel auxquels vous pouvez écrire. Delta Chat n\'a pas de serveur, vos contacts ne sont envoyés nulle part.</string>
@@ -909,9 +908,6 @@
 
 
     <!-- device messages for updates -->
-    <string name="update_1_24_android">La 1.24 au premier abord:\n\n• Moins d\'effort: la sélection de compte est dans le coin supérieur gauche de la liste de discussion\n• Encore moins d\'effort: tapez longuement l\'icône de l\'application pour ouvrir directement les récentes discussions\n• Économisez de la bande passante: téléchargez de large fichiers sur demande\n• Moins casse-tête: invitations par QRCode non-bloquantes et plus rapide, nouvelles options pour les QRCodes\n\nPlus de détails sur 👉</string>
-    <string name="update_1_26">Peaufinage de la 1.26 💅\n\n• Après avoir rendu les QRCodes non bloquants en 1.24, ils sont maintenant bien plus plaisants visuellement\n• Les badges et avatars ont une apparence consistante sur toutes les plateformes\n• Beaucoup de bugs corrigés</string>
     <string name="update_1_28_android">1.28 Changements marquants:\n\n🔒 Chiffrement: Une nouvelle option expérimentale pour garder vos contacts, vos secrets de chiffrement et vos messages texte chiffrés sur votre appareil. Disponible seulement lors de la création de compte et l\'import de fichiers de sauvegardes\n\n📫 Envoi de messages à une liste de distribution\n\n💫 Configuration initiale plus rapide pour davantage de serveurs mail et options réseaux éclaircies pour éviter d\'accidentelles mauvaises configurations\n\n🐜 Beaaaaaucoup de problèmes rapportés par les utilisateurs corrigés</string>
     <string name="update_1_28_ios_extra_line">... et vous pouvez désormais sélectionner un arrière-plan dans \"Configuration / Arrière-plan\" :)</string>
-
-</resources>
+    </resources>
