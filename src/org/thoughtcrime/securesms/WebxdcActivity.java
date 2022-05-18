@@ -25,6 +25,7 @@ import com.b44t.messenger.DcMsg;
 import org.json.JSONObject;
 import org.thoughtcrime.securesms.connect.DcEventCenter;
 import org.thoughtcrime.securesms.connect.DcHelper;
+import org.thoughtcrime.securesms.util.JsonUtils;
 import org.thoughtcrime.securesms.util.Prefs;
 import org.thoughtcrime.securesms.util.Util;
 
@@ -81,17 +82,7 @@ public class WebxdcActivity extends WebViewActivity implements DcEventCenter.DcE
     webView.addJavascriptInterface(new InternalJSApi(), "InternalJSApi");
 
     webView.loadUrl(this.baseURL + "/index.html");
-
-    Util.runOnAnyBackgroundThread(() -> {
-      JSONObject info = this.dcAppMsg.getWebxdcInfo();
-      Util.runOnMain(() -> {
-        try {
-          getSupportActionBar().setTitle(info.getString("name"));
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
-      });
-    });
+    updateTitle();
   }
 
   @Override
@@ -157,7 +148,21 @@ public class WebxdcActivity extends WebViewActivity implements DcEventCenter.DcE
     if ((eventId == DcContext.DC_EVENT_WEBXDC_STATUS_UPDATE && event.getData1Int() == dcAppMsg.getId())) {
       Log.i(TAG, "handleEvent");
       webView.loadUrl("javascript:window.__webxdcUpdate();");
+    } else if ((eventId == DcContext.DC_EVENT_MSGS_CHANGED && event.getData2Int() == dcAppMsg.getId())) {
+      updateTitle();
     }
+  }
+
+  private void updateTitle() {
+    Util.runOnAnyBackgroundThread(() -> {
+      final JSONObject info = this.dcAppMsg.getWebxdcInfo();
+      final String docName = JsonUtils.optString(info, "document");
+      final String xdcName = JsonUtils.optString(info, "name");
+      final String chatName =  WebxdcActivity.this.dcContext.getChat(WebxdcActivity.this.dcAppMsg.getChatId()).getName();
+      Util.runOnMain(() -> {
+        getSupportActionBar().setTitle((docName.isEmpty() ? xdcName : docName) + " – " + chatName);
+      });
+    });
   }
 
   class InternalJSApi {

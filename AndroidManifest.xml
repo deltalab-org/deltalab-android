@@ -281,6 +281,7 @@
     </activity>
 
     <activity android:name=".WebxdcActivity"
+              android:label=""
               android:theme="@style/TextSecure.LightTheme"
               android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize">
     </activity>
