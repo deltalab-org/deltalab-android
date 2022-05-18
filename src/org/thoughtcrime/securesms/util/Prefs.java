@@ -1,7 +1,5 @@
 package org.thoughtcrime.securesms.util;
 
-import static com.mapbox.mapboxsdk.constants.MapboxConstants.MINIMUM_ZOOM;
-
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -16,7 +14,6 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
 import com.b44t.messenger.DcContext;
-import com.mapbox.mapboxsdk.geometry.LatLng;
 
 import org.thoughtcrime.securesms.connect.DcHelper;
 import org.thoughtcrime.securesms.preferences.widgets.NotificationPrivacyPreference;
@@ -189,12 +186,7 @@ public class Prefs {
   }
 
   public static boolean isLocationStreamingEnabled(Context context) {
-    try {
-      return getBooleanPreference(context, "pref_location_streaming_enabled", false);
-    }
-    catch(Exception e) {
       return false;
-    }
   }
 
   public static boolean isDeveloperModeEnabled(Context context) {
@@ -275,27 +267,12 @@ public class Prefs {
 
   // map
 
-  public static void setMapCenter(Context context, int chatId, LatLng latLng) {
-    setLongPreference(context, MAP_CENTER_LATITUDE+chatId, Double.doubleToRawLongBits(latLng.getLatitude()));
-    setLongPreference(context, MAP_CENTER_LONGITUDE+chatId, Double.doubleToRawLongBits(latLng.getLongitude()));
-  }
-
   public static void setMapZoom(Context context, int chatId, double zoom) {
     setLongPreference(context, MAP_ZOOM+chatId, Double.doubleToRawLongBits(zoom));
   }
 
-  public static LatLng getMapCenter(Context context, int chatId) {
-    long latitude = getLongPreference(context, MAP_CENTER_LATITUDE+chatId, Long.MAX_VALUE);
-    long longitude = getLongPreference(context, MAP_CENTER_LONGITUDE+chatId, Long.MAX_VALUE);
-    if (latitude == Long.MAX_VALUE || longitude == Long.MAX_VALUE) {
-      return null;
-    }
-    return new LatLng(Double.longBitsToDouble(latitude), Double.longBitsToDouble(longitude));
-  }
-
   public static double getMapZoom(Context context, int chatId) {
-    long zoom = getLongPreference(context, MAP_ZOOM+chatId, Double.doubleToLongBits(MINIMUM_ZOOM));
-    return Double.longBitsToDouble(zoom);
+    return Double.longBitsToDouble(0);
   }
 
   // misc.

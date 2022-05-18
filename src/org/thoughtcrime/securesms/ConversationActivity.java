@@ -89,7 +89,6 @@ import org.thoughtcrime.securesms.connect.DcEventCenter;
 import org.thoughtcrime.securesms.connect.DcHelper;
 import org.thoughtcrime.securesms.connect.DirectShareUtil;
 import org.thoughtcrime.securesms.database.AttachmentDatabase;
-import org.thoughtcrime.securesms.map.MapActivity;
 import org.thoughtcrime.securesms.messagerequests.MessageRequestsBottomView;
 import org.thoughtcrime.securesms.mms.AttachmentManager;
 import org.thoughtcrime.securesms.mms.AttachmentManager.MediaType;
@@ -591,9 +590,6 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
   }
 
   private void handleShowMap() {
-    Intent intent = new Intent(this, MapActivity.class);
-    intent.putExtra(MapActivity.CHAT_ID, chatId);
-    startActivity(intent);
   }
 
   private void handleReturnToConversationList() {

@@ -141,20 +141,6 @@ public class AdvancedPreferenceFragment extends ListSummaryPreferenceFragment
       return true;
     });
 
-    Preference locationStreamingEnabled = this.findPreference("pref_location_streaming_enabled");
-    locationStreamingEnabled.setOnPreferenceChangeListener((preference, newValue) -> {
-      if ((Boolean)newValue) {
-        new AlertDialog.Builder(getActivity())
-          .setTitle("Thanks for trying out \"Location Streaming\"!")
-          .setMessage("• You will find a corresponding option in the attach menu (the paper clip) of each chat now\n\n"
-            + "• If you want to quit the experimental feature, you can disable it at \"Settings / Advanced\"")
-          .setCancelable(false)
-          .setPositiveButton(R.string.ok, null)
-          .show();
-      }
-      return true;
-    });
-
     Preference developerModeEnabled = this.findPreference("pref_developer_mode_enabled");
     developerModeEnabled.setOnPreferenceChangeListener((preference, newValue) -> {
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
