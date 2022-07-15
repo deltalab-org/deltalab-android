@@ -1,7 +1,60 @@
 # Delta Chat Android Changelog
 
+## v1.31.0 Testrun
+2022-07
+
+* experimental "Automatic E-mail Address Porting" (AEAP):
+  You can configure a new address now, and when receivers get messages
+  they will automatically recognize your moving to a new address
+* combine read receipts and webxdc updates and avoid sending too many messages
+* message lines starting with `>` are sent as quotes to non-Delta-Chat clients
+* support IMAP ID extension that is required by some providers
+* forward info messages as plain text
+* allow mailto: links in webxdc
+* fix: allow sharing filenames containing the character `~`
+* fix: allow DeltaChat folder being hidden
+* fix: cleanup read receipts storage
+* fix: mailing list: remove square-brackets only for first name
+* fix: do not use footers from mailinglists as the contact status
+* update to core88
+
+
+## v1.30.3
+2022-06
+
+* cleanup series of webxdc-info-messages
+* fix: make chat names always searchable
+* fix: do not reset database if backup cannot be decrypted
+* fix: do not add legacy info-messages on resending webxdc
+* fix: webxdc "back" button always closes webxdc
+* fix: let "Only Fetch from DeltaChat Folder" ignore other folders
+* fix: Autocrypt Setup Messages updates own key immediately
+* fix: do not skip Sent and Spam folders on gmail
+* fix: cleanup read-receipts saved by gmail to the Sent folder
+* fix: handle decryption errors explicitly and don't get confused by encrypted mail attachments
+* update provider database, add hermes.radio subdomains
+* update translations
+* update to core86
+
+
+## v1.30.2
+2022-05
+
+* show document and chat name in webxdc titles
+* add menu entry access the webxdc's source code
+* remove anyway unused com.google.android.gms from binary to avoid being flagged
+* send normal messages with higher priority than read receipts
+* improve chat encryption info, make it easier to find contacts without keys
+* improve error reporting when creating a folder fails
+* fix: repair encrypted mails "mixed up" by Google Workspace "Append footer" function
+* fix: use same contact-color if email address differ only in upper-/lowercase
+* update translations
+* update to core83
+
+
 ## v1.30.1
 2022-05
+
 * fix wrong language in read receipts
 * fix encoding issue in QR code descriptions
 * webxdc: allow internal pages

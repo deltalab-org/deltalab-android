@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.webkit.JavascriptInterface;
 import android.webkit.MimeTypeMap;
 import android.webkit.WebResourceResponse;
@@ -26,6 +27,7 @@ import org.json.JSONObject;
 import org.thoughtcrime.securesms.connect.DcEventCenter;
 import org.thoughtcrime.securesms.connect.DcHelper;
 import org.thoughtcrime.securesms.util.JsonUtils;
+import org.thoughtcrime.securesms.util.MediaUtil;
 import org.thoughtcrime.securesms.util.Prefs;
 import org.thoughtcrime.securesms.util.Util;
 
@@ -37,6 +39,7 @@ public class WebxdcActivity extends WebViewActivity implements DcEventCenter.DcE
   private DcContext dcContext;
   private DcMsg dcAppMsg;
   private String baseURL;
+  private String sourceCodeUrl = "";
 
   public static void openWebxdcActivity(Context context, DcMsg instance) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -82,7 +85,7 @@ public class WebxdcActivity extends WebViewActivity implements DcEventCenter.DcE
     webView.addJavascriptInterface(new InternalJSApi(), "InternalJSApi");
 
     webView.loadUrl(this.baseURL + "/index.html");
-    updateTitle();
+    updateTitleAndMenu();
   }
 
   @Override
@@ -94,7 +97,21 @@ public class WebxdcActivity extends WebViewActivity implements DcEventCenter.DcE
   @Override
   public boolean onPrepareOptionsMenu(Menu menu) {
     // do not call super.onPrepareOptionsMenu() as the default "Search" menu is not needed
+    menu.clear();
+    this.getMenuInflater().inflate(R.menu.webxdc, menu);
+    menu.findItem(R.id.source_code).setVisible(!sourceCodeUrl.isEmpty());
     return true;
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    super.onOptionsItemSelected(item);
+    switch (item.getItemId()) {
+      case R.id.source_code:
+        openUrlInBrowser(this, sourceCodeUrl);
+        return true;
+    }
+    return false;
   }
 
   @Override
@@ -103,6 +120,10 @@ public class WebxdcActivity extends WebViewActivity implements DcEventCenter.DcE
       // internal page, continue loading in the WebView
       return false;
     }
+    if (url.startsWith("mailto:")) {
+      return super.openOnlineUrl(url);
+    }
+
     Toast.makeText(this, "Please embed needed resources.", Toast.LENGTH_LONG).show();
     return true; // returning `true` causes the WebView to abort loading
   }
@@ -123,7 +144,7 @@ public class WebxdcActivity extends WebViewActivity implements DcEventCenter.DcE
         if (blob == null) {
           throw new Exception("\"" + path + "\" not found");
         }
-        String ext = MimeTypeMap.getFileExtensionFromUrl(path);
+        String ext = MediaUtil.getFileExtensionFromUrl(path);
         String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(ext);
         if (mimeType == null) {
           switch (ext) {
@@ -149,18 +170,24 @@ public class WebxdcActivity extends WebViewActivity implements DcEventCenter.DcE
       Log.i(TAG, "handleEvent");
       webView.loadUrl("javascript:window.__webxdcUpdate();");
     } else if ((eventId == DcContext.DC_EVENT_MSGS_CHANGED && event.getData2Int() == dcAppMsg.getId())) {
-      updateTitle();
+      updateTitleAndMenu();
     }
   }
 
-  private void updateTitle() {
+  private void updateTitleAndMenu() {
     Util.runOnAnyBackgroundThread(() -> {
       final JSONObject info = this.dcAppMsg.getWebxdcInfo();
       final String docName = JsonUtils.optString(info, "document");
       final String xdcName = JsonUtils.optString(info, "name");
       final String chatName =  WebxdcActivity.this.dcContext.getChat(WebxdcActivity.this.dcAppMsg.getChatId()).getName();
+      final String currSourceCodeUrl = JsonUtils.optString(info, "source_code_url");
+
       Util.runOnMain(() -> {
         getSupportActionBar().setTitle((docName.isEmpty() ? xdcName : docName) + " – " + chatName);
+        if (!sourceCodeUrl.equals(currSourceCodeUrl)) {
+          sourceCodeUrl = currSourceCodeUrl;
+          invalidateOptionsMenu();
+        }
       });
     });
   }
