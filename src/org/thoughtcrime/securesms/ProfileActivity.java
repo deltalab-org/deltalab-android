@@ -259,7 +259,7 @@ public class ProfileActivity extends PassphraseRequiredActionBarActivity
     }
     else if (chatId > 0) {
       DcChat dcChat  = dcContext.getChat(chatId);
-      titleView.setTitle(GlideApp.with(this), dcChat, isContactProfile());
+      titleView.setTitle(GlideApp.with(this), dcChat, true);
     }
     else if (isContactProfile()){
       titleView.setTitle(GlideApp.with(this), dcContext.getContact(contactId));
@@ -362,7 +362,7 @@ public class ProfileActivity extends PassphraseRequiredActionBarActivity
           return getString(R.string.tab_gallery);
 
         case TAB_DOCS:
-          return getString(R.string.tab_docs);
+          return getString(R.string.files);
 
         case TAB_LINKS:
           return getString(R.string.tab_links);
