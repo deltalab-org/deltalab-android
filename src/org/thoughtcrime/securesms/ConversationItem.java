@@ -469,7 +469,7 @@ public class ConversationItem extends BaseConversationItem
       if (documentViewStub.resolved())   documentViewStub.get().setVisibility(View.GONE);
       if (stickerStub.resolved())        stickerStub.get().setVisibility(View.GONE);
 
-      webxdcViewStub.get().setWebxdc(messageRecord, "Webxdc");
+      webxdcViewStub.get().setWebxdc(messageRecord, context.getString(R.string.webxdc_app));
       webxdcViewStub.get().setWebxdcClickListener(new ThumbnailClickListener());
       webxdcViewStub.get().setOnLongClickListener(passthroughClickListener);
 
@@ -569,7 +569,7 @@ public class ConversationItem extends BaseConversationItem
     }
 
     if(bottomLeft != 0 && bottomRight !=0) {
-      if(current.isOutgoing()) {
+      if((current.isOutgoing() && ViewUtil.isLtr(this)) || (!current.isOutgoing() && ViewUtil.isRtl(this))) {
         bottomRight = 0;
       }
       else {

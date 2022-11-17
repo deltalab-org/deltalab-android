@@ -12,7 +12,6 @@ import com.b44t.messenger.DcContact;
 
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.components.AvatarView;
-import org.thoughtcrime.securesms.connect.DcHelper;
 import org.thoughtcrime.securesms.mms.GlideRequests;
 import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.recipients.RecipientModifiedListener;
@@ -77,7 +76,7 @@ public class ContactSelectionListItem extends LinearLayout implements RecipientM
       }
     }
     this.avatar.setAvatar(glideRequests, recipient, false);
-    this.avatar.setSeenRecently(contact!=null? contact.isSeenRecently() : false);
+    this.avatar.setSeenRecently(contact!=null? contact.wasSeenRecently() : false);
 
     setText(name, number, label, contact);
     setEnabled(enabled);
@@ -144,7 +143,7 @@ public class ContactSelectionListItem extends LinearLayout implements RecipientM
       Util.runOnMain(() -> {
         avatar.setAvatar(glideRequests, recipient, false);
         DcContact contact = recipient.getDcContact();
-        avatar.setSeenRecently(contact!=null? contact.isSeenRecently() : false);
+        avatar.setSeenRecently(contact!=null? contact.wasSeenRecently() : false);
         nameView.setText(recipient.toShortString());
       });
     }

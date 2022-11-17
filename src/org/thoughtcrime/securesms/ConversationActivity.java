@@ -269,8 +269,9 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
 
     if (!isMultiUser()) {
       eventCenter.addObserver(DcContext.DC_EVENT_INCOMING_MSG, this);
-      eventCenter.addObserver(DcContext.DC_EVENT_MSG_DELIVERED, this);
       eventCenter.addObserver(DcContext.DC_EVENT_MSG_READ, this);
+      // handle DC_EVENT_MSG_DELIVERED to hide the seen-recently indicator if needed:
+      eventCenter.addObserver(DcContext.DC_EVENT_MSG_DELIVERED, this);
     }
 
     if (isForwarding(this)) {
@@ -476,12 +477,12 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
       menu.findItem(R.id.menu_videochat_invite).setVisible(false);
     }
 
-    if (!dcChat.canSend() || dcChat.isBroadcast()) {
+    if (!dcChat.canSend() || dcChat.isBroadcast() || dcChat.isMailingList()) {
       menu.findItem(R.id.menu_ephemeral_messages).setVisible(false);
     }
 
     if (isMultiUser()) {
-      if (dcChat.canSend() && !dcChat.isBroadcast()) {
+      if (dcChat.canSend() && !dcChat.isBroadcast() && !dcChat.isMailingList()) {
         inflater.inflate(R.menu.conversation_push_group_options, menu);
       }
     }
@@ -1576,7 +1577,7 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
                 || eventId == DcContext.DC_EVENT_MSG_DELIVERED)
                && event.getData1Int() == chatId) {
         DcContact contact = recipient.getDcContact();
-        titleView.setSeenRecently(contact!=null? contact.isSeenRecently() : false);
+        titleView.setSeenRecently(contact!=null? dcContext.getContact(contact.getId()).wasSeenRecently() : false);
     }
   }
 

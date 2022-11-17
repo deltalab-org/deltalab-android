@@ -280,37 +280,6 @@ JNIEXPORT jboolean Java_com_b44t_messenger_DcAccounts_selectAccount(JNIEnv *env,
 
 
 /*******************************************************************************
- * DcAccountsEventEmitter
- ******************************************************************************/
-
-
-static dc_accounts_event_emitter_t* get_dc_accounts_event_emitter(JNIEnv *env, jobject obj)
-{
-    static jfieldID fid = 0;
-    if (fid==0) {
-        jclass cls = (*env)->GetObjectClass(env, obj);
-        fid = (*env)->GetFieldID(env, cls, "accountsEventEmitterCPtr", "J" /*Signature, J=long*/);
-    }
-    if (fid) {
-        return (dc_accounts_event_emitter_t*)(*env)->GetLongField(env, obj, fid);
-    }
-    return NULL;
-}
-
-
-JNIEXPORT void Java_com_b44t_messenger_DcAccountsEventEmitter_unrefAccountsEventEmitterCPtr(JNIEnv *env, jobject obj)
-{
-    dc_accounts_event_emitter_unref(get_dc_accounts_event_emitter(env, obj));
-}
-
-
-JNIEXPORT jlong Java_com_b44t_messenger_DcAccountsEventEmitter_getNextEventCPtr(JNIEnv *env, jobject obj)
-{
-    return (jlong)dc_accounts_get_next_event(get_dc_accounts_event_emitter(env, obj));
-}
-
-
-/*******************************************************************************
  * DcContext
  ******************************************************************************/
 
@@ -1860,6 +1829,11 @@ JNIEXPORT jlong Java_com_b44t_messenger_DcContact_getLastSeen(JNIEnv *env, jobje
 }
 
 
+JNIEXPORT jboolean Java_com_b44t_messenger_DcContact_wasSeenRecently(JNIEnv *env, jobject obj)
+{
+    return (jboolean)(dc_contact_was_seen_recently(get_dc_contact(env, obj))!=0);
+}
+
 JNIEXPORT jboolean Java_com_b44t_messenger_DcContact_isBlocked(JNIEnv *env, jobject obj)
 {
     return (jboolean)(dc_contact_is_blocked(get_dc_contact(env, obj))!=0);
@@ -1987,12 +1961,3 @@ JNIEXPORT jstring Java_com_b44t_messenger_DcProvider_getOverviewPage(JNIEnv *env
     return ret;
 }
 
-
-/*******************************************************************************
- * Tools
- ******************************************************************************/
-
-JNIEXPORT jboolean Java_com_b44t_messenger_DcContext_data2IsString(JNIEnv *env, jclass cls, jint event)
-{
-    return DC_EVENT_DATA2_IS_STRING(event);
-}

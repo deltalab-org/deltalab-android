@@ -58,6 +58,7 @@ public class DcContext {
     public final static int DC_QR_WITHDRAW_VERIFYGROUP   = 502;
     public final static int DC_QR_REVIVE_VERIFYCONTACT   = 510;
     public final static int DC_QR_REVIVE_VERIFYGROUP     = 512;
+    public final static int DC_QR_LOGIN             = 520;
 
     public final static int DC_LP_AUTH_OAUTH2          =     0x2;
     public final static int DC_LP_AUTH_NORMAL          =     0x4;
@@ -235,9 +236,6 @@ public class DcContext {
      * @return true if at least one chat has location streaming enabled
      */
     public native boolean      setLocation          (float latitude, float longitude, float accuracy);
-
-    // helper to get/return strings from/to handleEvent()
-    public native static boolean data2IsString(int event);
 
     // working with raw c-data
     private long        contextCPtr;     // CAVE: the name is referenced in the JNI
