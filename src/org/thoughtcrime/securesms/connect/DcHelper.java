@@ -14,6 +14,7 @@ import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.FileProvider;
 
 import com.b44t.messenger.DcAccounts;
@@ -21,13 +22,19 @@ import com.b44t.messenger.DcChat;
 import com.b44t.messenger.DcContext;
 import com.b44t.messenger.DcLot;
 import com.b44t.messenger.DcMsg;
+import com.b44t.messenger.rpc.Rpc;
 
 import org.thoughtcrime.securesms.ApplicationContext;
 import org.thoughtcrime.securesms.BuildConfig;
+import org.thoughtcrime.securesms.LocalHelpActivity;
 import org.thoughtcrime.securesms.R;
+import org.thoughtcrime.securesms.ShareActivity;
 import org.thoughtcrime.securesms.database.model.ThreadRecord;
 import org.thoughtcrime.securesms.notifications.NotificationCenter;
+import org.thoughtcrime.securesms.providers.PersistentBlobProvider;
+import org.thoughtcrime.securesms.qr.QrActivity;
 import org.thoughtcrime.securesms.recipients.Recipient;
+import org.thoughtcrime.securesms.util.IntentUtils;
 import org.thoughtcrime.securesms.util.MediaUtil;
 
 import java.io.File;
@@ -65,9 +72,19 @@ public class DcHelper {
     public static final String CONFIG_SHOW_EMAILS = "show_emails";
     public static final String CONFIG_MEDIA_QUALITY = "media_quality";
     public static final String CONFIG_WEBRTC_INSTANCE = "webrtc_instance";
+    public static final String CONFIG_SOCKS5_ENABLED = "socks5_enabled";
+    public static final String CONFIG_SOCKS5_HOST = "socks5_host";
+    public static final String CONFIG_SOCKS5_PORT = "socks5_port";
+    public static final String CONFIG_SOCKS5_USER = "socks5_user";
+    public static final String CONFIG_SOCKS5_PASSWORD = "socks5_password";
+    public static final String CONFIG_VERIFIED_ONE_ON_ONE_CHATS = "verified_one_on_one_chats";
 
     public static DcContext getContext(@NonNull Context context) {
         return ApplicationContext.getInstance(context).dcContext;
+    }
+
+    public static Rpc getRpc(@NonNull Context context) {
+        return ApplicationContext.getInstance(context).rpc;
     }
 
     public static DcAccounts getAccounts(@NonNull Context context) {
@@ -146,7 +163,7 @@ public class DcHelper {
     dcContext.setStockTranslation(35, context.getString(R.string.contact_verified));
     dcContext.setStockTranslation(36, context.getString(R.string.contact_not_verified));
     dcContext.setStockTranslation(37, context.getString(R.string.contact_setup_changed));
-    dcContext.setStockTranslation(40, context.getString(R.string.chat_archived_chats_title));
+    dcContext.setStockTranslation(40, context.getString(R.string.chat_archived_label));
     dcContext.setStockTranslation(42, context.getString(R.string.autocrypt_asm_subject));
     dcContext.setStockTranslation(43, context.getString(R.string.autocrypt_asm_general_body));
     dcContext.setStockTranslation(60, context.getString(R.string.login_error_cannot_login));
@@ -221,10 +238,6 @@ public class DcHelper {
     dcContext.setStockTranslation(155, context.getString(R.string.ephemeral_timer_days_by_other));
     dcContext.setStockTranslation(156, context.getString(R.string.ephemeral_timer_weeks_by_you));
     dcContext.setStockTranslation(157, context.getString(R.string.ephemeral_timer_weeks_by_other));
-    dcContext.setStockTranslation(158, context.getString(R.string.protection_enabled_by_you));
-    dcContext.setStockTranslation(159, context.getString(R.string.protection_enabled_by_other));
-    dcContext.setStockTranslation(160, context.getString(R.string.protection_disabled_by_you));
-    dcContext.setStockTranslation(161, context.getString(R.string.protection_disabled_by_other));
 
     // HACK: svg does not handle entities correctly and shows `&quot;` as the text `quot;`.
     // until that is fixed, we fix the most obvious errors (core uses encode_minimal, so this does not affect so many characters)
@@ -233,6 +246,13 @@ public class DcHelper {
     dcContext.setStockTranslation(121, context.getString(R.string.connectivity_not_connected));
     dcContext.setStockTranslation(122, context.getString(R.string.aeap_addr_changed));
     dcContext.setStockTranslation(123, context.getString(R.string.aeap_explanation));
+    dcContext.setStockTranslation(162, context.getString(R.string.multidevice_qr_subtitle));
+    dcContext.setStockTranslation(163, context.getString(R.string.multidevice_transfer_done_devicemsg));
+
+    // The next two strings should only be set if the UI actually shows more info when the user clicks on the
+    // DC_INFO_PROTECTION_{EN|DIS}ABLED info message
+    dcContext.setStockTranslation(170, context.getString(R.string.chat_protection_enabled_tap_to_learn_more));
+    dcContext.setStockTranslation(171, context.getString(R.string.chat_protection_broken_tap_to_learn_more));
   }
 
   public static File getImexDir() {
@@ -297,6 +317,23 @@ public class DcHelper {
       Toast.makeText(activity, String.format("%s (%s)", activity.getString(R.string.no_app_to_handle_data), mimeType), Toast.LENGTH_LONG).show();
       Log.i(TAG, "opening of external activity failed.", e);
     }
+  }
+
+  public static void share(Context activity, byte[] data, String mimeType, String fileName, String text) {
+      Intent intent = new Intent(activity, ShareActivity.class);
+      intent.setAction(Intent.ACTION_SEND);
+
+      if (data != null) {
+          Uri uri = PersistentBlobProvider.getInstance().create(activity, data, mimeType, fileName);
+          intent.setType(mimeType);
+          intent.putExtra(Intent.EXTRA_STREAM, uri);
+      }
+
+      if (text != null) {
+          intent.putExtra(Intent.EXTRA_TEXT, text);
+      }
+
+      activity.startActivity(intent);
   }
 
   private static void startActivity(Activity activity, Intent intent) {
@@ -403,5 +440,21 @@ public class DcHelper {
       } else {
           return context.getString(R.string.connectivity_not_connected);
       }
+  }
+
+  public static void showVerificationBrokenDialog(Context context, String name) {
+    new AlertDialog.Builder(context)
+            .setMessage(context.getString(R.string.chat_protection_broken_explanation, name))
+            .setNeutralButton(R.string.learn_more, (d, w) -> IntentUtils.showBrowserIntent(context, "https://staging.delta.chat/684/en/help#verificationbroken"))
+            .setNegativeButton(R.string.qrscan_title, (d, w) -> context.startActivity(new Intent(context, QrActivity.class)))
+            .setPositiveButton(R.string.ok, null)
+            .setCancelable(true)
+            .show();
+  }
+
+  public static void showProtectionEnabledDialog(Context context) {
+    IntentUtils.showBrowserIntent(context, "https://staging.delta.chat/684/en/help#whatdoesverifiedmean");
+    // One day, it would be nice to point the user to the local help:
+    //context.startActivity(new Intent(context, LocalHelpActivity.class));
   }
 }

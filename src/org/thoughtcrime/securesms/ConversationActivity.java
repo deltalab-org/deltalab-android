@@ -33,6 +33,7 @@ import android.os.Bundle;
 import android.os.Vibrator;
 import android.provider.Browser;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.util.Pair;
@@ -46,7 +47,6 @@ import android.view.View.OnFocusChangeListener;
 import android.view.View.OnKeyListener;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
-import android.webkit.MimeTypeMap;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -66,6 +66,8 @@ import com.b44t.messenger.DcContact;
 import com.b44t.messenger.DcContext;
 import com.b44t.messenger.DcEvent;
 import com.b44t.messenger.DcMsg;
+import com.b44t.messenger.util.concurrent.ListenableFuture;
+import com.b44t.messenger.util.concurrent.SettableFuture;
 
 import org.thoughtcrime.securesms.attachments.Attachment;
 import org.thoughtcrime.securesms.attachments.UriAttachment;
@@ -85,6 +87,7 @@ import org.thoughtcrime.securesms.components.camera.QuickAttachmentDrawer.Attach
 import org.thoughtcrime.securesms.components.camera.QuickAttachmentDrawer.DrawerState;
 import org.thoughtcrime.securesms.components.emoji.EmojiKeyboardProvider;
 import org.thoughtcrime.securesms.components.emoji.MediaKeyboard;
+import org.thoughtcrime.securesms.connect.AccountManager;
 import org.thoughtcrime.securesms.connect.DcEventCenter;
 import org.thoughtcrime.securesms.connect.DcHelper;
 import org.thoughtcrime.securesms.connect.DirectShareUtil;
@@ -112,8 +115,6 @@ import org.thoughtcrime.securesms.util.ServiceUtil;
 import org.thoughtcrime.securesms.util.Util;
 import org.thoughtcrime.securesms.util.ViewUtil;
 import org.thoughtcrime.securesms.util.concurrent.AssertedSuccessListener;
-import org.thoughtcrime.securesms.util.concurrent.ListenableFuture;
-import org.thoughtcrime.securesms.util.concurrent.SettableFuture;
 import org.thoughtcrime.securesms.util.guava.Optional;
 import org.thoughtcrime.securesms.util.views.Stub;
 import org.thoughtcrime.securesms.video.recode.VideoRecoder;
@@ -129,11 +130,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import static org.thoughtcrime.securesms.NewConversationActivity.MAILTO;
 import static org.thoughtcrime.securesms.TransportOption.Type;
 import static org.thoughtcrime.securesms.util.RelayUtil.getSharedText;
 import static org.thoughtcrime.securesms.util.RelayUtil.isForwarding;
-import static org.thoughtcrime.securesms.util.RelayUtil.isRelayingMessageContent;
 import static org.thoughtcrime.securesms.util.RelayUtil.isSharing;
 
 /**
@@ -156,6 +155,7 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
 {
   private static final String TAG = ConversationActivity.class.getSimpleName();
 
+  public static final String ACCOUNT_ID_EXTRA        = "account_id";
   public static final String CHAT_ID_EXTRA           = "chat_id";
   public static final String FROM_ARCHIVED_CHATS_EXTRA = "from_archived";
   public static final String TEXT_EXTRA              = "draft_text";
@@ -170,17 +170,6 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
   private static final int RECORD_VIDEO        = 8;
   private static final int PICK_LOCATION       = 9;  // TODO: i think, this can be deleted
   private static final int SMS_DEFAULT         = 11; // TODO: i think, this can be deleted
-
-  /**
-   * If the user opens a chat, goes to another app, and shares some content to the same chat, we will have two ConversationActivity's
-   * with the same chat (because sharing uses startActivityForResult() and all activities started this way will be created a second time,
-   * without affecting the existing activity). So, when the sharing ConversationActivity closes, it sets this variable to `true` so that
-   * the still-running-currently-in-background ConversationActivity re-initializes the draft.
-   * There is always only one still-running-currently-in-background ConversationActivity, which is the one started normally (i.e. with
-   * `startActivity()`). Therefore, after reinitializing the draft in one activity, we can safely set this variable to `false`.
-   * See https://github.com/deltachat/deltachat-android/pull/1770
-   */
-  private static boolean doReinitializeDraft;
 
   private   GlideRequests               glideRequests;
   protected ComposeText                 composeText;
@@ -202,6 +191,7 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
   private   QuickAttachmentDrawer  quickAttachmentDrawer;
   private   InputPanel             inputPanel;
 
+  private ApplicationContext context;
   private Recipient  recipient;
   private DcContext  dcContext;
   private DcChat     dcChat                = new DcChat(0);
@@ -209,8 +199,6 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
   private final boolean isSecureText          = true;
   private boolean    isDefaultSms             = true;
   private boolean    isSecurityInitialized    = false;
-  private boolean    isShareDraftInitialized  = false;
-
   private boolean successfulForwardingAttempt = false;
 
 
@@ -225,7 +213,7 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
 
   @Override
   protected void onCreate(Bundle state, boolean ready) {
-    final Context context = getApplicationContext();
+    this.context = ApplicationContext.getInstance(getApplicationContext());
     this.dcContext = DcHelper.getContext(context);
 
     supportRequestWindowFeature(WindowCompat.FEATURE_ACTION_BAR_OVERLAY);
@@ -274,11 +262,7 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
       eventCenter.addObserver(DcContext.DC_EVENT_MSG_DELIVERED, this);
     }
 
-    if (isForwarding(this)) {
-      handleForwarding();
-    } else if (isSharing(this)) {
-      handleSharing();
-    }
+    handleRelaying();
   }
 
   @Override
@@ -304,9 +288,21 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
       }
     });
 
+    handleRelaying();
+
     if (fragment != null) {
       fragment.onNewIntent();
     }
+  }
+
+  private void handleRelaying() {
+    if (isForwarding(this)) {
+      handleForwarding();
+    } else if (isSharing(this)) {
+      handleSharing();
+    }
+
+    ConversationListRelayingActivity.finishActivity();
   }
 
   @Override
@@ -326,12 +322,7 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
 
     titleView.setTitle(glideRequests, dcChat);
 
-    DcHelper.getNotificationCenter(this).updateVisibleChat(chatId);
-
-    if (doReinitializeDraft) {
-      initializeDraft();
-      doReinitializeDraft = false;
-    }
+    DcHelper.getNotificationCenter(this).updateVisibleChat(dcContext.getAccountId(), chatId);
 
     attachmentManager.onResume();
   }
@@ -341,12 +332,8 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
     super.onPause();
 
     processComposeControls(ACTION_SAVE_DRAFT);
-    if (getCallingActivity() != null) {
-      // `getCallingActivity() != null` finds out whether the activity was started using `startActivityForResult()`.
-      doReinitializeDraft = true;
-    }
 
-    DcHelper.getNotificationCenter(this).updateVisibleChat(0);
+    DcHelper.getNotificationCenter(this).clearVisibleChat();
     if (isFinishing()) overridePendingTransition(R.anim.fade_scale_in, R.anim.slide_to_right);
     quickAttachmentDrawer.onPause();
     inputPanel.onPause();
@@ -434,7 +421,6 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
       break;
     case ScribbleActivity.SCRIBBLE_REQUEST_CODE:
       setMedia(data.getData(), MediaType.IMAGE);
-      doReinitializeDraft = false;
       break;
     case SMS_DEFAULT:
       initializeSecurity(isSecureText, isDefaultSms);
@@ -492,6 +478,7 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
       menu.findItem(R.id.menu_archive_chat).setTitle(R.string.menu_unarchive_chat);
     }
 
+    inflater.inflate(R.menu.conversation_clear, menu);
     inflater.inflate(R.menu.conversation_delete, menu);
 
     try {
@@ -542,6 +529,7 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
       case R.id.menu_add_attachment:        handleAddAttachment();             return true;
       case R.id.menu_leave:                 handleLeaveGroup();                return true;
       case R.id.menu_archive_chat:          handleArchiveChat();               return true;
+      case R.id.menu_clear_chat:            fragment.handleClearChat();        return true;
       case R.id.menu_delete_chat:           handleDeleteChat();                return true;
       case R.id.menu_mute_notifications:    handleMuteNotifications();         return true;
       case R.id.menu_show_map:              handleShowMap();                   return true;
@@ -604,17 +592,6 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
   }
 
   private void handleReturnToConversationList(@Nullable Bundle extras) {
-    if (isRelayingMessageContent(this) || successfulForwardingAttempt) {
-      if (isSharing(this)) {
-        // we're allowing only 1 try to share, going back to the conversation list will
-        // close the conversation list in activtyForResult() as well, so that the user
-        // comes back to the extenal app's share menu
-        setResult(RESULT_OK);
-      }
-      finish();
-      return;
-    }
-
     boolean archived = getIntent().getBooleanExtra(FROM_ARCHIVED_CHATS_EXTRA, false);
     Intent intent = new Intent(this, (archived ? ConversationListArchiveActivity.class : ConversationListActivity.class));
     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -739,12 +716,7 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
       } else {
         dcContext.setDraft(chatId, SendRelayedMessageUtil.createMessage(this, uriList.get(0), getSharedText(this)));
       }
-      initializeDraft().addListener(new AssertedSuccessListener<Boolean>() {
-        @Override
-        public void onSuccess(Boolean result) {
-          isShareDraftInitialized = true;
-        }
-      });
+      initializeDraft();
     }
   }
 
@@ -755,48 +727,22 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
    * @return
    */
   private ListenableFuture<Boolean> initializeDraft() {
-    if (isMailToIntent()) {
-      return initializeDraftFromIntent();
-    } else {
-      return initializeDraftFromDatabase();
-    }
-  }
-
-  boolean isMailToIntent() {
-    return getIntent() != null && getIntent().getData() != null && MAILTO.equals(getIntent().getData().getScheme());
-  }
-
-  private ListenableFuture<Boolean> initializeDraftFromIntent() {
-    SettableFuture<Boolean> result = new SettableFuture<>();
-    final String draftText = RelayUtil.getSharedText(this);
-
-    if (draftText != null) {
-      composeText.setText(draftText);
-    }
-
-    result.set(draftText != null);
-    updateToggleButtonState();
-    return result;
-  }
-
-  private void initializeEnabledCheck() {
-    boolean enabled = true;
-    inputPanel.setEnabled(enabled);
-    sendButton.setEnabled(enabled);
-    attachButton.setEnabled(enabled);
-  }
-
-  private ListenableFuture<Boolean> initializeDraftFromDatabase() {
     final SettableFuture<Boolean> future = new SettableFuture<>();
     DcMsg draft = dcContext.getDraft(chatId);
+    final String sharedText = RelayUtil.getSharedText(this);
 
     if (draft == null) {
-      future.set(false);
+      if (TextUtils.isEmpty(sharedText)) {
+        future.set(false);
+      } else {
+        composeText.setText(sharedText);
+        future.set(true);
+      }
       updateToggleButtonState();
       return future;
     }
 
-    final String text = draft.getText();
+    final String text = TextUtils.isEmpty(sharedText)? draft.getText() : sharedText;
     if(!text.isEmpty()) {
       composeText.setText(text);
       composeText.setSelection(composeText.getText().length());
@@ -852,6 +798,13 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
     }
 
     return future;
+  }
+
+  private void initializeEnabledCheck() {
+    boolean enabled = true;
+    inputPanel.setEnabled(enabled);
+    sendButton.setEnabled(enabled);
+    attachButton.setEnabled(enabled);
   }
 
   private ListenableFuture<Boolean> initializeSecurity(final boolean currentSecureText,
@@ -958,6 +911,12 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
   }
 
   private void initializeResources() {
+    int accountId = getIntent().getIntExtra(ACCOUNT_ID_EXTRA, dcContext.getAccountId());
+    if (accountId != dcContext.getAccountId()) {
+      AccountManager.getInstance().switchAccount(context, accountId);
+      dcContext = context.dcContext;
+      fragment.dcContext = context.dcContext;
+    }
     chatId = getIntent().getIntExtra(CHAT_ID_EXTRA, -1);
     if(chatId == DcChat.DC_CHAT_NO_CHAT)
       throw new IllegalStateException("can't display a conversation for no chat.");
@@ -979,8 +938,10 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
   private void setComposePanelVisibility() {
     if (dcChat.canSend()) {
       composePanel.setVisibility(View.VISIBLE);
+      attachmentManager.setHidden(false);
     } else {
       composePanel.setVisibility(View.GONE);
+      attachmentManager.setHidden(true);
       hideSoftKeyboard();
     }
   }
@@ -1158,7 +1119,7 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
 
           // for WEBXDC, drafts are just sent out as is.
           // for preparations and other cases, cleanup draft soon.
-          if (msg.getType() != DcMsg.DC_MSG_WEBXDC) {
+          if (msg == null || msg.getType() != DcMsg.DC_MSG_WEBXDC) {
             dcContext.setDraft(dcChat.getId(), null);
           }
 
@@ -1207,16 +1168,11 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
 
     if (refreshFragment) {
       fragment.reload(recipient, chatId);
-      DcHelper.getNotificationCenter(this).updateVisibleChat(chatId);
+      DcHelper.getNotificationCenter(this).updateVisibleChat(dcContext.getAccountId(), chatId);
     }
 
     fragment.scrollToBottom();
     attachmentManager.cleanup();
-
-    if (isShareDraftInitialized) {
-      isShareDraftInitialized = false;
-      setResult(RESULT_OK);
-    }
   }
 
 
@@ -1674,7 +1630,7 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
   }
 
   public void initializeContactRequest() {
-    if (!dcChat.isContactRequest()) {
+    if (!dcChat.isHalfBlocked()) {
       messageRequestBottomView.setVisibility(View.GONE);
       return;
     }
@@ -1685,21 +1641,33 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
       messageRequestBottomView.setVisibility(View.GONE);
       composePanel.setVisibility(View.VISIBLE);
     });
-    messageRequestBottomView.setBlockOnClickListener(v -> {
-      // avoid showing compose panel on receiving DC_EVENT_CONTACTS_CHANGED for the chat that is no longer a request after blocking
-      DcHelper.getEventCenter(this).removeObserver(DcContext.DC_EVENT_CONTACTS_CHANGED, this);
 
-      dcContext.blockChat(chatId);
-      Bundle extras = new Bundle();
-      extras.putInt(ConversationListFragment.RELOAD_LIST, 1);
-      handleReturnToConversationList(extras);
-    });
 
-    if (dcChat.getType() == DcChat.DC_CHAT_TYPE_GROUP) {
+    if (dcChat.isProtectionBroken()) {
+      messageRequestBottomView.setBlockText(R.string.more_info_desktop);
+      messageRequestBottomView.setBlockOnClickListener(v -> DcHelper.showVerificationBrokenDialog(this, recipient.getName()));
+
+      messageRequestBottomView.setQuestion(getString(R.string.chat_protection_broken, recipient.getName()));
+      messageRequestBottomView.setAcceptText(R.string.ok);
+
+    } else if (dcChat.getType() == DcChat.DC_CHAT_TYPE_GROUP) {
       // We don't support blocking groups yet, so offer to delete it instead
       messageRequestBottomView.setBlockText(R.string.delete);
       messageRequestBottomView.setBlockOnClickListener(v -> handleDeleteChat());
+      messageRequestBottomView.setQuestion(null);
+
+    } else {
+      messageRequestBottomView.setBlockText(R.string.block);
+      messageRequestBottomView.setBlockOnClickListener(v -> {
+        // avoid showing compose panel on receiving DC_EVENT_CONTACTS_CHANGED for the chat that is no longer a request after blocking
+        DcHelper.getEventCenter(this).removeObserver(DcContext.DC_EVENT_CONTACTS_CHANGED, this);
+
+        dcContext.blockChat(chatId);
+        Bundle extras = new Bundle();
+        extras.putInt(ConversationListFragment.RELOAD_LIST, 1);
+        handleReturnToConversationList(extras);
+      });
+      messageRequestBottomView.setQuestion(null);
     }
-    messageRequestBottomView.setQuestion(null);
   }
 }

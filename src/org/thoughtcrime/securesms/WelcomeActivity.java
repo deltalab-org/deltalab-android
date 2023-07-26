@@ -32,6 +32,7 @@ import org.thoughtcrime.securesms.connect.DcEventCenter;
 import org.thoughtcrime.securesms.connect.DcHelper;
 import org.thoughtcrime.securesms.mms.AttachmentManager;
 import org.thoughtcrime.securesms.permissions.Permissions;
+import org.thoughtcrime.securesms.qr.BackupTransferActivity;
 import org.thoughtcrime.securesms.qr.QrCodeHandler;
 import org.thoughtcrime.securesms.qr.RegistrationQrActivity;
 import org.thoughtcrime.securesms.service.GenericForegroundService;
@@ -72,10 +73,12 @@ public class WelcomeActivity extends BaseActionBarActivity implements DcEventCen
         setContentView(R.layout.welcome_activity);
 
         Button loginButton = findViewById(R.id.login_button);
+        View addAsSecondDeviceButton = findViewById(R.id.add_as_second_device_button);
         View scanQrButton = findViewById(R.id.scan_qr_button);
         View backupButton = findViewById(R.id.backup_button);
 
         loginButton.setOnClickListener((view) -> startRegistrationActivity());
+        addAsSecondDeviceButton.setOnClickListener((view) -> startAddAsSecondDeviceActivity());
         scanQrButton.setOnClickListener((view) -> startRegistrationQrActivity());
         backupButton.setOnClickListener((view) -> startImportBackup());
 
@@ -125,6 +128,7 @@ public class WelcomeActivity extends BaseActionBarActivity implements DcEventCen
         super.onStart();
         String qrAccount = getIntent().getStringExtra(QR_ACCOUNT_EXTRA);
         if (qrAccount!=null) {
+            getIntent().removeExtra(QR_ACCOUNT_EXTRA);
             manualConfigure = false;
             startQrAccountCreation(qrAccount);
         }
@@ -145,13 +149,18 @@ public class WelcomeActivity extends BaseActionBarActivity implements DcEventCen
         manualConfigure = true;
         Intent intent = new Intent(this, RegistrationActivity.class);
         startActivity(intent);
-        // no finish() here, the back key should take the user back from RegistrationActivity to WelcomeActivity
     }
 
     private void startRegistrationQrActivity() {
         manualConfigure = false;
         new IntentIntegrator(this).setCaptureActivity(RegistrationQrActivity.class).initiateScan();
-        // no finish() here, the back key should take the user back from RegistrationQrActivity to WelcomeActivity
+    }
+
+    private void startAddAsSecondDeviceActivity() {
+        manualConfigure = false;
+        new IntentIntegrator(this).setCaptureActivity(RegistrationQrActivity.class)
+          .addExtra(RegistrationQrActivity.ADD_AS_SECOND_DEVICE_EXTRA, true)
+          .initiateScan();
     }
 
     @SuppressLint("InlinedApi")
@@ -287,6 +296,14 @@ public class WelcomeActivity extends BaseActionBarActivity implements DcEventCen
             progressDialog = null;
         }
 
+        if (dcContext.checkQr(qrCode).getState() == DcContext.DC_QR_BACKUP) {
+            Intent intent = new Intent(this, BackupTransferActivity.class);
+            intent.putExtra(BackupTransferActivity.TRANSFER_MODE, BackupTransferActivity.TransferMode.RECEIVER_SCAN_QR.getInt());
+            intent.putExtra(BackupTransferActivity.QR_CODE, qrCode);
+            startActivity(intent);
+            return;
+        }
+
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage(getResources().getString(R.string.one_moment));
         progressDialog.setCanceledOnTouchOutside(false);
@@ -302,9 +319,6 @@ public class WelcomeActivity extends BaseActionBarActivity implements DcEventCen
             progressError(dcContext.getLastError());
             return;
         }
-
-        // calling configure() results in
-        // receiving multiple DC_EVENT_CONFIGURE_PROGRESS events
         DcHelper.getAccounts(this).stopIo();
         dcContext.configure();
     }
@@ -355,6 +369,13 @@ public class WelcomeActivity extends BaseActionBarActivity implements DcEventCen
 
         if (eventId== DcContext.DC_EVENT_IMEX_PROGRESS ) {
             long progress = event.getData1Int();
+            if (progressDialog == null || notificationController == null) {
+                // IMEX runs in BackupTransferActivity
+                if (progress == 1000) {
+                    finish();  // transfer done - remove ourself from the activity stack (finishAffinity is available in API 16, we're targeting API 14)
+                }
+                return;
+            }
             if (progress==0/*error/aborted*/) {
                 if (!imexUserAborted) {
                   progressError(dcContext.getLastError());
@@ -421,6 +442,16 @@ public class WelcomeActivity extends BaseActionBarActivity implements DcEventCen
                     new AlertDialog.Builder(this)
                             .setMessage(getString(R.string.qraccount_ask_create_and_login, domain))
                             .setPositiveButton(R.string.ok, (dialog, which) -> startQrAccountCreation(qrRaw))
+                            .setNegativeButton(R.string.cancel, null)
+                            .setCancelable(false)
+                            .show();
+                    break;
+
+                case DcContext.DC_QR_BACKUP:
+                    new AlertDialog.Builder(this)
+                            .setTitle(R.string.multidevice_receiver_title)
+                            .setMessage(R.string.multidevice_receiver_scanning_ask)
+                            .setPositiveButton(R.string.perm_continue, (dialog, which) -> startQrAccountCreation(qrRaw))
                             .setNegativeButton(R.string.cancel, null)
                             .setCancelable(false)
                             .show();

@@ -261,7 +261,7 @@ public class ShareActivity extends PassphraseRequiredActionBarActivity implement
     Intent composeIntent;
     if (chatId != -1) {
       composeIntent = getBaseShareIntent(ConversationActivity.class);
-      composeIntent.putExtra(EXTRA_CHAT_ID, chatId);
+      composeIntent.putExtra(ConversationActivity.CHAT_ID_EXTRA, chatId);
       RelayUtil.setSharedUris(composeIntent, resolvedExtras);
       startActivity(composeIntent);
     } else {
@@ -269,8 +269,6 @@ public class ShareActivity extends PassphraseRequiredActionBarActivity implement
       RelayUtil.setSharedUris(composeIntent, resolvedExtras);
       ConversationListRelayingActivity.start(this, composeIntent);
     }
-    // We use startActivityForResult() here so that the conversations list is correctly updated. (hide "Device messages", ...)a
-    // With startActivity() the list was not always updated before and after sharing and incorrectly showed or did not show the device talk.
     finish();
   }
 

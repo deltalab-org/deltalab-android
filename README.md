@@ -3,8 +3,7 @@
 This is the Android client for [Delta Chat](https://delta.chat/).
 It is available on [F-Droid](https://f-droid.org/app/com.b44t.messenger) and
 the [Google Play Store](https://play.google.com/store/apps/details?id=chat.delta).
-The APK can also be downloaded from [GitHub](https://github.com/deltachat/deltachat-android/releases)
-(only for experienced users).
+The APK can also be downloaded from [get.delta.chat](https://get.delta.chat).
 
 For the core library and other common info, please refer to the
 [Delta Chat Core Library](https://github.com/deltachat/deltachat-core-rust).
@@ -22,12 +21,39 @@ subproject _deltachat-core-rust_:
   or later by `git submodule update --init --recursive`. If you do this in your
   home directory, this results in the folder `~/deltachat-android` which is just fine.
 
+# Build Using Nix
+
+The repository contains [Nix](https://nixos.org/) development environment
+described in `flake.nix` file.
+If you don't have Nix installed,
+the easiest way is to use [The Determinate Nix Installer](https://github.com/DeterminateSystems/nix-installer)
+which installs Nix with [Flakes](https://nixos.wiki/wiki/Flakes) feature enabled out of the box
+and can be cleanly uninstalled with `/nix/nix-installer uninstall` once you don't need it anymore.
+
+Once you have Nix with Flakes feature set up start the development environment shell:
+```
+nix develop
+```
+Nix development environment contains Rust with cross-compilation toolchains and Android SDK.
+
+To [build an APK](https://developer.android.com/studio/build/building-cmdline) run the following 2 steps.
+Note that the first step may take some time to build for all architectures. You can optionally read 
+[the first comment block in the `ndk-make.sh` script](https://github.com/deltachat/deltachat-android/blob/master/scripts/ndk-make.sh) 
+for pointers on how to build for a specific architecture.
+```
+$ scripts/ndk-make.sh
+$ ./gradlew assembleDebug
+```
+
+Resulting APK files can be found in
+`build/outputs/apk/gplay/debug/` and
+`build/outputs/apk/fat/debug/`.
+
 # Build Using Dockerfile
 
-If you only want to build an APK, the easiest way is to use
-provided `Dockerfile` with [Docker](https://www.docker.com/) or
-[Podman](https://podman.io/). Podman is a drop-in replacement for Docker
-that does not require root privileges.
+Another way to build APK is to use provided `Dockerfile`
+with [Docker](https://www.docker.com/) or [Podman](https://podman.io/).
+Podman is a drop-in replacement for Docker that does not require root privileges.
 
 If you don't have Docker or Podman setup yet, read [how to setup Podman](#setup-podman)
 below. If you don't want to use Docker or Podman, read [how to manually install the
@@ -98,25 +124,21 @@ See https://wiki.archlinux.org/index.php/Podman#Rootless_Podman for more informa
 
 # <a name="install-build-environment"></a>Install Build Environment (without Docker or Podman)
 
-To setup build environment manually, you can read the `Dockerfile`
-and mimic what it does.
+To setup build environment manually:
+- _Either_, in Android Studio, go to "Tools / SDK Manager / SDK Tools", enable "Show Package Details",
+  select "CMake" and the desired NDK (install the same NDK version as the [Dockerfile](https://github.com/deltachat/deltachat-android/blob/master/Dockerfile)), hit "Apply".
+- _Or_ read [Dockerfile](https://github.com/deltachat/deltachat-android/blob/master/Dockerfile) and mimic what it does.
 
-First, you need to setup Android SDK and Android NDK. Configure
-`ANDROID_NDK_ROOT` environment variable to point to the Android NDK
+Then, in both cases, install Rust using [rustup](https://rustup.rs/)
+and Rust toolchains for cross-compilation by executing `scripts/install-toolchains.sh`.
+
+Then, configure `ANDROID_NDK_ROOT` environment variable to point to the Android NDK
 installation directory e.g. by adding this to your `.bashrc`:
 
 ```bash
-export ANDROID_NDK_ROOT=${HOME}/Android/Sdk/ndk/[version] # (or whereever your NDK is) Note that there is no `/` at the end!
+export ANDROID_NDK_ROOT=${HOME}/Android/Sdk/ndk/[version] # (or wherever your NDK is) Note that there is no `/` at the end!
 export PATH=${PATH}:${ANDROID_NDK_ROOT}/toolchains/llvm/prebuilt/linux-x86_64/bin/:${ANDROID_NDK_ROOT}
 ```
-
-Currently ndk20b is the minimum required version.
-Newer versions will likely work, however, are not tested and not used
-in official releases, in general, changes on the ndk-version should be
-done with care.
-
-Then, install Rust using [rustup](https://rustup.rs/). Install Rust
-toolchains for cross-compilation by executing `scripts/install-toolchains.sh`.
 
 After that, call `scripts/ndk-make.sh` in the root directory to build core-rust.
 Afterwards run the project in Android Studio. The project requires API 25.
@@ -174,7 +196,7 @@ environment.
 
 - Disable animations on your device, otherwise the test may fail:
   at "Developer options"
-  set all of "Window animation scale", "Transition animation scale" and "Animatior duration scale" to 0x
+  set all of "Window animation scale", "Transition animation scale" and "Animator duration scale" to 0x
 
 - In Android Studio: "File" / "Sync project with gradle files"
 

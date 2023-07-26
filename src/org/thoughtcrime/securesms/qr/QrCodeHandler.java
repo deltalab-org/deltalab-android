@@ -76,6 +76,20 @@ public class QrCodeHandler {
                 builder.setCancelable(false);
                 break;
 
+            case DcContext.DC_QR_BACKUP:
+                builder.setTitle(R.string.multidevice_receiver_title);
+                builder.setMessage(activity.getString(R.string.multidevice_receiver_scanning_ask) + "\n\n" + activity.getString(R.string.multidevice_same_network_hint));
+                builder.setPositiveButton(R.string.perm_continue, (dialog, which) -> {
+                  AccountManager.getInstance().addAccountFromQr(activity, rawString);
+                });
+                builder.setNegativeButton(R.string.cancel, null);
+                builder.setCancelable(false);
+
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+                BackupTransferActivity.appendSSID(activity, alertDialog.findViewById(android.R.id.message));
+                return;
+
             case DcContext.DC_QR_LOGIN:
                 String email = qrParsed.getText1();
                 builder.setMessage(activity.getString(R.string.qrlogin_ask_login_another, email));
@@ -182,6 +196,9 @@ public class QrCodeHandler {
             int chatId = dcContext.createChatByContactId(qrParsed.getId());
             Intent intent = new Intent(activity, ConversationActivity.class);
             intent.putExtra(ConversationActivity.CHAT_ID_EXTRA, chatId);
+            if (qrParsed.getText1Meaning() == DcLot.DC_TEXT1_DRAFT) {
+                intent.putExtra(ConversationActivity.TEXT_EXTRA, qrParsed.getText1());
+            }
             activity.startActivity(intent);
         });
         builder.setNegativeButton(android.R.string.cancel, null);

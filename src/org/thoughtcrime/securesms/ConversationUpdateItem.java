@@ -3,25 +3,31 @@ package org.thoughtcrime.securesms;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatImageView;
 import android.util.AttributeSet;
-import android.widget.TextView;
 
 import com.b44t.messenger.DcChat;
 import com.b44t.messenger.DcMsg;
 
+import org.json.JSONObject;
 import org.thoughtcrime.securesms.components.DeliveryStatusView;
 import org.thoughtcrime.securesms.mms.GlideRequests;
 import org.thoughtcrime.securesms.recipients.Recipient;
+import org.thoughtcrime.securesms.util.JsonUtils;
 
+import java.io.ByteArrayInputStream;
 import java.util.Locale;
 import java.util.Set;
 
 public class ConversationUpdateItem extends BaseConversationItem
 {
   private DeliveryStatusView  deliveryStatusView;
+  private AppCompatImageView  appIcon;
+  private AppCompatImageView  verifiedIcon;
   private int                 textColor;
 
   public ConversationUpdateItem(Context context) {
@@ -40,6 +46,9 @@ public class ConversationUpdateItem extends BaseConversationItem
 
     bodyText           = findViewById(R.id.conversation_update_body);
     deliveryStatusView = new DeliveryStatusView(findViewById(R.id.delivery_indicator));
+    appIcon            = findViewById(R.id.app_icon);
+    verifiedIcon       = findViewById(R.id.verified_icon);
+
 
     bodyText.setOnLongClickListener(passthroughClickListener);
     bodyText.setOnClickListener(passthroughClickListener);
@@ -55,7 +64,7 @@ public class ConversationUpdateItem extends BaseConversationItem
                    @NonNull Recipient               conversationRecipient,
                             boolean                 pulseUpdate)
   {
-    bind(messageRecord, dcChat, batchSelected, pulseUpdate);
+    bind(messageRecord, dcChat, batchSelected, pulseUpdate, conversationRecipient);
     setGenericInfoRecord(messageRecord);
   }
 
@@ -80,6 +89,39 @@ public class ConversationUpdateItem extends BaseConversationItem
   }
 
   private void setGenericInfoRecord(DcMsg messageRecord) {
+    int infoType = messageRecord.getInfoType();
+
+    if (infoType == DcMsg.DC_INFO_WEBXDC_INFO_MESSAGE) {
+      DcMsg parentMsg = messageRecord.getParent();
+
+      // It is possible that we only received an update without the webxdc itself.
+      // In this case parentMsg is null and we display update message without the icon.
+      if (parentMsg != null) {
+        JSONObject info = parentMsg.getWebxdcInfo();
+        byte[] blob = parentMsg.getWebxdcBlob(JsonUtils.optString(info, "icon"));
+        if (blob != null) {
+          ByteArrayInputStream is = new ByteArrayInputStream(blob);
+          Drawable drawable = Drawable.createFromStream(is, "icon");
+          appIcon.setImageDrawable(drawable);
+          appIcon.setVisibility(VISIBLE);
+        } else {
+          appIcon.setVisibility(GONE);
+        }
+      }
+    } else {
+      appIcon.setVisibility(GONE);
+    }
+
+    if (infoType == DcMsg.DC_INFO_PROTECTION_ENABLED) {
+      verifiedIcon.setVisibility(VISIBLE);
+      verifiedIcon.setImageResource(R.drawable.ic_verified);
+    } else if (infoType == DcMsg.DC_INFO_PROTECTION_DISABLED) {
+      verifiedIcon.setVisibility(VISIBLE);
+      verifiedIcon.setImageResource(R.drawable.ic_verified_broken);
+    } else {
+      verifiedIcon.setVisibility(GONE);
+    }
+
     bodyText.setText(messageRecord.getDisplayBody());
     bodyText.setVisibility(VISIBLE);
 

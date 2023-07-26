@@ -114,7 +114,6 @@
     <string name="menu_new_group">Nova grupa</string>
     <string name="menu_send">Pošalji</string>
     <string name="menu_edit_group">Uredi grupu</string>
-    <string name="menu_show_map">Prikaži mapu</string>
     <string name="menu_show_global_map">Prikaži sve lokacije</string>
     <string name="menu_add_attachment">Dodaj privitak</string>
     <string name="menu_leave_group">Napusti grupu</string>
@@ -216,6 +215,7 @@
     <string name="pref_message_text_size">Veličina fonta poruke</string>
     <string name="pref_other">Ostalo</string>
     <string name="pref_backup">Sigurnosna kopija</string>
+    <!-- No need to translate "Wallpaper" literally. Chose what is common in your language for a "Wallpaper" or a "Background". Avoid adding the term "image" here, as the "Wallpaper" may also be just a single color. -->
     <string name="pref_background">Pozadina</string>
     <string name="pref_background_btn_gallery">Odaberi iz galerije</string>
     <string name="pref_show_emails_all">Sve</string>

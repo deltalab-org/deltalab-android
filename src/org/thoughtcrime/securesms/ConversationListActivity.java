@@ -18,7 +18,6 @@ package org.thoughtcrime.securesms;
 
 import static org.thoughtcrime.securesms.ConversationActivity.CHAT_ID_EXTRA;
 import static org.thoughtcrime.securesms.ConversationActivity.STARTING_POSITION_EXTRA;
-import static org.thoughtcrime.securesms.util.RelayUtil.REQUEST_RELAY;
 import static org.thoughtcrime.securesms.util.RelayUtil.acquireRelayMessageContent;
 import static org.thoughtcrime.securesms.util.RelayUtil.getDirectSharingChatId;
 import static org.thoughtcrime.securesms.util.RelayUtil.isDirectSharing;
@@ -64,6 +63,7 @@ import org.thoughtcrime.securesms.util.DynamicLanguage;
 import org.thoughtcrime.securesms.util.DynamicNoActionBarTheme;
 import org.thoughtcrime.securesms.util.DynamicTheme;
 import org.thoughtcrime.securesms.util.Prefs;
+import org.thoughtcrime.securesms.util.RelayUtil;
 import org.thoughtcrime.securesms.util.SendRelayedMessageUtil;
 
 public class ConversationListActivity extends PassphraseRequiredActionBarActivity
@@ -74,6 +74,7 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
   private static final String OPENPGP4FPR = "openpgp4fpr";
   private static final String NDK_ARCH_WARNED = "ndk_arch_warned";
   public static final String CLEAR_NOTIFICATIONS = "clear_notifications";
+  public static final String ACCOUNT_ID_EXTRA = "account_id";
 
   private final DynamicTheme    dynamicTheme    = new DynamicNoActionBarTheme();
   private final DynamicLanguage dynamicLanguage = new DynamicLanguage();
@@ -98,8 +99,8 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
     // it is not needed to keep all past update messages, however, when deleted, also the strings should be deleted.
     DcContext dcContext = DcHelper.getContext(this);
     DcMsg msg = new DcMsg(dcContext, DcMsg.DC_MSG_TEXT);
-    msg.setText(getString(R.string.update_1_34_android));
-    dcContext.addDeviceMsg("update_1_34d_android", msg);
+    msg.setText(getString(R.string.update_1_38_android, "https://get.delta.chat/#changelogs"));
+    dcContext.addDeviceMsg("update_1_38c_android", msg);
 
     // create view
     setContentView(R.layout.conversation_list_activity);
@@ -129,7 +130,7 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
   }
 
   /**
-   * If the build script is invoked with a specific architecture (e.g.`./ndk-make.sh arm64-v8a`), it
+   * If the build script is invoked with a specific architecture (e.g.`ndk-make.sh arm64-v8a`), it
    * will compile the core only for this arch. This method checks if the arch was correct.
    *
    * In order to do this, `ndk-make.sh` writes its argument into the file `ndkArch`.
@@ -193,19 +194,20 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
   }
 
   private void refresh() {
+    DcContext dcContext = DcHelper.getContext(this);
+    int accountId = getIntent().getIntExtra(ACCOUNT_ID_EXTRA, dcContext.getAccountId());
+    if (getIntent().getBooleanExtra(CLEAR_NOTIFICATIONS, false)) {
+      DcHelper.getNotificationCenter(this).removeAllNotifiations(accountId);
+    }
+    if (accountId != dcContext.getAccountId()) {
+      AccountManager.getInstance().switchAccountAndStartActivity(this, accountId, null);
+    }
+
     refreshAvatar();
     refreshTitle();
     handleOpenpgp4fpr();
     if (isDirectSharing(this)) {
       openConversation(getDirectSharingChatId(this), -1);
-    }
-
-    if (isDirectSharing(this)) {
-      openConversation(getDirectSharingChatId(this), -1);
-    }
-
-    if (getIntent().getBooleanExtra(CLEAR_NOTIFICATIONS, false)) {
-      DcHelper.getNotificationCenter(this).removeAllNotifiations();
     }
   }
 
@@ -315,14 +317,8 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
       case R.id.menu_new_chat:
         createChat();
         return true;
-      case R.id.menu_archived_chats:
-        onSwitchToArchive();
-        return true;
       case R.id.menu_settings:
         startActivity(new Intent(this, ApplicationPreferencesActivity.class));
-        return true;
-      case R.id.menu_help:
-        startActivity(new Intent(this, LocalHelpActivity.class));
         return true;
       case R.id.menu_qr:
         new IntentIntegrator(this).setCaptureActivity(QrActivity.class).initiateScan();
@@ -335,6 +331,9 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
         return true;
       case android.R.id.home:
         onBackPressed();
+        return true;
+      case R.id.menu_all_media:
+        startActivity(new Intent(this, ProfileActivity.class));
         return true;
     }
 
@@ -386,10 +385,8 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
       intent.putExtra(STARTING_POSITION_EXTRA, startingPosition);
       if (isRelayingMessageContent(this)) {
         acquireRelayMessageContent(this, intent);
-        startActivityForResult(intent, REQUEST_RELAY);
-      } else {
-        startActivity(intent);
       }
+      startActivity(intent);
 
       overridePendingTransition(R.anim.slide_from_right, R.anim.fade_scale_out);
     }
@@ -400,10 +397,9 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
     Intent intent = new Intent(this, ConversationListArchiveActivity.class);
     if (isRelayingMessageContent(this)) {
       acquireRelayMessageContent(this, intent);
-      startActivityForResult(intent, REQUEST_RELAY);
-    } else {
-      startActivity(intent);
     }
+    startActivity(intent);
+    overridePendingTransition(R.anim.slide_from_right, R.anim.fade_scale_out);
   }
 
   @Override
@@ -419,10 +415,8 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
     Intent intent = new Intent(this, NewConversationActivity.class);
     if (isRelayingMessageContent(this)) {
       acquireRelayMessageContent(this, intent);
-      startActivityForResult(intent, REQUEST_RELAY);
-    } else {
-      startActivity(intent);
     }
+    startActivity(intent);
   }
 
   @Override
@@ -433,13 +427,6 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
         IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         QrCodeHandler qrCodeHandler = new QrCodeHandler(this);
         qrCodeHandler.onScanPerformed(scanResult);
-        break;
-      case REQUEST_RELAY:
-        if (resultCode == RESULT_OK) {
-          handleResetRelaying();
-          setResult(RESULT_OK);
-          finish();
-        }
         break;
       default:
         break;

@@ -33,7 +33,6 @@ public class ProfileSettingsAdapter extends RecyclerView.Adapter
                                     implements StickyHeaderAdapter<ProfileSettingsAdapter.HeaderViewHolder>
 {
   public static final int SETTING_SEND_MESSAGE = 120;
-  public static final int SETTING_NEW_GROUP    = 130;
 
   private final @NonNull Context              context;
   private final @NonNull Locale               locale;
@@ -314,7 +313,6 @@ public class ProfileSettingsAdapter extends RecyclerView.Adapter
       itemDataContact = dcContact;
       if (!chatIsDeviceTalk) {
         itemData.add(new ItemData(ItemData.TYPE_PRIMARY_SETTING, SETTING_SEND_MESSAGE, context.getString(R.string.send_message)));
-        itemData.add(new ItemData(ItemData.TYPE_PRIMARY_SETTING, SETTING_NEW_GROUP, context.getString(R.string.new_group_or_subject)));
       }
 
       itemDataStatusText = dcContact.getStatus();

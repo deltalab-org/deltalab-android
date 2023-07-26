@@ -3,25 +3,32 @@ package org.thoughtcrime.securesms;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 
 import androidx.appcompat.app.AlertDialog;
 
 import com.b44t.messenger.DcContext;
+import com.b44t.messenger.rpc.HttpResponse;
+import com.b44t.messenger.rpc.Rpc;
 
 import org.thoughtcrime.securesms.connect.DcHelper;
 import org.thoughtcrime.securesms.util.DynamicTheme;
 import org.thoughtcrime.securesms.util.Prefs;
 import org.thoughtcrime.securesms.util.Util;
 
+import java.io.ByteArrayInputStream;
 import java.lang.ref.WeakReference;
 
 public class FullMsgActivity extends WebViewActivity
 {
   public static final String MSG_ID_EXTRA = "msg_id";
+  public static final String BLOCK_LOADING_REMOTE = "block_loading_remote";
   private int msgId;
   private DcContext dcContext;
+  private Rpc rpc;
   private boolean loadRemoteContent = false;
+  private boolean blockLoadingRemote;
 
   enum LoadRemoteContent {
     NEVER,
@@ -33,7 +40,8 @@ public class FullMsgActivity extends WebViewActivity
   protected void onCreate(Bundle state, boolean ready) {
     super.onCreate(state, ready);
 
-    loadRemoteContent = Prefs.getAlwaysLoadRemoteContent(this);
+    blockLoadingRemote = getIntent().getBooleanExtra(BLOCK_LOADING_REMOTE, false);;
+    loadRemoteContent = !blockLoadingRemote && Prefs.getAlwaysLoadRemoteContent(this);
     webView.getSettings().setBlockNetworkLoads(!loadRemoteContent);
 
     // setBuiltInZoomControls() adds pinch-to-zoom as well as two on-screen zoom control buttons.
@@ -54,6 +62,7 @@ public class FullMsgActivity extends WebViewActivity
     webView.getSettings().setAllowFileAccess(false);
 
     dcContext = DcHelper.getContext(this);
+    rpc = DcHelper.getRpc(this);
     msgId = getIntent().getIntExtra(MSG_ID_EXTRA, 0);
     String title = dcContext.getMsg(msgId).getSubject();
     if (title.isEmpty()) title = getString(R.string.chat_input_placeholder);
@@ -115,16 +124,23 @@ public class FullMsgActivity extends WebViewActivity
         // would be required as well - probably as the leftmost button which is not that usable in
         // not-always-mode where the dialog is used more often. Or [Ok] would mean "Once" as well as "Change checkbox setting",
         // which is also a bit weird. Anyway, let's give the three buttons a try :)
-        final String checkmarkPrefix = DynamicTheme.getCheckmarkEmoji(this) + " ";
-        if (Prefs.getAlwaysLoadRemoteContent(this)) {
-          builder.setNeutralButton(checkmarkPrefix + getString(R.string.always), (dialog, which) -> onChangeLoadRemoteContent(LoadRemoteContent.ALWAYS));
-          builder.setNegativeButton(R.string.never, (dialog, which) -> onChangeLoadRemoteContent(LoadRemoteContent.NEVER));
-          builder.setPositiveButton(R.string.once, (dialog, which) -> onChangeLoadRemoteContent(LoadRemoteContent.ONCE));
+        final String checkmark = DynamicTheme.getCheckmarkEmoji(this) + " ";
+        String alwaysCheckmark = "";
+        String onceCheckmark = "";
+        String neverCheckmark = "";
+        if (!blockLoadingRemote && Prefs.getAlwaysLoadRemoteContent(this)) {
+          alwaysCheckmark = checkmark;
+        } else if (loadRemoteContent) {
+          onceCheckmark = checkmark;
         } else {
-          builder.setNeutralButton(R.string.always, (dialog, which) -> onChangeLoadRemoteContent(LoadRemoteContent.ALWAYS));
-          builder.setNegativeButton((loadRemoteContent? "" : checkmarkPrefix) + getString(R.string.never), (dialog, which) -> onChangeLoadRemoteContent(LoadRemoteContent.NEVER));
-          builder.setPositiveButton((loadRemoteContent? checkmarkPrefix : "") + getString(R.string.once), (dialog, which) -> onChangeLoadRemoteContent(LoadRemoteContent.ONCE));
+          neverCheckmark = checkmark;
         }
+
+        if (!blockLoadingRemote) {
+          builder.setNeutralButton(alwaysCheckmark + getString(R.string.always), (dialog, which) -> onChangeLoadRemoteContent(LoadRemoteContent.ALWAYS));
+        }
+        builder.setNegativeButton(neverCheckmark + getString(blockLoadingRemote ? R.string.no : R.string.never), (dialog, which) -> onChangeLoadRemoteContent(LoadRemoteContent.NEVER));
+        builder.setPositiveButton(onceCheckmark + getString(R.string.once), (dialog, which) -> onChangeLoadRemoteContent(LoadRemoteContent.ONCE));
 
         builder.show();
         return true;
@@ -136,11 +152,15 @@ public class FullMsgActivity extends WebViewActivity
     switch (loadRemoteContent) {
       case NEVER:
         this.loadRemoteContent = false;
-        Prefs.setBooleanPreference(this, Prefs.ALWAYS_LOAD_REMOTE_CONTENT, false);
+        if (!blockLoadingRemote) {
+          Prefs.setBooleanPreference(this, Prefs.ALWAYS_LOAD_REMOTE_CONTENT, false);
+        }
         break;
       case ONCE:
         this.loadRemoteContent = true;
-        Prefs.setBooleanPreference(this, Prefs.ALWAYS_LOAD_REMOTE_CONTENT, false);
+        if (!blockLoadingRemote) {
+          Prefs.setBooleanPreference(this, Prefs.ALWAYS_LOAD_REMOTE_CONTENT, false);
+        }
         break;
       case ALWAYS:
         this.loadRemoteContent = true;
@@ -149,5 +169,28 @@ public class FullMsgActivity extends WebViewActivity
     }
     webView.getSettings().setBlockNetworkLoads(!this.loadRemoteContent);
     webView.reload();
+  }
+
+  @Override
+  protected WebResourceResponse interceptRequest(String url) {
+    WebResourceResponse res = null;
+    try {
+      if (!loadRemoteContent) {
+        throw new Exception("loading remote content disabled");
+      }
+      if (url == null) {
+        throw new Exception("no url specified");
+      }
+      HttpResponse httpResponse = rpc.getHttpResponse(dcContext.getAccountId(), url);
+      String mimeType = httpResponse.getMimetype();
+      if (mimeType == null) {
+        mimeType = "application/octet-stream";
+      }
+      res = new WebResourceResponse(mimeType, httpResponse.getEncoding(), new ByteArrayInputStream(httpResponse.getBlob()));
+    } catch (Exception e) {
+      e.printStackTrace();
+      res = new WebResourceResponse("text/plain", "UTF-8", new ByteArrayInputStream(("Error: " + e.getMessage()).getBytes()));
+    }
+    return res;
   }
 }

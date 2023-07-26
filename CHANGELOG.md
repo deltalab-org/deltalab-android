@@ -1,9 +1,204 @@
 # Delta Chat Android Changelog
 
+## v1.38.2
+2023-06
+
+* fix version code issue with google play
+* using core117.0
+
+
+## v1.38.1
+2023-06
+
+* update translations
+* using core117.0
+
+
+## v1.38.0
+2023-06
+
+* improve group membership consistency
+* fix verification issues because of email addresses compared case-sensitive sometimes
+* fix empty lines in HTML view
+* fix empty links in HTML view
+* fix displaying of smaller images that were shown just white sometimes
+* fix android4 HTML view; bug introduced in v1.37.0
+* update translations
+* update to core117.0
+
+
+## v1.37.0 Testrun
+2023-06
+
+* new webxdc APIs: importFiles() and sendToChat()
+* remove upper size limit of attachments
+* save local storage: compress HTML emails in the database
+* save traffic and storage: recode large PNG and other supported image formats
+  (large JPEG were always recoded; images send as "File" are still not recorded or changed otherwise)
+* also strip metadata from images before sending
+  in case they're already small enough and do not require recoding
+* strip unicode sequences that are useless but may trick the user (RTLO attacks)
+* set a draft when scanning a QR code containing compatible mailto: data
+* tweak colors: make titles more visible in dark mode
+* bigger scroll-to-bottom button
+* fix appearance of verified icons
+* fix some bugs with handling of forward/share views
+* fix: exiting messages are no longer downloaded after configuration
+* fix: don't allow blocked contacts to create groups
+* fix: do not send messages when sending was cancelled while being offline
+* fix various bugs and improve logging
+* update to core116.0
+
+
+## v1.36.5
+2023-04
+
+* use SOCKS5 configuration also for loading remote images in HTML mails
+* bug fixes
+* update translations and local help
+* update to core112.8
+
+
+## v1.36.4
+2023-04
+
+* start with light/dark theme depending on system theme
+* fix verification icons for one-to-one chats
+* fix fetch errors due to erroneous EOF detection in long IMAP responses
+* more bug fixes
+* update translations and local help
+* update to core112.7
+
+
+## v1.36.2
+2023-04
+
+* add a device message after setting up a second device
+* speed up "Add as Second Device" connection time significantly on the getter side
+* if possible, show Wi-Fi-name directly after scanning an "Add Second Device" QR code
+* fix immediate restarts of "Add Second Device"
+* fix: do not show just trashed media in "All Media" view
+* fix: update database if needed after "Add Second Device"
+* update translations and local help
+* update to core112.6
+
+
+## v1.36.0
+2023-03
+
+* new, easy method of adding a second device to your account:
+  select "Add as Second Device" after installation and scan a QR code from the old device
+* view "All Media" of all chats by the corresponding option in the chat list's menu
+* add "Clear Chat" option to remove all messages from a chat
+* show non-deltachat emails by default for new installations
+  (you can change this at "Settings / Chats and Media)
+* show notifications for all accounts
+* make better use of dark/light mode in "Show full message"
+* show icon beside info messages of apps
+* resilience against outages by caching DNS results for SMTP connections
+  (IMAP connections are already cached since 1.34.11)
+* prefer TLS over STARTTLS during autoconfiguration, set minimum TLS version to 1.2
+* use SOCKS5 configuration also for HTTP requests
+* make invite QR codes even prettier
+* improve speed by reorganizing the database connection pool
+* improve speed by decrypting messages in parallel
+* improve reliability by using read/write instead of per-command timeouts for SMTP
+* improve reliability by closing databases sooner
+* improve compatibility with encrypted messages from non-deltachat clients
+* fix: Skip "Show full message" if the additional text is only a footer already shown in the profile
+* fix verifications when using for multiple devices
+* fix backup imports for backups seemingly work at first
+* fix a problem with gmail where (auto-)deleted messages would get archived instead of deleted
+* fix deletion of more than 32000 messages at the same time
+* update provider database
+* update translations and local help
+* update to core112.1
+
+
+## v1.34.13
+2023-02
+
+* fix sending status updates of private apps
+* show full messages: do not load remote content for requests automatically
+* using to core107.1
+
+
+## v1.34.12
+2023-02
+
+* disable SMTP pipelining for now
+* fix various bugs and improve logging
+* update translations
+* update to core107.1
+
+
+## v1.34.11
+2023-01
+
+* add SOCKS5 options to "Add Account" and "Configure"
+* introduce DNS cache: if DNS stops working on a network,
+  Delta Chat will still be able to connect to IMAP by using previous IP addresses
+* speed up sending and improve usability in flaky networks by using SMTP pipelining
+* fix SOCKS5 connection handling
+* fix various bugs and improve logging
+* update translations
+* update to core107
+
+
+## v1.34.10
+2023-01
+
+* fix: make archived chats visible that don't get unarchived automatically (muted chats):
+  add an unread counter and move the archive to the top
+* fix: send AVIF, HEIC, TXT, PPT, XLS, XML files as such
+* fix: trigger reconnection when failing to fetch existing messages
+* fix: do not retry fetching existing messages after failure, prevents infinite reconnection loop
+* fix: do not add an error if the message is encrypted but not signed
+* fix: do not strip leading spaces from message lines
+* fix corner cases on sending quoted texts
+* fix STARTTLS connection
+* fix: do not treat invalid email addresses as an exception
+* fix: flush relative database paths introduced in 1.34.8 in time
+* faster updates of chat lists and contact list
+* update translations
+* update to core106
+
+
+## v1.34.8
+2022-12
+
+* If a classical-email-user sends an email to a group and adds new recipients,
+  the new recipients will become group members
+* treat attached PGP keys from classical-email-user as a signal to prefer mutual encryption
+* treat encrypted or signed messages from classical-email-user as a signal to prefer mutual encryption
+* fix migration of old databases
+* fix: send ephemeral timer change messages only of the chat is already known by other members
+* fix: use relative paths to database and avoid problems eg. on migration to other devices or paths
+* fix read/write timeouts for IMAP over SOCKS5
+* fix: do not send "group name changes" if no character was modified
+* add Greek translation, update other translations
+* update to core104
+
+
+## v1.34.7 Testrun
+2022-12
+
+* prevent From:-forgery attacks
+* disable Autocrypt & Authres-checking for mailing lists because they don't work well with mailing lists
+* small speedups
+* improve logging
+* fix detection of "All mail", "Trash", "Junk" etc folders
+* fix reactions on partially downloaded messages by fetching messages sequentially
+* fix a bug where one malformed message blocked receiving any further messages
+* fix: set read/write timeouts for IMAP over SOCKS5
+* update translations
+* update to core103
+
+
 ## v1.34.5
 2022-11
 
-* allow removal of references contacts from the "New Chat" list
+* allow removal of referenced contacts from the "New Chat" list
 * show more debug info in message info
 * improve IMAP logging
 * show versionCode in log
@@ -29,7 +224,7 @@
 * using core98
 
 
-## v1.34.2
+## v1.34.2 Testrun
 2022-10
 
 * fix messages not arriving on newer androids by switching to more modern APIs
@@ -51,7 +246,7 @@
 * using core95
 
 
-## v1.34.0
+## v1.34.0 Testrun
 2022-10
 
 * start using "Private Apps" as a more user friendly term for the technical "Webxdc" term
@@ -207,7 +402,7 @@
 * fix: send locations in the background regardless of other sending activity
 * fix rare crashes when stopping IMAP and SMTP
 * fix correct message escaping consisting of a dot in SMTP protocol
-* fix: don't jump to parent message if parent messagse is not a webxdc
+* fix: don't jump to parent message if parent message is not a webxdc
 * fix webxdc background mode so that music stops playing
 * webxdc: improve display of webxdc items in the gallery's "docs" tab
 * webxdc: show icon in quotes
@@ -359,7 +554,7 @@
 * contact requests are notified as usual now
 * force strict certificate checks when a strict certificate was seen on first login
 * do not forward group names on forwarding messages
-* "Broadcast Lists", as kown from other messengers, added as an experimental feature
+* "Broadcast Lists", as known from other messengers, added as an experimental feature
   (you can enable it at "Settings / Advanced")
 * improve accessibility: add some button descriptions
 * remove "view profile" from the chat menu; just tap the chat name to open the profile
@@ -587,7 +782,7 @@
 * fix maybe stuck notifications
 * fix: close keyboard when a quotes is opened in another chat
 * fix: do not cut the document icon in quotes
-* fix: make the the quote dissmiss button better clickable again
+* fix: make the the quote dismiss button better clickable again
 * update translations
 
 
@@ -608,7 +803,7 @@
 * disappearing messages: select for any chat the lifetime of the messages
 * chat opens at the position of the first unseen message
 * add known contacts from the IMAP-server to the local addressbook on configure
-* direct forwarding to "saved messags" - save one tap and stay in context :)
+* direct forwarding to "saved messages" - save one tap and stay in context :)
 * long tap in contact-list allows opening "profile" directly
 * allow forwarding to multiple archived chats
 * enable encryption in groups if preferred by the majority of recipients
@@ -688,12 +883,12 @@
 
 * show a device message when the password was changed on the server
 * videochats introduced as experimental feature
-* show experimental disappearing-messags state in chat's title bar
+* show experimental disappearing-messages state in chat's title bar
 * improve sending large messages
 * improve receiving messages
 * improve error handling when there is no network
 * use correct aspect ratio of background images
-* fix sending umcompressed images
+* fix sending uncompressed images
 * fix emojis for android 4
 * more bug fixes
 
@@ -757,9 +952,9 @@
 ## v1.8.0
 2020-05-11
 
-* by default, the permantent notification is no longer shown;
-  the background fetch realibility depends on the system and the
-  permantent notification can be enabled at "Settings / Notifications" as needed
+* by default, the permanent notification is no longer shown;
+  the background fetch reliability depends on the system and the
+  permanent notification can be enabled at "Settings / Notifications" as needed
 * fix a bug that stops receiving messages under some circumstances
 * more bug fixes
 * update translations
@@ -784,8 +979,8 @@
 * new experimental feature that allows switching the account in use
 * improve interaction with traditional mail clients
 * improved onboarding when the provider returns a link
-* to improve background fetch, show a permantent notification by default
-* the permantent notification can be disabled at "Settins / Notifications"
+* to improve background fetch, show a permanent notification by default
+* the permanent notification can be disabled at "Settings / Notifications"
 * bug fixes
 * add Indonesian and Persian translations, update other translations
 
@@ -821,7 +1016,7 @@
 * lower minimal requirements, Delta Chat now also runs on Android 4.1 Jelly Bean
 * fix updating names from incoming mails
 * fix encryption to Ed25519 keys that will be used in one of the next releases
-* several bug fixes, eg. on sending and receivind messages, see
+* several bug fixes, eg. on sending and receiving messages, see
   https://github.com/deltachat/deltachat-core-rust/blob/master/CHANGELOG.md#1250
   for details on that
 * add Croatian and Esperanto translations, update other translations and help
@@ -1008,7 +1203,7 @@ Racer1, Simon Laux, solokot, Waldemar Stoczkowski, Xosé M. Lamas, Zkdc
 * use the rust-language for the mail-parsing and -generating part,
   introducing a vastly improved reliability
 * fix moving messages
-* fix flakyness when receiving messages
+* fix flakiness when receiving messages
   and in the secure-join process
 * more bug fixes
 
@@ -1102,7 +1297,7 @@ Heimen Stoffels, Lin Miaoski, Ozancan Karataş, Zkdc
 * Optional plipp-plop sounds in chats
 * Better document- and music-files view
 * Add new-messages marker
-* Keep chat-scroll-postion on incoming messages
+* Keep chat-scroll-position on incoming messages
 * Clean up settings dialog
 * More general "outgoing media quality" option (replaces image-quality option)
 * Improve quality of voice messages
@@ -1110,12 +1305,12 @@ Heimen Stoffels, Lin Miaoski, Ozancan Karataş, Zkdc
 * Add an experimental option to delete e-mails from server
 * Improve compatibility with older phones
 * Show a warning if the app is too old and won't be updated automatically
-  (done just by date comparision, no data is sent anywhere)
+  (done just by date comparison, no data is sent anywhere)
 * New option to save the log to a file
 * Make input text field a bit larger
 * Add Traditional Chinese and Simplified Chinese translations
 * Update Albanian, Azerbaijani, Basque, Brazilian Portuguese, Catalan, Danish,
-  Dutch, French, German, Italien, Japanese, Lithuanian, Polish, Portuguese,
+  Dutch, French, German, Italian, Japanese, Lithuanian, Polish, Portuguese,
   Russian, Spanish, Swedish, Turkish and Ukrainian translations
 * Bugfixes
 
@@ -1244,11 +1439,11 @@ Iskatel Istiny, Lech Rowerski, violoncelloCH and others.
 * Options for watching several IMAP-folders
 * Option to move messages to the DeltaChat-folder
 * Improved multi-device behavior
-* Improved Accessiblity eg. for screen readers
+* Improved Accessibility eg. for screen readers
 * Dark theme
 * Support right-to-left languages
 * Relative time display
-* Chatlist and contat list support a long click for several operations
+* Chatlist and contact list support a long click for several operations
 * Archive chats by swiping a chat right out of the chatlist
 * Show date always atop of the chat
 * Fix redraw problems with hidden system status or navigation bar
@@ -1292,7 +1487,7 @@ Karissa McKelvey, Lars-Magnus Skog, Ole Carlsen
 2018-07-10
 
 * Give advices for Google users
-* Speed up by making database-locks unneccessary
+* Speed up by making database-locks unnecessary
 * Fix drafts appearing twice
 * Update Albanian, Basque, Catalan, Danish, Dutch, English,
   Italian, Polish, Russian, and Turkish translations
@@ -1493,7 +1688,7 @@ Osoitz, sebek, Thomas Oster
 * Notify the user in the chatlist about contact requests
   of known users or of other Delta Chat clients
 * Show messages only for explicitly wanted chats
-* Show more detailed reasons about failed end-to-end-encryptions
+* Show more detailed reasons about failed end-to-end-encryption
 * Explicit option to leave a group
 * Do not show the padlock if end-to-end-encryption is disabled by the user
 * Import images from a backup when using a different device with different paths

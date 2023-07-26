@@ -114,7 +114,6 @@
     <string name="menu_toggle_keyboard">Emoji billentyűzet kapcsoló</string>
     <string name="menu_edit_group">Csoport szerkesztése</string>
     <string name="menu_group_name_and_image">Csoportnév és -kép</string>
-    <string name="menu_show_map">Térkép megjelenítése</string>
     <string name="menu_show_global_map">Minden hely megjelenítése</string>
     <string name="menu_archive_chat">Beszélgetés archiválása</string>
     <string name="menu_unarchive_chat">Archiválás visszavonása</string>
@@ -263,6 +262,7 @@
     <string name="pref_managekeys_menu_title">Privát kulcsok kezelése</string>
     <string name="pref_managekeys_export_secret_keys">Privát kulcsok exportálása</string>
     <string name="pref_managekeys_import_secret_keys">Privát kulcsok importálása</string>
+    <!-- No need to translate "Wallpaper" literally. Chose what is common in your language for a "Wallpaper" or a "Background". Avoid adding the term "image" here, as the "Wallpaper" may also be just a single color. -->
     <string name="pref_background">Beszélgetés háttere</string>
     <string name="pref_background_btn_gallery">Galériából</string>
     <string name="pref_show_emails_all">Mind</string>

@@ -7,16 +7,53 @@
 #include "deltachat-core-rust/deltachat-ffi/deltachat.h"
 
 
-#if __ANDROID_API__ < 21
-#include <sys/epoll.h>
-#include <fcntl.h>
-int epoll_create1(int flags) {
-    int fd = epoll_create(1000);
-    if (flags & O_CLOEXEC) { /* EPOLL_CLOEXEC == O_CLOEXEC */
-        int f = fcntl(fd, F_GETFD);
-        fcntl(fd, F_SETFD, f | FD_CLOEXEC);
+#if __ANDROID_API__ == 16
+unsigned long getauxval(unsigned long type) {
+    return 0;
+}
+
+#include <sys/socket.h>
+#include <unistd.h>
+
+int sendmmsg(int sockfd, struct mmsghdr *msgvec, unsigned int vlen,
+             int flags)
+{
+    if (flags != 0) {
+        // Not supported by the fallback.
+        return -1;
     }
-    return fd;
+
+    if (vlen == 0) {
+        return 0;
+    }
+
+    ssize_t n = sendmsg(sockfd, &msgvec->msg_hdr, flags);
+    if (n == -1) {
+        return -1;
+    }
+
+    (*msgvec).msg_len = n;
+    return 1;
+}
+
+int recvmmsg(int sockfd, struct mmsghdr *msgvec, unsigned int vlen,
+             int flags, struct timespec *timeout)
+{
+    if (flags != 0) {
+        // Not supported by the fallback.
+        return -1;
+    }
+
+    if (vlen == 0) {
+        return 0;
+    }
+
+    int n = recvmsg(sockfd, &msgvec->msg_hdr, flags);
+    if (n == -1) {
+        return -1;
+    }
+    (*msgvec).msg_len = n;
+    return 1;
 }
 #endif
 
@@ -206,6 +243,11 @@ JNIEXPORT void Java_com_b44t_messenger_DcAccounts_unrefAccountsCPtr(JNIEnv *env,
 JNIEXPORT jlong Java_com_b44t_messenger_DcAccounts_getEventEmitterCPtr(JNIEnv *env, jobject obj)
 {
     return (jlong)dc_accounts_get_event_emitter(get_dc_accounts(env, obj));
+}
+
+JNIEXPORT jlong Java_com_b44t_messenger_DcAccounts_getJsonrpcInstanceCPtr(JNIEnv *env, jobject obj)
+{
+    return (jlong)dc_jsonrpc_init(get_dc_accounts(env, obj));
 }
 
 
@@ -921,6 +963,21 @@ JNIEXPORT jstring Java_com_b44t_messenger_DcContext_imexHasBackup(JNIEnv *env, j
 }
 
 
+JNIEXPORT jlong Java_com_b44t_messenger_DcContext_newBackupProviderCPtr(JNIEnv *env, jobject obj)
+{
+    return (jlong)dc_backup_provider_new(get_dc_context(env, obj));
+}
+
+
+JNIEXPORT jboolean Java_com_b44t_messenger_DcContext_receiveBackup(JNIEnv *env, jobject obj, jstring qr)
+{
+    CHAR_REF(qr);
+        jboolean ret = dc_receive_backup(get_dc_context(env, obj), qrPtr);
+    CHAR_UNREF(qr);
+    return ret;
+}
+
+
 JNIEXPORT jint Java_com_b44t_messenger_DcContext_addAddressBook(JNIEnv *env, jobject obj, jstring adrbook)
 {
     CHAR_REF(adrbook);
@@ -965,6 +1022,15 @@ JNIEXPORT jlong Java_com_b44t_messenger_DcContext_getProviderFromEmailWithDnsCPt
     CHAR_REF(email);
         jlong ret = (jlong)dc_provider_new_from_email_with_dns(get_dc_context(env, obj), emailPtr);
     CHAR_UNREF(email);
+    return ret;
+}
+
+
+JNIEXPORT jlong Java_com_b44t_messenger_DcContext_getHttpResponseCPtr(JNIEnv *env, jobject obj, jstring url)
+{
+    CHAR_REF(url);
+        jlong ret = (jlong)dc_get_http_response(get_dc_context(env, obj), urlPtr);
+    CHAR_UNREF(url);
     return ret;
 }
 
@@ -1311,6 +1377,11 @@ JNIEXPORT jboolean Java_com_b44t_messenger_DcChat_isProtected(JNIEnv *env, jobje
     return dc_chat_is_protected(get_dc_chat(env, obj))!=0;
 }
 
+JNIEXPORT jboolean Java_com_b44t_messenger_DcChat_isProtectionBroken(JNIEnv *env, jobject obj)
+{
+    return dc_chat_is_protection_broken(get_dc_chat(env, obj))!=0;
+}
+
 
 JNIEXPORT jboolean Java_com_b44t_messenger_DcChat_isSendingLocations(JNIEnv *env, jobject obj)
 {
@@ -1465,6 +1536,12 @@ JNIEXPORT jboolean Java_com_b44t_messenger_DcMsg_hasLocation(JNIEnv *env, jobjec
 JNIEXPORT jint Java_com_b44t_messenger_DcMsg_getType(JNIEnv *env, jobject obj)
 {
     return dc_msg_get_viewtype(get_dc_msg(env, obj));
+}
+
+
+JNIEXPORT jint Java_com_b44t_messenger_DcMsg_getInfoType(JNIEnv *env, jobject obj)
+{
+    return dc_msg_get_info_type(get_dc_msg(env, obj));
 }
 
 
@@ -1914,6 +1991,55 @@ JNIEXPORT void Java_com_b44t_messenger_DcLot_unrefLotCPtr(JNIEnv *env, jobject o
 
 
 /*******************************************************************************
+ * DcBackupProvider
+ ******************************************************************************/
+
+
+static dc_backup_provider_t* get_dc_backup_provider(JNIEnv *env, jobject obj)
+{
+    static jfieldID fid = 0;
+    if (fid==0) {
+        jclass cls = (*env)->GetObjectClass(env, obj);
+        fid = (*env)->GetFieldID(env, cls, "backupProviderCPtr", "J" /*Signature, J=long*/);
+    }
+    if (fid) {
+        return (dc_backup_provider_t*)(*env)->GetLongField(env, obj, fid);
+    }
+    return NULL;
+}
+
+
+JNIEXPORT void Java_com_b44t_messenger_DcBackupProvider_unrefBackupProviderCPtr(JNIEnv *env, jobject obj)
+{
+    dc_backup_provider_unref(get_dc_backup_provider(env, obj));
+}
+
+
+JNIEXPORT jstring Java_com_b44t_messenger_DcBackupProvider_getQr(JNIEnv *env, jobject obj)
+{
+    char* temp = dc_backup_provider_get_qr(get_dc_backup_provider(env, obj));
+        jstring ret = JSTRING_NEW(temp);
+    dc_str_unref(temp);
+    return ret;
+}
+
+
+JNIEXPORT jstring Java_com_b44t_messenger_DcBackupProvider_getQrSvg(JNIEnv *env, jobject obj)
+{
+    char* temp = dc_backup_provider_get_qr_svg(get_dc_backup_provider(env, obj));
+        jstring ret = JSTRING_NEW(temp);
+    dc_str_unref(temp);
+    return ret;
+}
+
+
+JNIEXPORT void Java_com_b44t_messenger_DcBackupProvider_waitForReceiver(JNIEnv *env, jobject obj)
+{
+    dc_backup_provider_wait(get_dc_backup_provider(env, obj));
+}
+
+
+/*******************************************************************************
  * DcProvider
  ******************************************************************************/
 
@@ -1961,3 +2087,101 @@ JNIEXPORT jstring Java_com_b44t_messenger_DcProvider_getOverviewPage(JNIEnv *env
     return ret;
 }
 
+
+/*******************************************************************************
+ * DcHttpResponse
+ ******************************************************************************/
+
+
+static dc_http_response_t* get_dc_http_response(JNIEnv *env, jobject obj)
+{
+    static jfieldID fid = 0;
+    if (fid==0) {
+        jclass cls = (*env)->GetObjectClass(env, obj);
+        fid = (*env)->GetFieldID(env, cls, "httpResponseCPtr", "J" /*Signature, J=long*/);
+    }
+    if (fid) {
+        return (dc_http_response_t*)(*env)->GetLongField(env, obj, fid);
+    }
+    return NULL;
+}
+
+
+JNIEXPORT void Java_com_b44t_messenger_DcHttpResponse_unrefHttpResponseCPtr(JNIEnv *env, jobject obj)
+{
+    dc_http_response_unref(get_dc_http_response(env, obj));
+}
+
+
+JNIEXPORT jstring Java_com_b44t_messenger_DcHttpResponse_getMimetype(JNIEnv *env, jobject obj)
+{
+    char* temp = dc_http_response_get_mimetype(get_dc_http_response(env, obj));
+        jstring ret = NULL;
+        if (temp) {
+            ret = JSTRING_NEW(temp);
+        }
+    dc_str_unref(temp);
+    return ret;
+}
+
+
+JNIEXPORT jstring Java_com_b44t_messenger_DcHttpResponse_getEncoding(JNIEnv *env, jobject obj)
+{
+    char* temp = dc_http_response_get_encoding(get_dc_http_response(env, obj));
+        jstring ret = NULL;
+        if (temp) {
+            ret = JSTRING_NEW(temp);
+        }
+    dc_str_unref(temp);
+    return ret;
+}
+
+
+JNIEXPORT jbyteArray Java_com_b44t_messenger_DcHttpResponse_getBlob(JNIEnv *env, jobject obj)
+{
+    jbyteArray ret = NULL;
+    dc_http_response_t* http_response = get_dc_http_response(env, obj);
+    size_t ptr_size = dc_http_response_get_size(http_response);
+    uint8_t* ptr = dc_http_response_get_blob(http_response);
+        ret = ptr2jbyteArray(env, ptr, ptr_size);
+    dc_str_unref((char*)ptr);
+    return ret;
+}
+
+/*******************************************************************************
+ * DcJsonrpcInstance
+ ******************************************************************************/
+
+static dc_jsonrpc_instance_t* get_dc_jsonrpc_instance(JNIEnv *env, jobject obj)
+{
+    static jfieldID fid = 0;
+    if (fid==0) {
+        jclass cls = (*env)->GetObjectClass(env, obj);
+        fid = (*env)->GetFieldID(env, cls, "jsonrpcInstanceCPtr", "J" /*Signature, J=long*/);
+    }
+    if (fid) {
+        return (dc_jsonrpc_instance_t*)(*env)->GetLongField(env, obj, fid);
+    }
+    return NULL;
+}
+
+
+JNIEXPORT void Java_com_b44t_messenger_DcJsonrpcInstance_unrefJsonrpcInstanceCPtr(JNIEnv *env, jobject obj)
+{
+    dc_jsonrpc_unref(get_dc_jsonrpc_instance(env, obj));
+}
+
+JNIEXPORT void Java_com_b44t_messenger_DcJsonrpcInstance_request(JNIEnv *env, jobject obj, jstring request)
+{
+    CHAR_REF(request);
+    dc_jsonrpc_request(get_dc_jsonrpc_instance(env, obj), requestPtr);
+    CHAR_UNREF(request);
+}
+
+JNIEXPORT jstring Java_com_b44t_messenger_DcJsonrpcInstance_getNextResponse(JNIEnv *env, jobject obj)
+{
+    char* temp = dc_jsonrpc_next_response(get_dc_jsonrpc_instance(env, obj));
+    jstring ret = JSTRING_NEW(temp);
+    dc_str_unref(temp);
+    return ret;
+}

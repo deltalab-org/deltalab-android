@@ -281,6 +281,9 @@ public class ConversationFragment extends MessageSelectorFragment
             ConversationAdapter adapter = new ConversationAdapter(getActivity(), this.recipient.getChat(), GlideApp.with(this), locale, selectionClickListener, this.recipient);
             list.setAdapter(adapter);
 
+            if (dateDecoration != null) {
+                list.removeItemDecoration(dateDecoration);
+            }
             dateDecoration = new StickyHeaderDecoration(adapter, false, false);
             list.addItemDecoration(dateDecoration);
 
@@ -295,11 +298,11 @@ public class ConversationFragment extends MessageSelectorFragment
             reloadList();
             updateLocationButton();
 
+            if (lastSeenDecoration != null) {
+                list.removeItemDecoration(lastSeenDecoration);
+            }
             if (freshMsgs > 0) {
                 getListAdapter().setLastSeenPosition(freshMsgs - 1);
-                if (lastSeenDecoration != null) {
-                    list.removeItemDecoration(lastSeenDecoration);
-                }
                 lastSeenDecoration = new ConversationAdapter.LastSeenHeader(getListAdapter());
                 list.addItemDecoration(lastSeenDecoration);
             }
@@ -356,6 +359,10 @@ public class ConversationFragment extends MessageSelectorFragment
         return !dcMsg.isInfo() && dcMsg.getType() != DcMsg.DC_MSG_VIDEOCHAT_INVITATION;
     }
 
+    public void handleClearChat() {
+        handleDeleteMessages((int) chatId, getListAdapter().getMessageIds());
+    }
+
     private ConversationAdapter getListAdapter() {
         return (ConversationAdapter) list.getAdapter();
     }
@@ -389,13 +396,16 @@ public class ConversationFragment extends MessageSelectorFragment
     }
 
     void setLastSeen(long lastSeen) {
-        getListAdapter().setLastSeen(lastSeen);
-        if (lastSeenDecoration != null) {
-            list.removeItemDecoration(lastSeenDecoration);
-        }
-        if (lastSeen > 0) {
-            lastSeenDecoration = new ConversationAdapter.LastSeenHeader(getListAdapter());
-            list.addItemDecoration(lastSeenDecoration);
+        ConversationAdapter adapter = getListAdapter();
+        if (adapter != null) {
+            adapter.setLastSeen(lastSeen);
+            if (lastSeenDecoration != null) {
+                list.removeItemDecoration(lastSeenDecoration);
+            }
+            if (lastSeen > 0) {
+                lastSeenDecoration = new ConversationAdapter.LastSeenHeader(adapter);
+                list.addItemDecoration(lastSeenDecoration);
+            }
         }
     }
 
@@ -459,8 +469,8 @@ public class ConversationFragment extends MessageSelectorFragment
 
             Intent intent = new Intent(getActivity(), ConversationActivity.class);
             intent.putExtra(ConversationActivity.CHAT_ID_EXTRA, privateChatId);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             getActivity().startActivity(intent);
-            getActivity().finish();
         } else {
             Log.e(TAG, "Activity was null");
         }
@@ -831,10 +841,10 @@ public class ConversationFragment extends MessageSelectorFragment
                 intent.putExtra(ConversationActivity.CHAT_ID_EXTRA, foreignChatId);
                 int start = DcMsg.getMessagePosition(quoted, dcContext);
                 intent.putExtra(ConversationActivity.STARTING_POSITION_EXTRA, start);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 ((ConversationActivity) getActivity()).hideSoftKeyboard();
                 if (getActivity() != null) {
                     getActivity().startActivity(intent);
-                    getActivity().finish();
                 } else {
                     Log.e(TAG, "Activity was null");
                 }
@@ -847,6 +857,7 @@ public class ConversationFragment extends MessageSelectorFragment
       public void onShowFullClicked(DcMsg messageRecord) {
         Intent intent = new Intent(getActivity(), FullMsgActivity.class);
         intent.putExtra(FullMsgActivity.MSG_ID_EXTRA, messageRecord.getId());
+        intent.putExtra(FullMsgActivity.BLOCK_LOADING_REMOTE, getListAdapter().getChat().isHalfBlocked());
         startActivity(intent);
         getActivity().overridePendingTransition(R.anim.slide_from_right, R.anim.fade_scale_out);
       }

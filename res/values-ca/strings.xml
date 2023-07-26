@@ -87,7 +87,7 @@
     <string name="this_month">Aquest mes</string>
     <string name="last_week">La setmana passada</string>
     <string name="last_month">El mes passat</string>
-    <!-- Placeholder replaced by date or time, resulting in "Last seen at 12:13 AM" or "Last seen Nov 12" -->
+    <!-- Refers to the time a contact was last seen. Shown below contact name in the profile. The placeholder will be replaced by date or time, resulting in "Last seen at 12:13 AM" or "Last seen Nov 12" -->
     <string name="last_seen_at">Vist per darrer cop a les %1$s</string>
     <string name="last_seen_unknown">Vist per darrer cop: Ves a saber</string>
     <!-- Shown beside messages that are "N minutes old". Prefer short strings, or well-known abbreviations. -->
@@ -120,7 +120,7 @@
         <item quantity="one">%d destinatari</item>
         <item quantity="other">%d destinataris</item>
     </plurals>
-    <!-- Short form for "N Chats Selected" or "N Messages Selected": in English, "N Selected" -->
+    <!-- Short form for "N Items Selected" -->
     <plurals name="n_selected">
         <item quantity="one">%d Triat</item>
         <item quantity="other">%d Triats</item>
@@ -192,7 +192,6 @@
     <string name="menu_toggle_keyboard">Canvia al teclat d\'emoticones</string>
     <string name="menu_edit_group">Modifica el grup</string>
     <string name="menu_group_name_and_image">Nom i imatge del grup</string>
-    <string name="menu_show_map">Mostra el mapa</string>
     <string name="menu_show_global_map">Mostra totes les ubicacions</string>
     <string name="menu_archive_chat">Arxiva el xat</string>
     <string name="menu_unarchive_chat">Desarxiva el xat</string>
@@ -389,7 +388,6 @@
     <string name="start_app">Comença...</string>
     <!-- this is a warning that is shown when one tries to send something to a chat that is not yet accepted. -->
     <string name="accept_request_first">Si us plau accepteu primer el requeriment del xat.</string>
-
     <!-- map -->
     <string name="filter_map_on_time">Mostra les ubicacions al llarg del temps</string>
     <string name="show_location_traces">Mostra el rastre</string>
@@ -552,6 +550,7 @@
     <string name="pref_managekeys_import_explain">Importo les claus secretes de \"%1$s\"?\n\n• Les claus secretes existents no s\'esborraran\n\n• L\'última clau importada s\'usarà com la nova clau per defecte a menys que tingui la paraula \"legacy\" en el nom de l\'arxiu</string>
     <string name="pref_managekeys_secret_keys_exported_to_x">Les claus secretes s\'han copiat correctament a \"%1$s\".</string>
     <string name="pref_managekeys_secret_keys_imported_from_x">Claus secretes importades de \"%1$s\".</string>
+    <!-- No need to translate "Wallpaper" literally. Chose what is common in your language for a "Wallpaper" or a "Background". Avoid adding the term "image" here, as the "Wallpaper" may also be just a single color. -->
     <string name="pref_background">Fons</string>
     <string name="pref_background_btn_default">Usa la imatge per defecte</string>
     <string name="pref_background_btn_gallery">Tria de la galeria</string>
