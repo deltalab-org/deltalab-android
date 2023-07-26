@@ -198,16 +198,7 @@ public final class ImageEditorFragment extends Fragment implements ImageEditorHu
   @Override
   public void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
-    if (resultCode == RESULT_OK && requestCode == SELECT_STICKER_REQUEST_CODE && data != null) {
-      final String stickerFile = data.getStringExtra(StickerSelectActivity.EXTRA_STICKER_FILE);
-
-      UriGlideRenderer renderer = new UriGlideRenderer(Uri.parse("file:///android_asset/" + stickerFile), false, imageMaxWidth, imageMaxHeight);
-      EditorElement element     = new EditorElement(renderer);
-      imageEditorView.getModel().addElementCentered(element, 0.2f);
-      currentSelection = element;
-    } else {
-      imageEditorHud.enterMode(ImageEditorHud.Mode.NONE);
-    }
+    imageEditorHud.enterMode(ImageEditorHud.Mode.NONE);
   }
 
   @Override
@@ -235,11 +226,6 @@ public final class ImageEditorFragment extends Fragment implements ImageEditorHu
 
       case TEXT:
         addText();
-        break;
-
-      case MOVE_DELETE:
-        Intent intent = new Intent(getContext(), StickerSelectActivity.class);
-        startActivityForResult(intent, SELECT_STICKER_REQUEST_CODE);
         break;
 
       case NONE:

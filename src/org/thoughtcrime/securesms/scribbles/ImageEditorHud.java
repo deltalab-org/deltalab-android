@@ -35,7 +35,6 @@ public final class ImageEditorHud extends LinearLayout {
   private View                     highlightButton;
   private View                     blurButton;
   private View                     textButton;
-  private View                     stickerButton;
   private View                     undoButton;
   private View                     saveButton;
   private View                     deleteButton;
@@ -82,7 +81,6 @@ public final class ImageEditorHud extends LinearLayout {
     highlightButton  = findViewById(R.id.scribble_highlight_button);
     blurButton       = findViewById(R.id.scribble_blur_button);
     textButton       = findViewById(R.id.scribble_text_button);
-    stickerButton    = findViewById(R.id.scribble_sticker_button);
     undoButton       = findViewById(R.id.scribble_undo_button);
     saveButton       = findViewById(R.id.scribble_save_button);
     deleteButton     = findViewById(R.id.scribble_delete_button);
@@ -97,9 +95,9 @@ public final class ImageEditorHud extends LinearLayout {
 
   private void initializeVisibilityMap() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-      setVisibleViewsWhenInMode(Mode.NONE, drawButton, highlightButton, blurButton, textButton, stickerButton, cropButton, undoButton, saveButton);
+      setVisibleViewsWhenInMode(Mode.NONE, drawButton, highlightButton, blurButton, textButton, cropButton, undoButton, saveButton);
     } else {
-      setVisibleViewsWhenInMode(Mode.NONE, drawButton, highlightButton, textButton, stickerButton, cropButton, undoButton, saveButton);
+      setVisibleViewsWhenInMode(Mode.NONE, drawButton, highlightButton, textButton, cropButton, undoButton, saveButton);
     }
 
     setVisibleViewsWhenInMode(Mode.DRAW, confirmButton, undoButton, colorPicker, colorPalette);
@@ -148,7 +146,6 @@ public final class ImageEditorHud extends LinearLayout {
     highlightButton.setOnClickListener(v -> setMode(Mode.HIGHLIGHT));
     textButton.setOnClickListener(v -> setMode(Mode.TEXT));
     saveButton.setOnClickListener(v -> eventListener.onSave());
-    stickerButton.setOnClickListener(v -> setMode(Mode.MOVE_DELETE));
   }
 
   public void setColorPalette(@NonNull Set<Integer> colors) {

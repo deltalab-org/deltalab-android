@@ -85,15 +85,6 @@
                 android:src="@drawable/ic_blur_on_white_24" />
 
             <ImageView
-                android:id="@+id/scribble_sticker_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/circle_universal_overlay"
-                android:padding="6dp"
-                android:contentDescription="@string/emoji"
-                android:src="@drawable/ic_emoji_32" />
-
-            <ImageView
                 android:id="@+id/scribble_crop_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
