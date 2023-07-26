@@ -154,7 +154,7 @@ android {
 
     buildTypes {
         release {
-	    applicationIdSuffix ".lite2"
+	        applicationIdSuffix ".lite2"
             // minification and proguard disabled for now.
             //
             // when enabled, it can cut down apk size about 6%,
@@ -164,7 +164,10 @@ android {
             //
             // nb: it is highly recommended to use the same settings in debug+release -
             // otherwise problems might be noticed delayed only
-            minifyEnabled false
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
+                          'proguard-rules.pro'
+
 	    if(project.hasProperty("DC_RELEASE_STORE_FILE")) {
                 signingConfig signingConfigs.release
 	    }
