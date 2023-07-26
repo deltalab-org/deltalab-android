@@ -26,8 +26,6 @@ jobs:
       - uses: actions/checkout@v2
         with:
           submodules: recursive
-      - run: cp jni/deltachat-core-rust/rust-toolchain .
-      - uses: actions-rs/toolchain@v1
       - uses: Swatinem/rust-cache@v1
         with:
           working-directory: jni/deltachat-core-rust
@@ -38,14 +36,14 @@ jobs:
       - uses: nttld/setup-ndk@v1
         id: setup-ndk
         with:
-          ndk-version: r21d
+          ndk-version: r23c
 
       - name: Compile core
         env:
           ANDROID_NDK_ROOT: ${{ steps.setup-ndk.outputs.ndk-path }}
         run: |
           export PATH="${PATH}:${ANDROID_NDK_ROOT}/toolchains/llvm/prebuilt/linux-x86_64/bin/:${ANDROID_NDK_ROOT}"
-          ./scripts/install-toolchains.sh && ./ndk-make.sh
+          ./scripts/install-toolchains.sh && ./scripts/ndk-make.sh
 
       - name: Build APK
         run: |
