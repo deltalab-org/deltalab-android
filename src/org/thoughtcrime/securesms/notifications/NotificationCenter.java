@@ -337,14 +337,17 @@ public class NotificationCenter {
                 return;
             }
 
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && !notificationManager.areNotificationsEnabled()) {
+                return;
+            }
+
             if (Util.equals(visibleChat, chatData)) {
                 if (Prefs.isInChatNotifications(context)) {
                     InChatSounds.getInstance(context).playIncomingSound();
                 }
                 return;
             }
-
-            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
 
             // get notification text as a single line
             NotificationPrivacyPreference privacy = Prefs.getNotificationPrivacy(context);
@@ -443,8 +446,7 @@ public class NotificationCenter {
 
             // add buttons that allow some actions without opening Delta Chat.
             // if privacy options are enabled, the buttons are not added.
-            if (privacy.isDisplayContact() && privacy.isDisplayMessage()
-             && !Prefs.isScreenLockEnabled(context)) {
+            if (privacy.isDisplayContact() && privacy.isDisplayMessage()) {
                 try {
                     PendingIntent inNotificationReplyIntent = getRemoteReplyIntent(chatData);
                     PendingIntent markReadIntent = getMarkAsReadIntent(chatData, true);
@@ -602,8 +604,8 @@ public class NotificationCenter {
     }
 
   private class ChatData {
-    public int accountId;
-    public int chatId;
+    public final int accountId;
+    public final int chatId;
 
     public ChatData(int accountId, int chatId) {
         this.accountId = accountId;

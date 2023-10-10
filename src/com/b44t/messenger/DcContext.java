@@ -11,6 +11,7 @@ public class DcContext {
     public final static int DC_EVENT_ERROR                       = 400;
     public final static int DC_EVENT_ERROR_SELF_NOT_IN_GROUP     = 410;
     public final static int DC_EVENT_MSGS_CHANGED                = 2000;
+    public final static int DC_EVENT_REACTIONS_CHANGED           = 2001;
     public final static int DC_EVENT_INCOMING_MSG                = 2005;
     public final static int DC_EVENT_MSGS_NOTICED                = 2008;
     public final static int DC_EVENT_MSG_DELIVERED               = 2010;
@@ -101,10 +102,6 @@ public class DcContext {
     @Override
     protected void finalize() throws Throwable {
         super.finalize();
-        unref();
-    }
-
-    public void unref() {
         if (contextCPtr != 0) {
             unrefContextCPtr();
             contextCPtr = 0;
@@ -161,8 +158,8 @@ public class DcContext {
     public native String       getContactEncrInfo   (int contact_id);
     public native boolean      deleteContact        (int id);
     public native int          addAddressBook       (String adrbook);
-    public DcChatlist          getChatlist          (int listflags, String query, int queryId) { return new DcChatlist(getChatlistCPtr(listflags, query, queryId)); }
-    public DcChat              getChat              (int chat_id) { return new DcChat(getChatCPtr(chat_id)); }
+    public DcChatlist          getChatlist          (int listflags, String query, int queryId) { return new DcChatlist(getAccountId(), getChatlistCPtr(listflags, query, queryId)); }
+    public DcChat              getChat              (int chat_id) { return new DcChat(getAccountId(), getChatCPtr(chat_id)); }
     public native String       getChatEncrInfo      (int chat_id);
     public native void         markseenMsgs         (int msg_ids[]);
     public native void         marknoticedChat      (int chat_id);
@@ -216,7 +213,6 @@ public class DcContext {
     public DcArray             getLocations         (int chat_id, int contact_id, long timestamp_start, long timestamp_end) { return new DcArray(getLocationsCPtr(chat_id, contact_id, timestamp_start, timestamp_end)); }
     public native void         deleteAllLocations   ();
     public DcProvider          getProviderFromEmailWithDns (String email) { long cptr = getProviderFromEmailWithDnsCPtr(email); return cptr!=0 ? new DcProvider(cptr) : null; }
-    public DcHttpResponse      getHttpResponse      (String url) { long cptr = getHttpResponseCPtr(url); return cptr!=0 ? new DcHttpResponse(cptr) : null; }
 
     public String getNameNAddr() {
       String displayname = getConfig("displayname");
@@ -256,5 +252,4 @@ public class DcContext {
     private native long checkQrCPtr      (String qr);
     private native long getProviderFromEmailWithDnsCPtr  (String addr);
     private native long newBackupProviderCPtr();
-    private native long getHttpResponseCPtr(String url);
 }

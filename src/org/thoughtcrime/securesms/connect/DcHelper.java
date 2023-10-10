@@ -35,6 +35,7 @@ import org.thoughtcrime.securesms.providers.PersistentBlobProvider;
 import org.thoughtcrime.securesms.qr.QrActivity;
 import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.util.IntentUtils;
+import org.thoughtcrime.securesms.util.FileUtils;
 import org.thoughtcrime.securesms.util.MediaUtil;
 
 import java.io.File;
@@ -264,7 +265,7 @@ public class DcHelper {
     return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
   }
 
-  public static HashMap<String, Integer> sharedFiles = new HashMap<>();
+  public static final HashMap<String, Integer> sharedFiles = new HashMap<>();
 
   public static void openForViewOrShare(Context activity, int msg_id, String cmd) {
     DcContext dcContext = getContext(activity);
@@ -319,7 +320,7 @@ public class DcHelper {
     }
   }
 
-  public static void share(Context activity, byte[] data, String mimeType, String fileName, String text) {
+  public static void sendToChat(Context activity, byte[] data, String mimeType, String fileName, String text) {
       Intent intent = new Intent(activity, ShareActivity.class);
       intent.setAction(Intent.ACTION_SEND);
 
@@ -327,10 +328,14 @@ public class DcHelper {
           Uri uri = PersistentBlobProvider.getInstance().create(activity, data, mimeType, fileName);
           intent.setType(mimeType);
           intent.putExtra(Intent.EXTRA_STREAM, uri);
+          intent.putExtra(ShareActivity.EXTRA_TITLE, activity.getString(R.string.send_file_to, fileName));
       }
 
       if (text != null) {
           intent.putExtra(Intent.EXTRA_TEXT, text);
+          if (data == null) {
+              intent.putExtra(ShareActivity.EXTRA_TITLE, activity.getString(R.string.send_message_to));
+          }
       }
 
       activity.startActivity(intent);
@@ -358,6 +363,8 @@ public class DcHelper {
   }
 
   public static String getBlobdirFile(DcContext dcContext, String filename, String ext) {
+    filename = FileUtils.sanitizeFilename(filename);
+    ext = FileUtils.sanitizeFilename(ext);
     String outPath = null;
     for (int i = 0; i < 1000; i++) {
       String test = dcContext.getBlobdir() + "/" + filename + (i == 0 ? "" : i < 100 ? "-" + i : "-" + (new Date().getTime() + i)) + ext;

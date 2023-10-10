@@ -25,9 +25,6 @@ import java.util.Map;
 
 public class BucketedThreadMediaLoader extends AsyncTaskLoader<BucketedThreadMediaLoader.BucketedThreadMedia> {
 
-  @SuppressWarnings("unused")
-  private static final String TAG = BucketedThreadMediaLoader.class.getSimpleName();
-
   private final int chatId;
   private final int msgType1;
   private final int msgType2;
@@ -116,6 +113,17 @@ public class BucketedThreadMediaLoader extends AsyncTaskLoader<BucketedThreadMed
         }
       }
       OLDER.add(imageMessage);
+    }
+
+    public LinkedList<DcMsg> getAll() {
+      LinkedList<DcMsg> messages = new LinkedList<>();
+      for (TimeBucket section : TIME_SECTIONS) {
+        messages.addAll(section.records);
+      }
+      for (List<DcMsg> records : OLDER.months.values()) {
+        messages.addAll(records);
+      }
+      return messages;
     }
 
     public int getSectionCount() {

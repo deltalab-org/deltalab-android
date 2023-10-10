@@ -22,6 +22,7 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
+import android.os.Build;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -39,6 +40,8 @@ import androidx.annotation.Nullable;
 import com.b44t.messenger.DcChat;
 import com.b44t.messenger.DcContact;
 import com.b44t.messenger.DcMsg;
+import com.b44t.messenger.rpc.Reactions;
+import com.b44t.messenger.rpc.RpcException;
 
 import org.thoughtcrime.securesms.audio.AudioSlidePlayer;
 import org.thoughtcrime.securesms.components.AudioView;
@@ -59,6 +62,7 @@ import org.thoughtcrime.securesms.mms.Slide;
 import org.thoughtcrime.securesms.mms.SlideClickListener;
 import org.thoughtcrime.securesms.mms.SlideDeck;
 import org.thoughtcrime.securesms.mms.StickerSlide;
+import org.thoughtcrime.securesms.reactions.ReactionsConversationView;
 import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.util.LongClickMovementMethod;
 import org.thoughtcrime.securesms.util.MediaUtil;
@@ -96,7 +100,7 @@ public class ConversationItem extends BaseConversationItem
   protected View                   replyView;
   @Nullable private QuoteView      quoteView;
   private   ConversationItemFooter footer;
-  private   ConversationItemFooter stickerFooter;
+  private ReactionsConversationView reactionsView;
   private   TextView               groupSender;
   private   View                   groupSenderHolder;
   private   AvatarImageView        contactPhoto;
@@ -132,7 +136,7 @@ public class ConversationItem extends BaseConversationItem
 
     this.bodyText                =            findViewById(R.id.conversation_item_body);
     this.footer                  =            findViewById(R.id.conversation_item_footer);
-    this.stickerFooter           =            findViewById(R.id.conversation_item_sticker_footer);
+    this.reactionsView           =            findViewById(R.id.reactions_view);
     this.groupSender             =            findViewById(R.id.group_message_sender);
     this.contactPhoto            =            findViewById(R.id.contact_photo);
     this.contactPhotoHolder      =            findViewById(R.id.contact_photo_container);
@@ -183,8 +187,12 @@ public class ConversationItem extends BaseConversationItem
     setGroupMessageStatus();
     setAuthor(messageRecord, showSender);
     setMessageSpacing(context);
+    setReactions(messageRecord);
     setFooter(messageRecord, locale);
     setQuote(messageRecord);
+    if (Util.isTouchExplorationEnabled(context)) {
+      setContentDescription();
+    }
   }
 
 
@@ -281,9 +289,7 @@ public class ConversationItem extends BaseConversationItem
     }
 
     if (audioViewStub.resolved()) {
-      audioViewStub.get().setFocusable(!shouldInterceptClicks(messageRecord) && batchSelected.isEmpty());
-      audioViewStub.get().setClickable(batchSelected.isEmpty());
-      audioViewStub.get().setEnabled(batchSelected.isEmpty());
+      audioViewStub.get().disablePlayer(!batchSelected.isEmpty());
     }
 
     if (documentViewStub.resolved()) {
@@ -295,6 +301,35 @@ public class ConversationItem extends BaseConversationItem
       webxdcViewStub.get().setFocusable(!shouldInterceptClicks(messageRecord) && batchSelected.isEmpty());
       webxdcViewStub.get().setClickable(batchSelected.isEmpty());
     }
+  }
+
+  private void setContentDescription() {
+    String desc = "";
+    if (groupSenderHolder.getVisibility() == View.VISIBLE) {
+      desc = groupSender.getText() + "\n";
+    }
+
+    if (audioViewStub.resolved() && audioViewStub.get().getVisibility() == View.VISIBLE) {
+      desc += audioViewStub.get().getDescription() + "\n";
+    } else if (documentViewStub.resolved() && documentViewStub.get().getVisibility() == View.VISIBLE) {
+      desc += documentViewStub.get().getDescription() + "\n";
+    } else if (webxdcViewStub.resolved() && webxdcViewStub.get().getVisibility() == View.VISIBLE) {
+      desc += webxdcViewStub.get().getDescription() + "\n";
+    } else if (mediaThumbnailStub.resolved() && mediaThumbnailStub.get().getVisibility() == View.VISIBLE) {
+      desc += mediaThumbnailStub.get().getDescription() + "\n";
+    } else if (stickerStub.resolved() && stickerStub.get().getVisibility() == View.VISIBLE) {
+      desc += stickerStub.get().getDescription() + "\n";
+    }
+
+    if (bodyText.getVisibility() == View.VISIBLE) {
+      desc += bodyText.getText() + "\n";
+    }
+
+    if (footer.getVisibility() == View.VISIBLE) {
+      desc += footer.getDescription();
+    }
+
+    this.setContentDescription(desc);
   }
 
   private boolean hasAudio(DcMsg messageRecord) {
@@ -414,7 +449,7 @@ public class ConversationItem extends BaseConversationItem
       public void onStop() {}
 
       @Override
-      public void onProgress(double progress, long millis) {}
+      public void onProgress(AudioSlide slide, double progress, long millis) {}
 
       @Override
       public void onReceivedDuration(int millis) {
@@ -438,7 +473,11 @@ public class ConversationItem extends BaseConversationItem
       }
 
       audioViewStub.get().setAudio(new AudioSlide(context, messageRecord), duration);
+      audioViewStub.get().setOnClickListener(passthroughClickListener);
       audioViewStub.get().setOnLongClickListener(passthroughClickListener);
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        audioViewStub.get().setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
+      }
 
       ViewUtil.updateLayoutParams(bodyText, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
       ViewUtil.updateLayoutParams(groupSenderHolder, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -455,6 +494,9 @@ public class ConversationItem extends BaseConversationItem
       documentViewStub.get().setDocument(new DocumentSlide(context, messageRecord));
       documentViewStub.get().setDocumentClickListener(new ThumbnailClickListener());
       documentViewStub.get().setOnLongClickListener(passthroughClickListener);
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        documentViewStub.get().setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
+      }
 
       ViewUtil.updateLayoutParams(bodyText, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
       ViewUtil.updateLayoutParams(groupSenderHolder, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -470,6 +512,9 @@ public class ConversationItem extends BaseConversationItem
       webxdcViewStub.get().setWebxdc(messageRecord, context.getString(R.string.webxdc_app));
       webxdcViewStub.get().setWebxdcClickListener(new ThumbnailClickListener());
       webxdcViewStub.get().setOnLongClickListener(passthroughClickListener);
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        webxdcViewStub.get().setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
+      }
 
       ViewUtil.updateLayoutParams(bodyText, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
       ViewUtil.updateLayoutParams(groupSenderHolder, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -504,6 +549,9 @@ public class ConversationItem extends BaseConversationItem
       mediaThumbnailStub.get().setOnLongClickListener(passthroughClickListener);
       mediaThumbnailStub.get().setOnClickListener(passthroughClickListener);
       mediaThumbnailStub.get().showShade(TextUtils.isEmpty(messageRecord.getText()));
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        mediaThumbnailStub.get().setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
+      }
 
       setThumbnailOutlineCorners(messageRecord, showSender);
 
@@ -523,9 +571,11 @@ public class ConversationItem extends BaseConversationItem
 
       stickerStub.get().setSlide(glideRequests, new StickerSlide(context, messageRecord));
       stickerStub.get().setThumbnailClickListener(new StickerClickListener());
-
       stickerStub.get().setOnLongClickListener(passthroughClickListener);
       stickerStub.get().setOnClickListener(passthroughClickListener);
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        stickerStub.get().setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
+      }
 
       ViewUtil.updateLayoutParams(bodyText, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
       ViewUtil.updateLayoutParams(groupSenderHolder, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -657,7 +707,6 @@ public class ConversationItem extends BaseConversationItem
     ViewUtil.updateLayoutParams(footer, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 
     footer.setVisibility(GONE);
-    stickerFooter.setVisibility(GONE);
     if (mediaThumbnailStub.resolved()) mediaThumbnailStub.get().getFooter().setVisibility(GONE);
 
     ConversationItemFooter activeFooter = getActiveFooter(current);
@@ -665,9 +714,29 @@ public class ConversationItem extends BaseConversationItem
     activeFooter.setMessageRecord(current, locale);
   }
 
+  private void setReactions(@NonNull DcMsg current) {
+    try {
+      Reactions reactions = rpc.getMsgReactions(dcContext.getAccountId(), current.getId());
+      if (reactions == null) {
+        reactionsView.clear();
+      } else {
+        reactionsView.setReactions(reactions.getReactions());
+        reactionsView.setOnClickListener(view -> {
+          if (eventListener != null && batchSelected.isEmpty()) {
+            eventListener.onReactionClicked(current);
+          } else {
+            passthroughClickListener.onClick(view);
+          }
+        });
+      }
+    } catch (RpcException e) {
+      reactionsView.clear();
+    }
+  }
+
   private ConversationItemFooter getActiveFooter(@NonNull DcMsg messageRecord) {
     if (hasSticker(messageRecord)) {
-      return stickerFooter;
+      return stickerStub.get().getFooter();
     } else if (hasOnlyThumbnail(messageRecord) && TextUtils.isEmpty(messageRecord.getText())) {
       return mediaThumbnailStub.get().getFooter();
     } else {
@@ -762,6 +831,14 @@ public class ConversationItem extends BaseConversationItem
     availableWidth -= ViewUtil.getLeftMargin(forView) + ViewUtil.getRightMargin(forView);
 
     return availableWidth;
+  }
+
+  @Override
+  public void onAccessibilityClick() {
+    if (mediaThumbnailStub.resolved())    mediaThumbnailStub.get().performClick();
+    else if (audioViewStub.resolved())    audioViewStub.get().togglePlay();
+    else if (documentViewStub.resolved()) documentViewStub.get().performClick();
+    else if (webxdcViewStub.resolved())   webxdcViewStub.get().performClick();
   }
 
   /// Event handlers

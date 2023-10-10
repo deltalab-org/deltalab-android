@@ -6,10 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
-import androidx.annotation.RequiresApi;
+
 import androidx.core.os.ConfigurationCompat;
 import androidx.core.view.ViewCompat;
 
@@ -32,7 +31,7 @@ public class DynamicLanguage {
   }
 
   public void onResume(Activity activity) {
-    if (!currentLocale.equals(getSelectedLocale(activity))) {
+    if (!getSelectedLocale(activity).equals(currentLocale)) {
       Intent intent = activity.getIntent();
       activity.finish();
       OverridePendingTransition.invoke(activity);

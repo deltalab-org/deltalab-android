@@ -9,7 +9,6 @@ import com.b44t.messenger.DcMsg;
 import org.thoughtcrime.securesms.mms.GlideRequests;
 import org.thoughtcrime.securesms.recipients.Recipient;
 
-import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
@@ -30,5 +29,6 @@ public interface BindableConversationItem extends Unbindable {
     void onQuoteClicked(DcMsg messageRecord);
     void onShowFullClicked(DcMsg messageRecord);
     void onDownloadClicked(DcMsg messageRecord);
+    void onReactionClicked(DcMsg messageRecord);
   }
 }

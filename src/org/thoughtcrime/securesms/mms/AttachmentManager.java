@@ -37,6 +37,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 
 import com.b44t.messenger.DcContext;
 import com.b44t.messenger.DcMsg;
@@ -94,7 +95,7 @@ public class AttachmentManager {
   private WebxdcView                 webxdcView;
   //private SignalMapView              mapView;
 
-  private @NonNull  List<Uri>       garbage = new LinkedList<>();
+  private final @NonNull  List<Uri>       garbage = new LinkedList<>();
   private @NonNull  Optional<Slide> slide   = Optional.absent();
   private @Nullable Uri             imageCaptureUri;
   private @Nullable Uri             videoCaptureUri;
@@ -294,7 +295,7 @@ public class AttachmentManager {
               public void onStop() {}
 
               @Override
-              public void onProgress(double progress, long millis) {}
+              public void onProgress(AudioSlide slide, double progress, long millis) {}
 
               @Override
               public void onReceivedDuration(int millis) {
@@ -422,13 +423,31 @@ public class AttachmentManager {
     return deck;
   }
 
+  public static @Nullable String getFileName(Context context, Uri uri) {
+    String result = null;
+    if (uri.getScheme().equals("content")) {
+      Cursor cursor = context.getContentResolver().query(uri, new String[]{OpenableColumns.DISPLAY_NAME}, null, null, null);
+      try {
+        if (cursor != null && cursor.moveToFirst()) {
+          result = cursor.getString(cursor.getColumnIndexOrThrow(OpenableColumns.DISPLAY_NAME));
+        }
+      } finally {
+        if (cursor != null) cursor.close();
+      }
+    }
+    if (result == null) {
+      result = uri.getLastPathSegment();
+    }
+    return result;
+  }
+
   public static void selectDocument(Activity activity, int requestCode) {
     selectMediaType(activity, "*/*", null, requestCode);
   }
 
   public static void selectGallery(Activity activity, int requestCode) {
     Permissions.with(activity)
-               .request(Manifest.permission.READ_EXTERNAL_STORAGE)
+               .request(Permissions.galleryPermissions())
                .ifNecessary()
                .withPermanentDenialDialog(activity.getString(R.string.perm_explain_access_to_storage_denied))
                .onAllGranted(() -> selectMediaType(activity, "image/*", new String[] {"image/*", "video/*"}, requestCode))
@@ -437,7 +456,7 @@ public class AttachmentManager {
 
   public static void selectImage(Activity activity, int requestCode) {
     Permissions.with(activity)
-            .request(Manifest.permission.READ_EXTERNAL_STORAGE)
+            .request(Permissions.galleryPermissions())
             .ifNecessary()
             .withPermanentDenialDialog(activity.getString(R.string.perm_explain_access_to_storage_denied))
             .onAllGranted(() -> selectMediaType(activity, "image/*", null, requestCode))
@@ -538,6 +557,12 @@ public class AttachmentManager {
               captureIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
               captureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
               activity.startActivityForResult(captureIntent, requestCode);
+            } else {
+              new AlertDialog.Builder(activity)
+                .setCancelable(false)
+                .setMessage("Video recording not available")
+                .setPositiveButton(android.R.string.ok, null)
+                .show();
             }
           } catch (Exception e) {
             Log.w(TAG, e);

@@ -58,11 +58,6 @@ public class ConversationItemFooter extends LinearLayout {
     }
   }
 
-  @Override
-  protected void onDetachedFromWindow() {
-    super.onDetachedFromWindow();
-  }
-
   public void setMessageRecord(@NonNull DcMsg messageRecord, @NonNull Locale locale) {
     presentDate(messageRecord, locale);
     secureIndicatorView.setVisibility(messageRecord.isSecure() ? View.VISIBLE : View.GONE);
@@ -104,5 +99,14 @@ public class ConversationItemFooter extends LinearLayout {
     } else {
       deliveryStatusView.setTint(textColor); // Reset the color to the standard color (because the footer is re-used in a RecyclerView)
     }
+  }
+
+  public String getDescription() {
+      String desc = dateView.getText().toString();
+      String deliveryDesc = deliveryStatusView.getDescription();
+      if (!"".equals(deliveryDesc)) {
+          desc += "\n" + deliveryDesc;
+      }
+      return desc;
   }
 }

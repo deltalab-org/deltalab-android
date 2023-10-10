@@ -3,7 +3,6 @@ package org.thoughtcrime.securesms.components;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.BitmapFactory;
 import android.os.Build.VERSION_CODES;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
@@ -14,17 +13,15 @@ public class SquareFrameLayout extends FrameLayout {
 
   private final boolean squareHeight;
 
-  @SuppressWarnings("unused")
   public SquareFrameLayout(Context context) {
     this(context, null);
   }
 
-  @SuppressWarnings("unused")
   public SquareFrameLayout(Context context, AttributeSet attrs) {
     this(context, attrs, 0);
   }
 
-  @TargetApi(VERSION_CODES.HONEYCOMB) @SuppressWarnings("unused")
+  @TargetApi(VERSION_CODES.HONEYCOMB)
   public SquareFrameLayout(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
 

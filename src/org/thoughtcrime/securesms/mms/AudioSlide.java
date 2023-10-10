@@ -18,13 +18,11 @@ package org.thoughtcrime.securesms.mms;
 
 import android.content.Context;
 import android.net.Uri;
-import androidx.annotation.DrawableRes;
-import androidx.annotation.NonNull;
+
 import androidx.annotation.Nullable;
 
 import com.b44t.messenger.DcMsg;
 
-import org.thoughtcrime.securesms.attachments.Attachment;
 import org.thoughtcrime.securesms.attachments.DcAttachment;
 import org.thoughtcrime.securesms.attachments.UriAttachment;
 import org.thoughtcrime.securesms.database.AttachmentDatabase;
@@ -45,6 +43,13 @@ public class AudioSlide extends Slide {
 
   public AudioSlide(Context context, Uri uri, long dataSize, String contentType, boolean voiceNote) {
     super(context,  new UriAttachment(uri, null, contentType, AttachmentDatabase.TRANSFER_PROGRESS_STARTED, dataSize, 0, 0, null, null, voiceNote));
+  }
+
+  @Override
+  public boolean equals(Object other) {
+      if (other == null)                  return false;
+      if (!(other instanceof AudioSlide)) return false;
+      return this.getDcMsgId() == ((AudioSlide)other).getDcMsgId();
   }
 
   @Override

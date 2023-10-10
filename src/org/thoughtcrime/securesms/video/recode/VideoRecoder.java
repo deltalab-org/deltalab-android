@@ -10,7 +10,8 @@ import android.media.MediaExtractor;
 import android.media.MediaFormat;
 import android.os.Build;
 import android.util.Log;
-import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
 
 import com.b44t.messenger.DcMsg;
 import com.coremedia.iso.IsoFile;
@@ -43,7 +44,7 @@ public class VideoRecoder {
   private final static int PROCESSOR_TYPE_MTK = 3;
   private final static int PROCESSOR_TYPE_SEC = 4;
   private final static int PROCESSOR_TYPE_TI = 5;
-  private boolean cancelCurrentVideoConversion = false;
+  private final boolean cancelCurrentVideoConversion = false;
   private final Object videoConvertSync = new Object();
 
   private void checkConversionCanceled() throws Exception {
@@ -241,6 +242,7 @@ public class VideoRecoder {
     File inputFile = new File(videoEditedInfo.originalPath);
     if (!inputFile.canRead()) {
       //didWriteData(messageObject, cacheFile, true, true);
+      Log.w(TAG, "Could not read video file to be recoded");
       return false;
     }
 
@@ -537,7 +539,7 @@ public class VideoRecoder {
                           outputSurface.awaitNewImage();
                         } catch (Exception e) {
                           errorWait = true;
-
+                          Log.w(TAG, "error while waiting for recording output surface", e);
                         }
                         if (!errorWait) {
                           if (Build.VERSION.SDK_INT >= 18) {
@@ -545,6 +547,7 @@ public class VideoRecoder {
                             inputSurface.setPresentationTime(info.presentationTimeUs * 1000);
                             inputSurface.swapBuffers();
                           } else {
+                            Log.w(TAG, "Cannot proceed with the current SDK version");
                             return false; // TODO: this should be caught much earlier
                             /*
                             int inputBufIndex = encoder.dequeueInputBuffer(TIMEOUT_USEC);
@@ -582,7 +585,7 @@ public class VideoRecoder {
                 videoStartTime = videoTime;
               }
             } catch (Exception e) {
-
+              Log.w(TAG,"Recoding video failed unexpectedly", e);
               error = true;
             }
 
@@ -615,8 +618,8 @@ public class VideoRecoder {
           readAndWriteTrack(extractor, mediaMuxer, info, videoStartTime, endTime, cacheFile, true);
         }
       } catch (Exception e) {
+        Log.w(TAG,"Recoding video failed unexpectedly/2", e);
         error = true;
-
       } finally {
         if (extractor != null) {
           extractor.release();
@@ -625,13 +628,14 @@ public class VideoRecoder {
           try {
             mediaMuxer.finishMovie(false);
           } catch (Exception e) {
-
+            Log.w(TAG,"Flushing video failed unexpectedly", e);
           }
         }
         //Log.i("DeltaChat", "time = " + (System.currentTimeMillis() - time));
       }
     } else {
       //didWriteData(messageObject, cacheFile, true, true);
+      Log.w(TAG,"Video width or height are 0, refusing recode.");
       return false;
     }
     //didWriteData(messageObject, cacheFile, true, error);
@@ -662,12 +666,14 @@ public class VideoRecoder {
   {
     boolean canRecode = true;
     if (Build.VERSION.SDK_INT < 16 /*= Jelly Bean 4.1 (before that codecInfo.getName() was not there) */) {
+      Log.w(TAG, "Cannot recode: API < 16");
       canRecode = false;
     }
     else if (Build.VERSION.SDK_INT < 18 /*= Jelly Bean 4.3*/) {
       try {
         MediaCodecInfo codecInfo = VideoRecoder.selectCodec(VideoRecoder.MIME_TYPE);
         if (codecInfo == null) {
+          Log.w(TAG, "Cannot recode: cannot select codec");
           canRecode = false;
         } else {
           String name = codecInfo.getName();
@@ -678,14 +684,17 @@ public class VideoRecoder {
               name.equals("OMX.MARVELL.VIDEO.H264ENCODER") ||
               name.equals("OMX.k3.video.encoder.avc") ||
               name.equals("OMX.TI.DUCATI1.VIDEO.H264E")) {
+            Log.w(TAG, "Cannot recode: no supported codec found");
             canRecode = false;
           } else {
             if (VideoRecoder.selectColorFormat(codecInfo, VideoRecoder.MIME_TYPE) == 0) {
+              Log.w(TAG, "Cannot recode: cannot select color format");
               canRecode = false;
             }
           }
         }
       } catch (Exception e) {
+        Log.w(TAG, "Cannot recode: Determinating recoding capabilities failed unexpectedly", e);
         canRecode = false;
       }
     }
@@ -723,7 +732,7 @@ public class VideoRecoder {
           trackBitrate = (int) (sampleSizes * 8 / originalVideoSeconds);
           vei.originalDurationMs = originalVideoSeconds * 1000;
         } catch (Exception e) {
-
+          Log.w(TAG, "Get video info: Calculating sample sizes failed unexpectedly", e);
         }
         TrackHeaderBox headerBox = trackBox.getTrackHeaderBox();
         if (headerBox.getWidth() != 0 && headerBox.getHeight() != 0) {
@@ -734,6 +743,7 @@ public class VideoRecoder {
         }
       }
       if (trackHeaderBox == null) {
+        Log.w(TAG, "Get video info: No trackHeaderBox");
         return null;
       }
 
@@ -749,6 +759,7 @@ public class VideoRecoder {
       vei.originalHeight = (int) trackHeaderBox.getHeight();
 
     } catch (Exception e) {
+      Log.w(TAG, "Get video info: Reading message info failed unexpectedly", e);
       return null;
     }
 
@@ -761,10 +772,14 @@ public class VideoRecoder {
     return size;
   }
 
-  private static void logNtoast(Context context, String str)
+  private static void alert(Context context, String str)
   {
-    Log.w(TAG, str);
-    Util.runOnMain(()->Toast.makeText(context, str, Toast.LENGTH_LONG).show());
+    Log.e(TAG, str);
+    Util.runOnMain(() -> new AlertDialog.Builder(context)
+      .setCancelable(false)
+      .setMessage(str)
+      .setPositiveButton(android.R.string.ok, null)
+      .show());
   }
 
   // prepareVideo() assumes the msg object is set up properly to being sent;
@@ -775,11 +790,12 @@ public class VideoRecoder {
 
     try {
       String inPath = msg.getFile();
+      Log.i(TAG, "Preparing video: " + inPath);
 
       // try to get information from video file
       VideoEditedInfo vei = getVideoEditInfoFromFile(inPath);
       if (vei == null) {
-        logNtoast(context, String.format("recoding for %s failed: cannot get info", inPath));
+        alert(context, String.format("Recoding failed for %s: cannot get info", inPath));
         return false;
       }
       vei.rotationValue = vei.originalRotationValue;
@@ -796,7 +812,7 @@ public class VideoRecoder {
       msg.setDuration((int)vei.originalDurationMs);
 
       if (!canRecode()) {
-        logNtoast(context, String.format("recoding for %s failed: this system cannot recode videos", inPath));
+        alert(context, String.format("Recoding failed for %s: this system cannot recode videos", inPath));
         return false;
       }
 
@@ -851,7 +867,7 @@ public class VideoRecoder {
           vei.resultVideoBitrate, vei.originalDurationMs, vei.originalAudioBytes);
 
       if (vei.estimatedBytes > MAX_BYTES+MAX_BYTES/4) {
-        logNtoast(context, String.format("recoding for %s failed: resulting file probably too large", inPath));
+        alert(context, "Video cannot be compressed to a reasonable size. Try a shorter video or a lower quality.");
         return false;
       }
 
@@ -859,12 +875,12 @@ public class VideoRecoder {
       String tempPath = DcHelper.getBlobdirFile(DcHelper.getContext(context), inPath);
       VideoRecoder videoRecoder = new VideoRecoder();
       if (!videoRecoder.convertVideo(vei, tempPath)) {
-        logNtoast(context, String.format("recoding for %s failed: cannot convert to temporary file %s", inPath, tempPath));
+        alert(context, String.format("Recoding failed for %s: cannot convert to temporary file %s", inPath, tempPath));
         return false;
       }
 
       if (!Util.moveFile(tempPath, inPath)) {
-        logNtoast(context, String.format("recoding for %s failed: cannot move temporary file %s", inPath, tempPath));
+        alert(context, String.format("Recoding failed for %s: cannot move temporary file %s", inPath, tempPath));
         return false;
       }
 

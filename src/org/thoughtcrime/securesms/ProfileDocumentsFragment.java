@@ -1,5 +1,7 @@
 package org.thoughtcrime.securesms;
 
+import static com.b44t.messenger.DcChat.DC_CHAT_NO_CHAT;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -45,7 +47,7 @@ public class ProfileDocumentsFragment
   protected TextView noMedia;
   protected RecyclerView recyclerView;
   private StickyHeaderGridLayoutManager gridManager;
-  private ActionModeCallback actionModeCallback = new ActionModeCallback();
+  private final ActionModeCallback actionModeCallback = new ActionModeCallback();
   private boolean showAudio;
   private boolean showWebxdc;
 
@@ -124,7 +126,7 @@ public class ProfileDocumentsFragment
     ((ProfileDocumentsAdapter) recyclerView.getAdapter()).notifyAllSectionsDataSetChanged();
 
     noMedia.setVisibility(recyclerView.getAdapter().getItemCount() > 0 ? View.GONE : View.VISIBLE);
-    if (chatId == 0) {
+    if (chatId == DC_CHAT_NO_CHAT) {
       noMedia.setText(R.string.tab_all_media_empty_hint);
     } else if (showAudio) {
       noMedia.setText(R.string.tab_audio_empty_hint);
@@ -148,6 +150,11 @@ public class ProfileDocumentsFragment
     }
   }
 
+  private void updateActionModeBar() {
+    actionMode.setTitle(String.valueOf(getListAdapter().getSelectedMediaCount()));
+    setCorrectMenuVisibility(actionMode.getMenu());
+  }
+
   private void handleMediaMultiSelectClick(@NonNull DcMsg mediaRecord) {
     ProfileDocumentsAdapter adapter = getListAdapter();
 
@@ -156,8 +163,7 @@ public class ProfileDocumentsFragment
       actionMode.finish();
       actionMode = null;
     } else {
-      actionMode.setTitle(String.valueOf(adapter.getSelectedMediaCount()));
-      setCorrectMenuVisibility(actionMode.getMenu());
+      updateActionModeBar();
     }
   }
 
@@ -201,6 +207,15 @@ public class ProfileDocumentsFragment
     menu.findItem(R.id.details).setVisible(singleSelection);
     menu.findItem(R.id.show_in_chat).setVisible(singleSelection);
     menu.findItem(R.id.share).setVisible(singleSelection);
+
+    boolean canResend = true;
+    for (DcMsg messageRecord : messageRecords) {
+      if (!messageRecord.isOutgoing()) {
+        canResend = false;
+        break;
+      }
+    }
+    menu.findItem(R.id.menu_resend).setVisible(canResend);
 
     boolean webxdcApp = singleSelection && messageRecords.iterator().next().getType() == DcMsg.DC_MSG_WEBXDC;
     menu.findItem(R.id.menu_add_to_home_screen).setVisible(webxdcApp);
@@ -256,6 +271,13 @@ public class ProfileDocumentsFragment
           return true;
         case R.id.save:
           handleSaveAttachment(getListAdapter().getSelectedMedia());
+          return true;
+        case R.id.menu_resend:
+          handleResendMessage(getListAdapter().getSelectedMedia());
+          return true;
+        case R.id.menu_select_all:
+          getListAdapter().selectAll();
+          updateActionModeBar();
           return true;
       }
       return false;

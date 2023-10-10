@@ -1,5 +1,7 @@
 package org.thoughtcrime.securesms;
 
+import static com.b44t.messenger.DcChat.DC_CHAT_NO_CHAT;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -45,7 +47,7 @@ public class ProfileGalleryFragment
   protected TextView noMedia;
   protected RecyclerView recyclerView;
   private StickyHeaderGridLayoutManager gridManager;
-  private ActionModeCallback actionModeCallback = new ActionModeCallback();
+  private final ActionModeCallback actionModeCallback = new ActionModeCallback();
 
   private int                  chatId;
   private Locale               locale;
@@ -120,7 +122,7 @@ public class ProfileGalleryFragment
     ((ProfileGalleryAdapter) recyclerView.getAdapter()).notifyAllSectionsDataSetChanged();
 
     noMedia.setVisibility(recyclerView.getAdapter().getItemCount() > 0 ? View.GONE : View.VISIBLE);
-    if (chatId == 0) {
+    if (chatId == DC_CHAT_NO_CHAT) {
       noMedia.setText(R.string.tab_all_media_empty_hint);
     }
     getActivity().invalidateOptionsMenu();
@@ -140,6 +142,11 @@ public class ProfileGalleryFragment
     }
   }
 
+  private void updateActionModeBar() {
+    actionMode.setTitle(String.valueOf(getListAdapter().getSelectedMediaCount()));
+    setCorrectMenuVisibility(actionMode.getMenu());
+  }
+
   private void handleMediaMultiSelectClick(@NonNull DcMsg mediaRecord) {
     ProfileGalleryAdapter adapter = getListAdapter();
 
@@ -148,8 +155,7 @@ public class ProfileGalleryFragment
       actionMode.finish();
       actionMode = null;
     } else {
-      actionMode.setTitle(String.valueOf(adapter.getSelectedMediaCount()));
-      setCorrectMenuVisibility(actionMode.getMenu());
+      updateActionModeBar();
     }
   }
 
@@ -195,6 +201,15 @@ public class ProfileGalleryFragment
     menu.findItem(R.id.details).setVisible(singleSelection);
     menu.findItem(R.id.show_in_chat).setVisible(singleSelection);
     menu.findItem(R.id.share).setVisible(singleSelection);
+
+    boolean canResend = true;
+    for (DcMsg messageRecord : messageRecords) {
+      if (!messageRecord.isOutgoing()) {
+        canResend = false;
+        break;
+      }
+    }
+    menu.findItem(R.id.menu_resend).setVisible(canResend);
   }
 
   private ProfileGalleryAdapter getListAdapter() {
@@ -243,6 +258,13 @@ public class ProfileGalleryFragment
           return true;
         case R.id.save:
           handleSaveAttachment(getListAdapter().getSelectedMedia());
+          return true;
+        case R.id.menu_resend:
+          handleResendMessage(getListAdapter().getSelectedMedia());
+          return true;
+        case R.id.menu_select_all:
+          getListAdapter().selectAll();
+          updateActionModeBar();
           return true;
       }
       return false;

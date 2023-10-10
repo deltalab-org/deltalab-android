@@ -6,9 +6,10 @@ import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.drawable.AnimatedVectorDrawable;
+import android.media.AudioAttributes;
+import android.media.AudioFocusRequest;
+import android.media.AudioManager;
 import android.os.Build;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -17,6 +18,9 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.audio.AudioSlidePlayer;
@@ -36,8 +40,10 @@ public class AudioView extends FrameLayout implements AudioSlidePlayer.Listener 
   private final @NonNull SeekBar         seekBar;
   private final @NonNull TextView        timestamp;
   private final @NonNull TextView        title;
+  private final @NonNull View            mask;
 
   private @Nullable AudioSlidePlayer   audioSlidePlayer;
+  private AudioManager.OnAudioFocusChangeListener audioFocusChangeListener;
   private int backwardsCounter;
 
   public AudioView(Context context) {
@@ -58,6 +64,7 @@ public class AudioView extends FrameLayout implements AudioSlidePlayer.Listener 
     this.seekBar          = (SeekBar) findViewById(R.id.seek);
     this.timestamp        = (TextView) findViewById(R.id.timestamp);
     this.title            = (TextView) findViewById(R.id.title);
+    this.mask             = findViewById(R.id.interception_mask);
 
     this.timestamp.setText("00:00");
 
@@ -79,6 +86,7 @@ public class AudioView extends FrameLayout implements AudioSlidePlayer.Listener 
   {
     controlToggle.displayQuick(playButton);
     seekBar.setEnabled(true);
+    seekBar.setProgress(0);
     audioSlidePlayer = AudioSlidePlayer.createFor(getContext(), audio, this);
     timestamp.setText(DateUtils.getFormatedDuration(duration));
 
@@ -89,6 +97,42 @@ public class AudioView extends FrameLayout implements AudioSlidePlayer.Listener 
       title.setText(audio.getFileName().get());
       title.setVisibility(View.VISIBLE);
     }
+  }
+
+  @Override
+  public void setOnClickListener(OnClickListener listener) {
+    super.setOnClickListener(listener);
+    this.mask.setOnClickListener(listener);
+  }
+
+  @Override
+  public void setOnLongClickListener(OnLongClickListener listener) {
+    super.setOnLongClickListener(listener);
+    this.mask.setOnLongClickListener(listener);
+    this.playButton.setOnLongClickListener(listener);
+    this.pauseButton.setOnLongClickListener(listener);
+  }
+
+  public void togglePlay() {
+    if (this.playButton.getVisibility() == View.VISIBLE) {
+        playButton.performClick();
+    } else {
+        pauseButton.performClick();
+    }
+  }
+
+  public String getDescription() {
+    String desc;
+    if (this.title.getVisibility() == View.VISIBLE) {
+      desc = getContext().getString(R.string.audio);
+    } else {
+      desc = getContext().getString(R.string.voice_message);
+    }
+    desc += "\n" + this.timestamp.getText();
+    if (title.getVisibility() == View.VISIBLE) {
+        desc += "\n" + this.title.getText();
+    }
+    return desc;
   }
 
   public void setDuration(int duration) {
@@ -122,39 +166,20 @@ public class AudioView extends FrameLayout implements AudioSlidePlayer.Listener 
 
     if (seekBar.getProgress() + 5 >= seekBar.getMax()) {
       backwardsCounter = 4;
-      onProgress(0.0, -1);
+      onProgress(audioSlidePlayer.getAudioSlide(), 0.0, -1);
     }
   }
 
-  @Override
-  public void setFocusable(boolean focusable) {
-    super.setFocusable(focusable);
-    this.playButton.setFocusable(focusable);
-    this.pauseButton.setFocusable(focusable);
-    this.seekBar.setFocusable(focusable);
-    this.seekBar.setFocusableInTouchMode(focusable);
+  public void disablePlayer(boolean disable) {
+    this.mask.setVisibility(disable? View.VISIBLE : View.GONE);
   }
 
   @Override
-  public void setClickable(boolean clickable) {
-    super.setClickable(clickable);
-    this.playButton.setClickable(clickable);
-    this.pauseButton.setClickable(clickable);
-    this.seekBar.setClickable(clickable);
-    this.seekBar.setOnTouchListener(clickable ? null : new TouchIgnoringListener());
-  }
-
-  @Override
-  public void setEnabled(boolean enabled) {
-    super.setEnabled(enabled);
-    this.playButton.setEnabled(enabled);
-    this.pauseButton.setEnabled(enabled);
-    this.seekBar.setEnabled(enabled);
-  }
-
-  @Override
-  public void onProgress(double progress, long millis) {
-    int seekProgress = (int)Math.floor(progress * this.seekBar.getMax());
+  public void onProgress(AudioSlide slide, double progress, long millis) {
+    if (!audioSlidePlayer.getAudioSlide().equals(slide)) {
+      return;
+    }
+    int seekProgress = (int) Math.floor(progress * this.seekBar.getMax());
 
     if (seekProgress > seekBar.getProgress() || backwardsCounter > 3) {
       backwardsCounter = 0;
@@ -222,6 +247,31 @@ public class AudioView extends FrameLayout implements AudioSlidePlayer.Listener 
       try {
         Log.w(TAG, "playbutton onClick");
         if (audioSlidePlayer != null) {
+          if (Build.VERSION.SDK_INT >= 26) {
+            if (audioFocusChangeListener == null) {
+              audioFocusChangeListener = focusChange -> {
+                if (focusChange == AudioManager.AUDIOFOCUS_LOSS) {
+                  pauseButton.performClick();
+                }
+              };
+            }
+
+            AudioAttributes playbackAttributes = new AudioAttributes.Builder()
+              .setUsage(AudioAttributes.USAGE_VOICE_COMMUNICATION)
+              .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
+              .build();
+
+            AudioFocusRequest focusRequest = new AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
+              .setAudioAttributes(playbackAttributes)
+              .setAcceptsDelayedFocusGain(false)
+              .setWillPauseWhenDucked(false)
+              .setOnAudioFocusChangeListener(audioFocusChangeListener)
+              .build();
+
+            AudioManager audioManager = (AudioManager) getContext().getSystemService(Context.AUDIO_SERVICE);
+            audioManager.requestAudioFocus(focusRequest);
+          }
+
           togglePlayToPause();
           audioSlidePlayer.play(getProgress());
         }

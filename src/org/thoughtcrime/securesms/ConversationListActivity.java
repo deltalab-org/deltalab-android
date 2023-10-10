@@ -20,6 +20,7 @@ import static org.thoughtcrime.securesms.ConversationActivity.CHAT_ID_EXTRA;
 import static org.thoughtcrime.securesms.ConversationActivity.STARTING_POSITION_EXTRA;
 import static org.thoughtcrime.securesms.util.RelayUtil.acquireRelayMessageContent;
 import static org.thoughtcrime.securesms.util.RelayUtil.getDirectSharingChatId;
+import static org.thoughtcrime.securesms.util.RelayUtil.getSharedTitle;
 import static org.thoughtcrime.securesms.util.RelayUtil.isDirectSharing;
 import static org.thoughtcrime.securesms.util.RelayUtil.isForwarding;
 import static org.thoughtcrime.securesms.util.RelayUtil.isRelayingMessageContent;
@@ -39,6 +40,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.appcompat.widget.TooltipCompat;
@@ -55,29 +57,24 @@ import org.thoughtcrime.securesms.connect.AccountManager;
 import org.thoughtcrime.securesms.connect.DcHelper;
 import org.thoughtcrime.securesms.connect.DirectShareUtil;
 import org.thoughtcrime.securesms.mms.GlideApp;
+import org.thoughtcrime.securesms.permissions.Permissions;
 import org.thoughtcrime.securesms.qr.QrActivity;
 import org.thoughtcrime.securesms.qr.QrCodeHandler;
 import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.search.SearchFragment;
-import org.thoughtcrime.securesms.util.DynamicLanguage;
 import org.thoughtcrime.securesms.util.DynamicNoActionBarTheme;
 import org.thoughtcrime.securesms.util.DynamicTheme;
 import org.thoughtcrime.securesms.util.Prefs;
-import org.thoughtcrime.securesms.util.RelayUtil;
 import org.thoughtcrime.securesms.util.SendRelayedMessageUtil;
 
 public class ConversationListActivity extends PassphraseRequiredActionBarActivity
     implements ConversationListFragment.ConversationSelectedListener
 {
-  @SuppressWarnings("unused")
   private static final String TAG = ConversationListActivity.class.getSimpleName();
   private static final String OPENPGP4FPR = "openpgp4fpr";
   private static final String NDK_ARCH_WARNED = "ndk_arch_warned";
   public static final String CLEAR_NOTIFICATIONS = "clear_notifications";
   public static final String ACCOUNT_ID_EXTRA = "account_id";
-
-  private final DynamicTheme    dynamicTheme    = new DynamicNoActionBarTheme();
-  private final DynamicLanguage dynamicLanguage = new DynamicLanguage();
 
   private ConversationListFragment conversationListFragment;
   public TextView                  title;
@@ -89,18 +86,18 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
 
   @Override
   protected void onPreCreate() {
-    dynamicTheme.onCreate(this);
-    dynamicLanguage.onCreate(this);
+    dynamicTheme = new DynamicNoActionBarTheme();
+    super.onPreCreate();
   }
 
   @Override
   protected void onCreate(Bundle icicle, boolean ready) {
     // update messages - for new messages, do not reuse or modify strings but create new ones.
     // it is not needed to keep all past update messages, however, when deleted, also the strings should be deleted.
-    DcContext dcContext = DcHelper.getContext(this);
-    DcMsg msg = new DcMsg(dcContext, DcMsg.DC_MSG_TEXT);
-    msg.setText(getString(R.string.update_1_38_android, "https://get.delta.chat/#changelogs"));
-    dcContext.addDeviceMsg("update_1_38c_android", msg);
+    //DcContext dcContext = DcHelper.getContext(this);
+    //DcMsg msg = new DcMsg(dcContext, DcMsg.DC_MSG_TEXT);
+    //msg.setText(getString(R.string.update_1_38_android, "https://get.delta.chat/#changelogs"));
+    //dcContext.addDeviceMsg("update_1_38c_android", msg);
 
     // create view
     setContentView(R.layout.conversation_list_activity);
@@ -213,7 +210,16 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
 
   public void refreshTitle() {
     if (isRelayingMessageContent(this)) {
-      title.setText(isForwarding(this) ? R.string.forward_to : R.string.chat_share_with_title);
+      if (isForwarding(this)) {
+        title.setText(R.string.forward_to);
+      } else {
+        String titleStr = getSharedTitle(this);
+        if (titleStr != null) { // sharing from sendToChat
+          title.setText(titleStr);
+        } else { // normal sharing
+          title.setText(R.string.chat_share_with_title);
+        }
+      }
       getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     } else {
       title.setText(DcHelper.getConnectivitySummary(this, R.string.app_name));
@@ -239,9 +245,6 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
   @Override
   public void onResume() {
     super.onResume();
-    dynamicTheme.onResume(this);
-    dynamicLanguage.onResume(this);
-
     DirectShareUtil.triggerRefreshDirectShare(this);
   }
 
@@ -306,7 +309,11 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
   }
 
   private void initializeTitleListener() {
-    title.setOnClickListener(v -> startActivity(new Intent(this, ConnectivityActivity.class)));
+    title.setOnClickListener(v -> {
+      if (!isRelayingMessageContent(this)) {
+        startActivity(new Intent(this, ConnectivityActivity.class));
+      }
+    });
   }
 
   @Override
@@ -431,5 +438,10 @@ public class ConversationListActivity extends PassphraseRequiredActionBarActivit
       default:
         break;
     }
+  }
+
+  @Override
+  public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    Permissions.onRequestPermissionsResult(this, requestCode, permissions, grantResults);
   }
 }

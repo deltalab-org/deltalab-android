@@ -55,15 +55,15 @@ public class Recipient {
 
   private final @NonNull Address address;
 
-  private @Nullable String  customLabel;
+  private final @Nullable String  customLabel;
 
   private @Nullable Uri                  systemContactPhoto;
-  private           Uri                  contactUri;
+  private final Uri                  contactUri;
 
-  private @Nullable String         profileName;
+  private final @Nullable String         profileName;
   private @Nullable String         profileAvatar;
 
-  private @Nullable DcChat dcChat;
+  private final @Nullable DcChat dcChat;
   private @Nullable DcContact dcContact;
 
   public static @NonNull Recipient fromChat(@NonNull Context context, int dcMsgId) {
@@ -121,7 +121,7 @@ public class Recipient {
       int chatId = dcChat.getId();
       this.address = Address.fromChat(chatId);
       if (!dcChat.isMultiUser()) {
-        DcContext dcContext = DcHelper.getContext(context);
+        DcContext dcContext = DcHelper.getAccounts(context).getAccount(dcChat.getAccountId());
         int[] contacts = dcContext.getChatContacts(chatId);
         if( contacts.length>=1 ) {
           this.dcContact = dcContext.getContact(contacts[0]);
@@ -171,7 +171,7 @@ public class Recipient {
   public @NonNull List<Recipient> loadParticipants(Context context) {
     List<Recipient> participants = new ArrayList<>();
     if (dcChat!=null) {
-      DcContext dcContext = DcHelper.getContext(context);
+      DcContext dcContext = DcHelper.getAccounts(context).getAccount(dcChat.getAccountId());
       int[] contactIds = dcContext.getChatContacts(dcChat.getId());
       for (int contactId : contactIds) {
         participants.add(new Recipient(context, dcContext.getContact(contactId)));
@@ -287,7 +287,7 @@ public class Recipient {
 
   public DcChat getChat()
   {
-    return dcChat!=null? dcChat : new DcChat(0);
+    return dcChat!=null? dcChat : new DcChat(0, 0);
   }
 
   @Override

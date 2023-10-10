@@ -40,7 +40,7 @@ public class FullMsgActivity extends WebViewActivity
   protected void onCreate(Bundle state, boolean ready) {
     super.onCreate(state, ready);
 
-    blockLoadingRemote = getIntent().getBooleanExtra(BLOCK_LOADING_REMOTE, false);;
+    blockLoadingRemote = getIntent().getBooleanExtra(BLOCK_LOADING_REMOTE, false);
     loadRemoteContent = !blockLoadingRemote && Prefs.getAlwaysLoadRemoteContent(this);
     webView.getSettings().setBlockNetworkLoads(!loadRemoteContent);
 

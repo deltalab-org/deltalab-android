@@ -1,5 +1,93 @@
 # Delta Chat Android Changelog
 
+## v1.41.0 Testrun
+2023-10
+
+* keep screen on while playing voice messages
+* pause background music when starting voice messages
+* use the system camera as default; the old built-in camera can be enabled at "Settings / Advanced"
+* add "Verified by" information to contact profiles
+* screen reader: read out message types
+* screen reader: allow tapping anywhere in the  message to start voice or audio playback
+* set different wallpapers for different accounts
+* add "Select All" to gallery and to file lists
+* resend attachments from profile (long tap, then "Resend" in the menu)
+* allow to import a key file instead of a folder containing keys
+* search in "Attach Contact" dialog
+* improve landscape mode for webxdc apps
+* adapt webxdc loading screen to dark mode
+* add file name to dialog shown if a webxdc app wants to share information
+* add app icon to webxdc info messages and improve webxdc app icon layout
+* improve layout of input bar when system emojis are used
+* ask for permissions before adding notifications on Android 13 (needed by the required update to API 33)
+* switch account if needed when opening webxdc app on the system's home screen
+* improve video error messages and logging
+* fix sometimes wrong avatar shown in notifications when using multiple accounts
+* fix: save map preferences per account to avoid resetting location and zoom
+* fix: play audio and voice messages: do not show progress in unrelated messages
+* fix: update relative times directly after entering chatlist, do not wait for a minute
+* fix issues when after selecting a non-system-language, system-language strings still show up
+* fix: only jump to message if info message is from webxdc
+* fix: update webxdc document name in titles immediately
+* fix: do not open Connectivity when tapping forward/share titles
+* fix starting conversation with contact from the phone contacts app
+* fix WASM support for some webxdc apps
+* fix off-by-one mismatch in manual language selection
+* fix: sanitize invalid filename we get from some camera apps
+* fix: display sticker footer properly
+* fix: webxdc apps starting twice sometimes
+* fix sending images and other files in location steaming mode
+* fix connectivity view layout if eg. storage shows values larger than 100%
+* fix scanning account-QR-codes on older phones that miss the Let's Encrypt system certificate
+* fix: make Thunderbird show encrypted subjects
+* fix: do not forward document name when forwarding only a webxdc app
+* fix: do not create new groups if someone replies to a group message with status "failed"
+* fix: do not block new group chats if 1:1 chat is blocked
+* fix "Show full message" showing a black screen for some messages received from Microsoft Exchange
+* fix: skip read-only mailing lists from forwarding/share chat lists
+* fix: do not allow dots at the end of email addresses
+* fix: do not send images pasted from the keyboard unconditionally as stickers
+* fix: forbid membership changes from possible non-members, allow from possible members
+* fix: improve group consistency across members
+* fix: delete messages from SMTP queue only on user demand
+* fix: improve wrapping of email messages on the wire
+* fix memory leak in IMAP
+* update translations and local help
+* update to core 1.124.1
+
+
+## v1.40.1
+2023-08
+
+* fix: correct core-submodule picked up by f-droid
+* update to core119.1
+
+
+## v1.40.0
+2023-08
+
+* use image editor for avatar selection when possible
+* allow media from blob: and data: in webxdc
+* optimized native library size
+* improve loading screen in dark mode
+* improve IMAP logs
+* update "verified icon"
+* fix webxdc issues with dark mode
+* fix crash in android 4.2 or older when opening a HTML message in full message view
+* fix: avoid IMAP move loops when DeltaChat folder is aliased
+* fix: accept webxdc updates in mailing lists
+* fix: delete webxdc status updates together with webxdc instance
+* fix: prevent corruption of large unencrypted webxdc updates
+* fix "Member added by me" message appearing sometimes within wrong context
+* fix core panic after sending 29 offline messages
+* fix: make avatar in qr-codes work on more platforms
+* fix: preserve indentation when converting plaintext to HTML
+* fix: remove superfluous spaces at start of lines when converting HTML to plaintext
+* fix: always rewrite and translate member added/removed messages
+* add Luri Bakhtiari translation, update other translations and local help
+* update to core119
+
+
 ## v1.38.2
 2023-06
 

@@ -64,6 +64,7 @@ import org.thoughtcrime.securesms.connect.DcHelper;
 import org.thoughtcrime.securesms.database.Address;
 import org.thoughtcrime.securesms.mms.GlideApp;
 import org.thoughtcrime.securesms.recipients.Recipient;
+import org.thoughtcrime.securesms.reactions.ReactionsDetailsFragment;
 import org.thoughtcrime.securesms.util.AccessibilityUtil;
 import org.thoughtcrime.securesms.util.Debouncer;
 import org.thoughtcrime.securesms.util.StickyHeaderDecoration;
@@ -119,6 +120,7 @@ public class ConversationFragment extends MessageSelectorFragment
         DcEventCenter eventCenter = DcHelper.getEventCenter(getContext());
         eventCenter.addObserver(DcContext.DC_EVENT_INCOMING_MSG, this);
         eventCenter.addObserver(DcContext.DC_EVENT_MSGS_CHANGED, this);
+        eventCenter.addObserver(DcContext.DC_EVENT_REACTIONS_CHANGED, this);
         eventCenter.addObserver(DcContext.DC_EVENT_MSG_DELIVERED, this);
         eventCenter.addObserver(DcContext.DC_EVENT_MSG_FAILED, this);
         eventCenter.addObserver(DcContext.DC_EVENT_MSG_READ, this);
@@ -476,20 +478,6 @@ public class ConversationFragment extends MessageSelectorFragment
         }
     }
 
-    private void handleResendMessage(final Set<DcMsg> dcMsgsSet) {
-        int[] ids = DcMsg.msgSetToIds(dcMsgsSet);
-        if (dcContext.resendMsgs(ids)) {
-            actionMode.finish();
-            Toast.makeText(getContext(), R.string.sending, Toast.LENGTH_SHORT).show();
-        } else {
-            new AlertDialog.Builder(getContext())
-                .setMessage(dcContext.getLastError())
-                .setCancelable(false)
-                .setPositiveButton(android.R.string.ok, null)
-                .show();
-        }
-    }
-
     private void reloadList() {
         reloadList(false);
     }
@@ -802,7 +790,7 @@ public class ConversationFragment extends MessageSelectorFragment
             else if(DozeReminder.isDozeReminderMsg(getContext(), messageRecord)) {
                 DozeReminder.dozeReminderTapped(getContext());
             }
-            else if(messageRecord.isInfo() && messageRecord.getParent() != null && messageRecord.getParent().getType() == DcMsg.DC_MSG_WEBXDC) {
+            else if(messageRecord.getInfoType() == DcMsg.DC_INFO_WEBXDC_INFO_MESSAGE) {
                 scrollMaybeSmoothToMsgId(messageRecord.getParent().getId());
             }
             else {
@@ -865,6 +853,12 @@ public class ConversationFragment extends MessageSelectorFragment
       @Override
       public void onDownloadClicked(DcMsg messageRecord) {
         dcContext.downloadFullMsg(messageRecord.getId());
+      }
+
+      @Override
+      public void onReactionClicked(DcMsg messageRecord) {
+        ReactionsDetailsFragment dialog = new ReactionsDetailsFragment(messageRecord.getId());
+        dialog.show(getActivity().getSupportFragmentManager(), null);
       }
     }
 
@@ -972,6 +966,7 @@ public class ConversationFragment extends MessageSelectorFragment
                 }
                 break;
 
+            case DcContext.DC_EVENT_REACTIONS_CHANGED:
             case DcContext.DC_EVENT_INCOMING_MSG:
             case DcContext.DC_EVENT_MSG_DELIVERED:
             case DcContext.DC_EVENT_MSG_FAILED:

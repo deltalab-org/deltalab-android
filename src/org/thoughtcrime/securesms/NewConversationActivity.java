@@ -22,7 +22,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -51,7 +50,6 @@ import static org.thoughtcrime.securesms.util.RelayUtil.isRelayingMessageContent
  */
 public class NewConversationActivity extends ContactSelectionActivity {
 
-  @SuppressWarnings("unused")
   private static final String TAG = NewConversationActivity.class.getSimpleName();
   public  static final String MAILTO = "mailto";
   private static final String SUBJECT = "subject";
@@ -184,17 +182,6 @@ public class NewConversationActivity extends ContactSelectionActivity {
     }
     startActivity(intent);
     finish();
-  }
-
-  @Override
-  public boolean onOptionsItemSelected(MenuItem item) {
-    super.onOptionsItemSelected(item);
-
-    switch (item.getItemId()) {
-    case android.R.id.home:   super.onBackPressed(); return true;
-    }
-
-    return false;
   }
 
   @Override

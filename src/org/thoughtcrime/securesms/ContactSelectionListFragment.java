@@ -77,12 +77,11 @@ public class ContactSelectionListFragment extends    Fragment
                                           implements LoaderManager.LoaderCallbacks<DcContactsLoader.Ret>,
                                                      DcEventCenter.DcEventDelegate
 {
-  @SuppressWarnings("unused")
   private static final String TAG = ContactSelectionListFragment.class.getSimpleName();
 
   public static final String MULTI_SELECT          = "multi_select";
   public static final String SELECT_VERIFIED_EXTRA = "select_verified";
-  public static final String FROM_SHARE_ACTIVITY_EXTRA = "from_share_activity";
+  public static final String ALLOW_CREATION = "allow_creation";
   public static final String PRESELECTED_CONTACTS = "preselected_contacts";
 
   private DcContext dcContext;
@@ -257,10 +256,6 @@ public class ContactSelectionListFragment extends    Fragment
     return getActivity().getIntent().getBooleanExtra(SELECT_VERIFIED_EXTRA, false);
   }
 
-  private boolean isFromShareActivity() {
-    return getActivity().getIntent().getBooleanExtra(FROM_SHARE_ACTIVITY_EXTRA, false);
-  }
-
   private void initializeCursor() {
     ContactSelectionListAdapter adapter = new ContactSelectionListAdapter(getActivity(),
             GlideApp.with(this),
@@ -282,12 +277,15 @@ public class ContactSelectionListFragment extends    Fragment
 
   @Override
   public Loader<DcContactsLoader.Ret> onCreateLoader(int id, Bundle args) {
-    boolean addCreateGroupLinks = isFromShareActivity() || isRelayingMessageContent(getActivity()) ? false : !isMulti();
+    boolean allowCreation = getActivity().getIntent().getBooleanExtra(ALLOW_CREATION, true);
+    boolean addCreateContactLink = allowCreation;
+    boolean addCreateGroupLinks = allowCreation && !isRelayingMessageContent(getActivity()) && !isMulti();
+
     int listflags = DcContext.DC_GCL_ADD_SELF;
     if(isSelectVerfied()) {
       listflags = DcContext.DC_GCL_VERIFIED_ONLY;
     }
-    return new DcContactsLoader(getActivity(), listflags, cursorFilter, addCreateGroupLinks, false);
+    return new DcContactsLoader(getActivity(), listflags, cursorFilter, addCreateGroupLinks, addCreateContactLink, false);
   }
 
   @Override

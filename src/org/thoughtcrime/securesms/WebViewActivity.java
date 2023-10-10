@@ -18,13 +18,13 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.SearchView;
 import androidx.webkit.WebSettingsCompat;
 import androidx.webkit.WebViewFeature;
 import androidx.webkit.ProxyController;
 import androidx.webkit.ProxyConfig;
 
-import org.thoughtcrime.securesms.util.DynamicLanguage;
 import org.thoughtcrime.securesms.util.DynamicTheme;
 
 import java.util.concurrent.Executor;
@@ -36,13 +36,10 @@ public class WebViewActivity extends PassphraseRequiredActionBarActivity
   private static final String TAG = WebViewActivity.class.getSimpleName();
 
   protected WebView webView;
-  private final DynamicTheme dynamicTheme = new DynamicTheme();
-  protected final DynamicLanguage dynamicLanguage = new DynamicLanguage();
 
   @Override
   protected void onPreCreate() {
-    dynamicTheme.onCreate(this);
-    dynamicLanguage.onCreate(this);
+    super.onPreCreate();
 
     if (WebViewFeature.isFeatureSupported(WebViewFeature.PROXY_OVERRIDE)) {
       // Set proxy to non-routable address.
@@ -71,7 +68,10 @@ public class WebViewActivity extends PassphraseRequiredActionBarActivity
   @Override
   protected void onCreate(Bundle state, boolean ready) {
     setContentView(R.layout.web_view_activity);
-    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    ActionBar actionBar = getSupportActionBar();
+    if (actionBar != null) {
+      actionBar.setDisplayHomeAsUpEnabled(true);
+    }
 
     webView = findViewById(R.id.webview);
     webView.setWebViewClient(new WebViewClient() {
@@ -103,7 +103,6 @@ public class WebViewActivity extends PassphraseRequiredActionBarActivity
       }
 
       @Override
-      @SuppressWarnings("deprecation")
       public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
         WebResourceResponse res = interceptRequest(url);
         if (res!=null) {
@@ -134,9 +133,10 @@ public class WebViewActivity extends PassphraseRequiredActionBarActivity
   }
 
   protected void setForceDark() {
-    if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK)) {
+    if (Build.VERSION.SDK_INT <= 32 && WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK)) {
+      // needed for older API (tested on android7) that do not set `color-scheme` without the following hint
       WebSettingsCompat.setForceDark(webView.getSettings(),
-                                     DynamicTheme.isDarkTheme(this) ? WebSettingsCompat.FORCE_DARK_ON : WebSettingsCompat.FORCE_DARK_OFF);
+        DynamicTheme.isDarkTheme(this) ? WebSettingsCompat.FORCE_DARK_ON : WebSettingsCompat.FORCE_DARK_OFF);
     }
   }
 
@@ -149,8 +149,6 @@ public class WebViewActivity extends PassphraseRequiredActionBarActivity
   @Override
   public void onResume() {
     super.onResume();
-    dynamicTheme.onResume(this);
-    dynamicLanguage.onResume(this);
     webView.onResume();
   }
 

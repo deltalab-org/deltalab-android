@@ -1,5 +1,6 @@
 package org.thoughtcrime.securesms.audio;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -7,6 +8,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.util.Pair;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -151,6 +153,7 @@ public class AudioSlidePlayer {
               setPlaying(AudioSlidePlayer.this);
             }
 
+            keepScreenOn(true);
             notifyOnStart();
             progressEventHandler.sendEmptyMessage(0);
             break;
@@ -163,6 +166,7 @@ public class AudioSlidePlayer {
               mediaPlayer = null;
             }
 
+            keepScreenOn(false);
             notifyOnStop();
             progressEventHandler.removeMessages(0);
         }
@@ -200,6 +204,7 @@ public class AudioSlidePlayer {
   public synchronized void stop() {
     Log.i(TAG, "Stop called!");
 
+    keepScreenOn(false);
     removePlaying(this);
 
     if (this.mediaPlayer != null) {
@@ -264,7 +269,7 @@ public class AudioSlidePlayer {
     Util.runOnMain(new Runnable() {
       @Override
       public void run() {
-        getListener().onProgress(progress, millis);
+        getListener().onProgress(slide, progress, millis);
       }
     });
   }
@@ -279,10 +284,20 @@ public class AudioSlidePlayer {
       @Override
       public void onStop() {}
       @Override
-      public void onProgress(double progress, long millis) {}
+      public void onProgress(AudioSlide slide, double progress, long millis) {}
       @Override
       public void onReceivedDuration(int millis) {}
     };
+  }
+
+  public void keepScreenOn(boolean keepOn) {
+    if (context instanceof Activity) {
+      if (keepOn) {
+        ((Activity) context).getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+      } else {
+        ((Activity) context).getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+      }
+    }
   }
 
   private synchronized static void setPlaying(@NonNull AudioSlidePlayer player) {
@@ -303,7 +318,7 @@ public class AudioSlidePlayer {
   public interface Listener {
     void onStart();
     void onStop();
-    void onProgress(double progress, long millis);
+    void onProgress(AudioSlide slide, double progress, long millis);
     void onReceivedDuration(int millis);
   }
 

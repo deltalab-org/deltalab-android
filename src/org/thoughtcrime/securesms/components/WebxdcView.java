@@ -22,7 +22,6 @@ import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.mms.DocumentSlide;
 import org.thoughtcrime.securesms.mms.SlideClickListener;
 import org.thoughtcrime.securesms.util.JsonUtils;
-import org.thoughtcrime.securesms.util.Util;
 
 import java.io.ByteArrayInputStream;
 
@@ -88,6 +87,15 @@ public class WebxdcView extends FrameLayout {
       summary = defaultSummary;
     }
     appSubtitle.setText(summary);
+  }
+
+  public String getDescription() {
+    String desc = getContext().getString(R.string.webxdc_app);
+    desc += "\n" + appName.getText();
+    if (appSubtitle.getText() != null && !appSubtitle.getText().toString().equals("") && !appSubtitle.getText().toString().equals(getContext().getString(R.string.webxdc_app))) {
+      desc += "\n" + appSubtitle.getText();
+    }
+    return desc;
   }
 
   private class OpenClickedListener implements View.OnClickListener {

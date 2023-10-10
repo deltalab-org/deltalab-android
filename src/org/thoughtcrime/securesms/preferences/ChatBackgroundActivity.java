@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import androidx.appcompat.app.ActionBar;
 import android.view.Display;
@@ -24,8 +23,9 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import org.thoughtcrime.securesms.ApplicationPreferencesActivity;
 import org.thoughtcrime.securesms.PassphraseRequiredActionBarActivity;
 import org.thoughtcrime.securesms.R;
+import org.thoughtcrime.securesms.connect.DcHelper;
+import org.thoughtcrime.securesms.mms.AttachmentManager;
 import org.thoughtcrime.securesms.mms.GlideApp;
-import org.thoughtcrime.securesms.util.DynamicLanguage;
 import org.thoughtcrime.securesms.util.DynamicTheme;
 import org.thoughtcrime.securesms.util.ServiceUtil;
 import org.thoughtcrime.securesms.util.Prefs;
@@ -36,9 +36,6 @@ import java.util.concurrent.ExecutionException;
 
 public class ChatBackgroundActivity extends PassphraseRequiredActionBarActivity {
 
-    private final DynamicTheme dynamicTheme = new DynamicTheme();
-    private final DynamicLanguage dynamicLanguage = new DynamicLanguage();
-
     Button galleryButton;
     Button defaultButton;
     MenuItem acceptMenuItem;
@@ -48,11 +45,7 @@ public class ChatBackgroundActivity extends PassphraseRequiredActionBarActivity 
     Uri imageUri;
     Boolean imageUpdate = false;
 
-    @Override
-    protected void onPreCreate() {
-        dynamicTheme.onCreate(this);
-        dynamicLanguage.onCreate(this);
-    }
+    private int accountId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState, boolean ready) {
@@ -61,11 +54,12 @@ public class ChatBackgroundActivity extends PassphraseRequiredActionBarActivity 
         defaultButton = findViewById(R.id.set_default_button);
         galleryButton = findViewById(R.id.from_gallery_button);
         preview = findViewById(R.id.preview);
+        accountId = DcHelper.getContext(getApplicationContext()).getAccountId();
 
         defaultButton.setOnClickListener(new DefaultClickListener());
         galleryButton.setOnClickListener(new GalleryClickListener());
 
-        String backgroundImagePath = Prefs.getBackgroundImagePath(this);
+        String backgroundImagePath = Prefs.getBackgroundImagePath(this, accountId);
         if(backgroundImagePath.isEmpty()){
             setDefaultLayoutBackgroundImage();
         }else {
@@ -79,13 +73,6 @@ public class ChatBackgroundActivity extends PassphraseRequiredActionBarActivity 
             actionBar.setHomeAsUpIndicator(R.drawable.ic_close_white_24dp);
         }
 
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        dynamicTheme.onResume(this);
-        dynamicLanguage.onResume(this);
     }
 
     @Override
@@ -110,14 +97,14 @@ public class ChatBackgroundActivity extends PassphraseRequiredActionBarActivity 
                     Thread thread = new Thread() {
                         @Override
                         public void run() {
-                            String destination = context.getFilesDir().getAbsolutePath() + "/background";
-                            Prefs.setBackgroundImagePath(context, destination);
+                            String destination = context.getFilesDir().getAbsolutePath() + "/background."+ accountId;
+                            Prefs.setBackgroundImagePath(context, accountId, destination);
                             scaleAndSaveImage(context, destination);
                         }
                     };
                     thread.start();
                 } else {
-                    Prefs.setBackgroundImagePath(context, "");
+                    Prefs.setBackgroundImagePath(context, accountId, "");
                 }
             }
             finish();
@@ -137,7 +124,7 @@ public class ChatBackgroundActivity extends PassphraseRequiredActionBarActivity 
             Point size = new Point();
             display.getSize(size);
             // resize so that the larger side fits the screen accurately
-            int largerSide = (size.x > size.y ? size.x : size.y);
+            int largerSide = Math.max(size.x, size.y);
             Bitmap scaledBitmap = GlideApp.with(context)
                     .asBitmap()
                     .load(imageUri)
@@ -150,15 +137,15 @@ public class ChatBackgroundActivity extends PassphraseRequiredActionBarActivity 
             scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 85, outStream);
         } catch (InterruptedException e) {
             e.printStackTrace();
-            Prefs.setBackgroundImagePath(context, "");
+            Prefs.setBackgroundImagePath(context, accountId, "");
             showBackgroundSaveError();
         } catch (ExecutionException e) {
             e.printStackTrace();
-            Prefs.setBackgroundImagePath(context, "");
+            Prefs.setBackgroundImagePath(context, accountId, "");
             showBackgroundSaveError();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            Prefs.setBackgroundImagePath(context, "");
+            Prefs.setBackgroundImagePath(context, accountId, "");
             showBackgroundSaveError();
         }
     }
@@ -169,7 +156,7 @@ public class ChatBackgroundActivity extends PassphraseRequiredActionBarActivity 
     }
 
     private void setDefaultLayoutBackgroundImage() {
-        if(dynamicTheme.isDarkTheme(this)) {
+        if(DynamicTheme.isDarkTheme(this)) {
             Drawable image = getResources().getDrawable(R.drawable.background_hd_dark);
             preview.setImageDrawable(image);
         }
@@ -222,17 +209,7 @@ public class ChatBackgroundActivity extends PassphraseRequiredActionBarActivity 
     private class GalleryClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-                intent.addCategory(Intent.CATEGORY_OPENABLE);
-                intent.setType("image/*");
-                startActivityForResult(intent, ApplicationPreferencesActivity.REQUEST_CODE_SET_BACKGROUND);
-            } else {
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.addCategory(Intent.CATEGORY_OPENABLE);
-                intent.setType("image/*");
-                startActivityForResult(intent, ApplicationPreferencesActivity.REQUEST_CODE_SET_BACKGROUND);
-            }
+            AttachmentManager.selectImage(ChatBackgroundActivity.this, ApplicationPreferencesActivity.REQUEST_CODE_SET_BACKGROUND);
         }
     }
 }

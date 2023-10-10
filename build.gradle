@@ -82,7 +82,7 @@ dependencies {
 android {
     namespace "org.thoughtcrime.securesms"
     flavorDimensions "none"
-    compileSdkVersion 32
+    compileSdkVersion 33
 
     // Set NDK version to strip native libraries.
     // Even though we compile our libraries outside Gradle with `scripts/ndk-make.sh`,
@@ -94,14 +94,14 @@ android {
     useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
-        versionCode 658
-        versionName "1.38.2"
+        versionCode 661
+        versionName "1.41.0"
 
         applicationId "com.b44t.messenger"
         multiDexEnabled true
 
         minSdkVersion 16
-        targetSdkVersion 32
+        targetSdkVersion 33
 
         vectorDrawables.useSupportLibrary = true
 

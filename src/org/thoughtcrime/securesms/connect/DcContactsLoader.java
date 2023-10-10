@@ -17,13 +17,15 @@ public class DcContactsLoader extends AsyncLoader<DcContactsLoader.Ret> {
     private final int     listflags;
     private final String  query;
     private final boolean addCreateGroupLinks;
+    private final boolean addCreateContactLink;
     private final boolean blockedContacts;
 
-    public DcContactsLoader(Context context, int listflags, String query, boolean addCreateGroupLinks, boolean blockedContacts) {
+    public DcContactsLoader(Context context, int listflags, String query, boolean addCreateGroupLinks, boolean addCreateContactLink, boolean blockedContacts) {
         super(context);
         this.listflags           = listflags;
         this.query               = (query==null||query.isEmpty())? null : query;
         this.addCreateGroupLinks = addCreateGroupLinks;
+        this.addCreateContactLink= addCreateContactLink;
         this.blockedContacts     = blockedContacts;
     }
 
@@ -39,7 +41,7 @@ public class DcContactsLoader extends AsyncLoader<DcContactsLoader.Ret> {
         int[] contact_ids = dcContext.getContacts(listflags, query);
         if(query!=null) {
             // show the "new contact" link also for partly typed e-mail addresses, so that the user knows he can continue
-            if (dcContext.lookupContactIdByAddr(query)==0 && (listflags&DcContext.DC_GCL_VERIFIED_ONLY)==0) {
+            if (addCreateContactLink && dcContext.lookupContactIdByAddr(query)==0 && (listflags&DcContext.DC_GCL_VERIFIED_ONLY)==0) {
                 contact_ids = Util.appendInt(contact_ids, DcContact.DC_CONTACT_ID_NEW_CONTACT);
             }
             return new DcContactsLoader.Ret(contact_ids, query);
@@ -65,8 +67,8 @@ public class DcContactsLoader extends AsyncLoader<DcContactsLoader.Ret> {
     }
 
     public class Ret {
-        public int[]  ids;
-        public String query;
+        public final int[]  ids;
+        public final String query;
 
         Ret(int[] ids, String query) {
             this.ids   = ids;

@@ -24,8 +24,6 @@ import org.thoughtcrime.securesms.WebViewActivity;
 import org.thoughtcrime.securesms.connect.DcHelper;
 import org.thoughtcrime.securesms.service.GenericForegroundService;
 import org.thoughtcrime.securesms.service.NotificationController;
-import org.thoughtcrime.securesms.util.DynamicLanguage;
-import org.thoughtcrime.securesms.util.DynamicTheme;
 import org.thoughtcrime.securesms.util.Util;
 
 public class BackupTransferActivity extends BaseActionBarActivity {
@@ -54,9 +52,6 @@ public class BackupTransferActivity extends BaseActionBarActivity {
     private TransferMode transferMode = TransferMode.RECEIVER_SCAN_QR;
     private TransferState transferState = TransferState.TRANSFER_UNKNOWN;
 
-    private final DynamicTheme dynamicTheme = new DynamicTheme();
-    private final DynamicLanguage dynamicLanguage = new DynamicLanguage();
-
     NotificationController notificationController;
     private boolean notificationControllerClosed = false;
     public boolean warnAboutCopiedQrCodeOnAbort = false;
@@ -64,8 +59,6 @@ public class BackupTransferActivity extends BaseActionBarActivity {
     @Override
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
-        dynamicTheme.onCreate(this);
-        dynamicLanguage.onCreate(this);
 
         transferMode = TransferMode.fromInt(getIntent().getIntExtra(TRANSFER_MODE, TransferMode.INVALID.getInt()));
         if (transferMode == TransferMode.INVALID) {
@@ -102,13 +95,6 @@ public class BackupTransferActivity extends BaseActionBarActivity {
             notificationController.close();
         }
         DcHelper.getAccounts(this).startIo();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        dynamicTheme.onResume(this);
-        dynamicLanguage.onResume(this);
     }
 
     @Override
@@ -220,7 +206,7 @@ public class BackupTransferActivity extends BaseActionBarActivity {
             new Thread(() -> {
                 try {
                     // depending on the android version, getting the SSID requires none, all or one of
-                    // ACCESS_COARSE_LOCATION, ACCESS_FINE_LOCATION, ACCESS_WIFI_STATE, ACCESS_NETWORK_STATE and maybe even more.
+                    // ACCESS_COARSE_LOCATION, ACCESS_FINE_LOCATION, NEARBY_WIFI_DEVICES, ACCESS_WIFI_STATE, ACCESS_NETWORK_STATE and maybe even more.
                     final WifiManager wifiManager = (WifiManager)activity.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
                     if (wifiManager.isWifiEnabled()) {
                         final WifiInfo info = wifiManager.getConnectionInfo();

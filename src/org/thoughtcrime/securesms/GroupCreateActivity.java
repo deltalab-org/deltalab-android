@@ -42,8 +42,6 @@ import org.thoughtcrime.securesms.profiles.AvatarHelper;
 import org.thoughtcrime.securesms.qr.QrShowActivity;
 import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.scribbles.ScribbleActivity;
-import org.thoughtcrime.securesms.util.DynamicLanguage;
-import org.thoughtcrime.securesms.util.DynamicTheme;
 import org.thoughtcrime.securesms.util.SelectedRecipientsAdapter;
 import org.thoughtcrime.securesms.util.SelectedRecipientsAdapter.OnRecipientDeletedListener;
 import org.thoughtcrime.securesms.util.ThemeUtil;
@@ -68,9 +66,6 @@ public class GroupCreateActivity extends PassphraseRequiredActionBarActivity
   public static final String CREATE_BROADCAST  = "group_create_broadcast";
   public static final String SUGGESTED_CONTACT_IDS = "suggested_contact_ids";
 
-  private final DynamicTheme    dynamicTheme    = new DynamicTheme();
-  private final DynamicLanguage dynamicLanguage = new DynamicLanguage();
-
   private static final int PICK_CONTACT = 1;
   public static final  int AVATAR_SIZE  = 210;
   private static final int REQUEST_CODE_AVATAR = 2759;
@@ -89,12 +84,6 @@ public class GroupCreateActivity extends PassphraseRequiredActionBarActivity
   private boolean      imageLoaded;
   private boolean      hasSuggestedContacts;
   private AttachmentManager attachmentManager;
-
-  @Override
-  protected void onPreCreate() {
-    dynamicTheme.onCreate(this);
-    dynamicLanguage.onCreate(this);
-  }
 
   @Override
   protected void onCreate(Bundle state, boolean ready) {
@@ -130,8 +119,6 @@ public class GroupCreateActivity extends PassphraseRequiredActionBarActivity
   @Override
   public void onResume() {
     super.onResume();
-    dynamicTheme.onResume(this);
-    dynamicLanguage.onResume(this);
     updateViewState();
   }
 
@@ -179,8 +166,8 @@ public class GroupCreateActivity extends PassphraseRequiredActionBarActivity
 
   private static class AddMembersTask extends AsyncTask<Recipient,Void,List<AddMembersTask.Result>> {
     static class Result {
-      Optional<Recipient> recipient;
-      String              reason;
+      final Optional<Recipient> recipient;
+      final String              reason;
 
       public Result(@Nullable Recipient recipient, @Nullable String reason) {
         this.recipient = Optional.fromNullable(recipient);
@@ -188,7 +175,7 @@ public class GroupCreateActivity extends PassphraseRequiredActionBarActivity
       }
     }
 
-    private GroupCreateActivity activity;
+    private final GroupCreateActivity activity;
 
     public AddMembersTask(@NonNull GroupCreateActivity activity) {
       this.activity      = activity;
@@ -442,7 +429,6 @@ public class GroupCreateActivity extends PassphraseRequiredActionBarActivity
   @Override
   public void onActivityResult(int reqCode, int resultCode, final Intent data) {
     super.onActivityResult(reqCode, resultCode, data);
-    Uri outputFile = Uri.fromFile(new File(getCacheDir(), "cropped"));
 
     if (resultCode != Activity.RESULT_OK)
       return;
@@ -531,7 +517,7 @@ public class GroupCreateActivity extends PassphraseRequiredActionBarActivity
 
   private static class FillExistingGroupInfoAsyncTask extends ProgressDialogAsyncTask<Integer,Void,Recipient> {
 
-    GroupCreateActivity activity;
+    final GroupCreateActivity activity;
 
     FillExistingGroupInfoAsyncTask(GroupCreateActivity activity) {
       super(activity,

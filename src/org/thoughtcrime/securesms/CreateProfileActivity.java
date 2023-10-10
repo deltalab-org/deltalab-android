@@ -42,16 +42,10 @@ import org.thoughtcrime.securesms.permissions.Permissions;
 import org.thoughtcrime.securesms.profiles.AvatarHelper;
 import org.thoughtcrime.securesms.profiles.ProfileMediaConstraints;
 import org.thoughtcrime.securesms.scribbles.ScribbleActivity;
-import org.thoughtcrime.securesms.util.BitmapDecodingException;
-import org.thoughtcrime.securesms.util.BitmapUtil;
-import org.thoughtcrime.securesms.util.DynamicLanguage;
-import org.thoughtcrime.securesms.util.DynamicTheme;
 import org.thoughtcrime.securesms.util.Prefs;
-import org.thoughtcrime.securesms.util.Util;
 import org.thoughtcrime.securesms.util.ViewUtil;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.security.SecureRandom;
 
@@ -64,9 +58,6 @@ public class CreateProfileActivity extends BaseActionBarActivity implements Emoj
   public static final String FROM_WELCOME   = "from_welcome";
 
   private static final int REQUEST_CODE_AVATAR = 1;
-
-  private final DynamicTheme    dynamicTheme    = new DynamicTheme();
-  private final DynamicLanguage dynamicLanguage = new DynamicLanguage();
 
   private InputAwareLayout       container;
   private ImageView              avatar;
@@ -88,9 +79,6 @@ public class CreateProfileActivity extends BaseActionBarActivity implements Emoj
     super.onCreate(bundle);
     this.fromWelcome  = getIntent().getBooleanExtra(FROM_WELCOME, false);
 
-    dynamicTheme.onCreate(this);
-    dynamicLanguage.onCreate(this);
-
     setContentView(R.layout.profile_create_activity);
 
     getSupportActionBar().setTitle(R.string.pref_profile_info_headline);
@@ -111,13 +99,6 @@ public class CreateProfileActivity extends BaseActionBarActivity implements Emoj
     MenuInflater inflater = this.getMenuInflater();
     inflater.inflate(R.menu.preferences_create_profile_menu, menu);
     return true;
-  }
-
-  @Override
-  public void onResume() {
-    super.onResume();
-    dynamicTheme.onResume(this);
-    dynamicLanguage.onResume(this);
   }
 
   @Override

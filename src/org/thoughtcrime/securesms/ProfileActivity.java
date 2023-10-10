@@ -32,9 +32,7 @@ import com.google.android.material.tabs.TabLayout;
 import org.thoughtcrime.securesms.connect.DcEventCenter;
 import org.thoughtcrime.securesms.connect.DcHelper;
 import org.thoughtcrime.securesms.mms.GlideApp;
-import org.thoughtcrime.securesms.util.DynamicLanguage;
 import org.thoughtcrime.securesms.util.DynamicNoActionBarTheme;
-import org.thoughtcrime.securesms.util.DynamicTheme;
 import org.thoughtcrime.securesms.util.Prefs;
 import org.thoughtcrime.securesms.util.Util;
 import org.thoughtcrime.securesms.util.ViewUtil;
@@ -45,9 +43,6 @@ import java.util.ArrayList;
 public class ProfileActivity extends PassphraseRequiredActionBarActivity
                              implements DcEventCenter.DcEventDelegate
 {
-
-  @SuppressWarnings("unused")
-  private final static String TAG = ProfileActivity.class.getSimpleName();
 
   public static final String CHAT_ID_EXTRA    = "chat_id";
   public static final String CONTACT_ID_EXTRA = "contact_id";
@@ -64,9 +59,6 @@ public class ProfileActivity extends PassphraseRequiredActionBarActivity
 
   private static final int REQUEST_CODE_PICK_RINGTONE = 1;
 
-  private final DynamicTheme    dynamicTheme    = new DynamicNoActionBarTheme();
-  private final DynamicLanguage dynamicLanguage = new DynamicLanguage();
-
   private DcContext            dcContext;
   private int                  chatId;
   private boolean              chatIsMultiUser;
@@ -76,7 +68,7 @@ public class ProfileActivity extends PassphraseRequiredActionBarActivity
   private int                  contactId;
   private boolean              fromChat;
 
-  private ArrayList<Integer> tabs = new ArrayList<>();
+  private final ArrayList<Integer> tabs = new ArrayList<>();
   private Toolbar            toolbar;
   private ConversationTitleView titleView;
   private TabLayout          tabLayout;
@@ -84,8 +76,8 @@ public class ProfileActivity extends PassphraseRequiredActionBarActivity
 
   @Override
   protected void onPreCreate() {
-    dynamicTheme.onCreate(this);
-    dynamicLanguage.onCreate(this);
+    dynamicTheme = new DynamicNoActionBarTheme();
+    super.onPreCreate();
     dcContext = DcHelper.getContext(this);
   }
 
@@ -186,13 +178,6 @@ public class ProfileActivity extends PassphraseRequiredActionBarActivity
 
     super.onPrepareOptionsMenu(menu);
     return true;
-  }
-
-  @Override
-  public void onResume() {
-    super.onResume();
-    dynamicTheme.onResume(this);
-    dynamicLanguage.onResume(this);
   }
 
   boolean backPressed = false;

@@ -417,8 +417,9 @@ https://meet.jit.si/$ROOM
     <string name="start_app">شروع...</string>
     <!-- this is a warning that is shown when one tries to send something to a chat that is not yet accepted. -->
     <string name="accept_request_first">لطفاً اول درخواست گپ را قبول کنید.</string>
-    <!-- placeholder will be replaced by a file name -->
+    <!-- title shown above a list of chats where one should be selected (eg. when sharing files from a webxdc). the placeholder will be replaced by a file name -->
     <string name="send_file_to">ارسال \"%1$s\" به...</string>
+    <!-- title shown above a list contacts where one should be selected (eg. when a webxdc attempts to send a message to a chat) -->
     <string name="send_message_to">ارسال پیام به...</string>
 
     <!-- map -->
@@ -725,7 +726,6 @@ https://meet.jit.si/$ROOM
     <string name="emoji_symbols">نمادها</string>
     <string name="emoji_flags">پرچم‌ها</string>
 
-
     <!-- automatically delete message -->
     <string name="delete_old_messages">پاک کردن پیام‌های قدیمی</string>
     <string name="autodel_device_title">پاک کردن پیام‌ها از دستگاه</string>
@@ -865,7 +865,7 @@ https://meet.jit.si/$ROOM
     <string name="qrscan_failed">امکان رمزگشایی کد کیوآر وجود ندارد</string>
     <string name="qrscan_ask_join_group">آیا می خواهید به گروه\"%1$s\" ملحق شوید؟</string>
     <string name="qrscan_fingerprint_mismatch">اثرانگشت اسکن شده با انچه که برای %1$sمشاهده شده بود انطباق ندارد. </string>
-    <string name="qrscan_no_addr_found">این کیوآر حاوی یک شناساگر است ولی ادرس رایانامهی در آن نیست. \n\n برای یک تأییدیه به روش‌های دیگر لطفا ابتدا یک ارتباط رمزگذاری شده با دریافت کننده برقرار کنید. </string>
+    <string name="qrscan_no_addr_found">این کیوآر حاوی یک شناساگر است ولی ادرس رایانامه‌ای در آن نیست. \n\n برای یک تأییدیه به روش‌های دیگر لطفا ابتدا یک ارتباط رمزگذاری شده با دریافت کننده برقرار کنید. </string>
     <string name="qrscan_contains_text">کیوآر کد اسکن شده:\n\n %1$s</string>
     <string name="qrscan_contains_url">آدرس اینترنتی کیوآر اسکن شده:\n\n %1$s</string>
     <string name="qrscan_fingerprint_label">اثر انگشت</string>
@@ -926,8 +926,6 @@ https://meet.jit.si/$ROOM
     <string name="notify_name_and_message">نام و پیام</string>
     <string name="notify_name_only">فقط نام</string>
     <string name="notify_no_name_or_message">بدون نام یا پیام</string>
-
-
     <!-- permissions -->
     <string name="perm_required_title">مجوز لازم است</string>
     <string name="perm_continue">ادامه</string>
@@ -949,7 +947,6 @@ https://meet.jit.si/$ROOM
 گزینه
 \"Location\" 
 را فعال نمایید.</string>
-
     <!-- ImageEditorHud -->
     <string name="ImageEditorHud_draw_anywhere_to_blur">هر کجا مایلید شروع به رسم کردن کنید تا مات شود.</string>
     <string name="ImageEditorHud_add_text">افزودن متن</string>
@@ -1097,7 +1094,7 @@ GNU GPL ورژن ۳
 
     <!-- device messages for updates -->
     <!-- placeholder will be replaced by the URL https://get.delta.chat/#changelogs -->
-    <string name="update_1_36_android">نکات برجسته 1.36/n/n💻📱 از دلتاچت در همه دستگاه‌های خود به راحتی استفاده کنید - فقط سه مرحله ساده را در \"تنظیمات / افزودن دستگاه دوم\" (تجربی) دنبال کنید/n/n🖼🔍 آیا تا به حال به دنبال 1 تصویر هستید و نمی توانید چت را به یاد بیاورید؟ \"همه رسانه\" از منوی اصلی متعلق به شماست!/n/nچه چیز دیگری؟ اعلان ها برای همه حساب ها، پاک کردن چت، و موارد دیگر در %1$s</string>
+    <string name="update_1_36_android">نکات برجسته ۱.۳۶/n/n💻📱 از دلتاچت در همه دستگاه‌های خود به راحتی استفاده کنید - فقط سه مرحله ساده را در \"تنظیمات / افزودن دستگاه دوم\" (تجربی) دنبال کنید/n/n🖼🔍 آیا تا به حال به دنبال 1 تصویر هستید و نمی توانید چت را به یاد بیاورید؟ \"همه رسانه\" از منوی اصلی متعلق به شماست!/n/nچه چیز دیگری؟ اعلان ها برای همه حساب‌ها، پاک کردن چت، و موارد دیگر در %1$s</string>
     <!-- placeholder will be replaced by the URL https://delta.chat/en/2023-03-27-third-independent-security-audit -->
     <string name="update_1_36_audit">ما در اینجا زیاد در مورد امنیت صحبت نمی کنیم، اما مطمئن باشید، ما اهمیت می دهیم: برای اخبار خوب اخیر به %1$s مراجعه کنید 👌</string>
     <!-- placeholder will be replaced by the URL https://get.delta.chat/#changelogs -->

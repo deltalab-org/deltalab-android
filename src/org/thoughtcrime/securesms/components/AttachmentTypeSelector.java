@@ -27,7 +27,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
-import org.thoughtcrime.securesms.ApplicationContext;
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.connect.DcHelper;
 import org.thoughtcrime.securesms.permissions.Permissions;
@@ -46,9 +45,6 @@ public class AttachmentTypeSelector extends PopupWindow {
 
   private static final int ANIMATION_DURATION = 300;
 
-  @SuppressWarnings("unused")
-  private static final String TAG = AttachmentTypeSelector.class.getSimpleName();
-
   private final @NonNull LoaderManager       loaderManager;
   private final @NonNull RecentPhotoViewRail recentRail;
   private final @NonNull ImageView           imageButton;
@@ -62,7 +58,7 @@ public class AttachmentTypeSelector extends PopupWindow {
 
   private @Nullable View                      currentAnchor;
   private @Nullable AttachmentClickedListener listener;
-  private int chatId;
+  private final int chatId;
 
   public AttachmentTypeSelector(@NonNull Context context, @NonNull LoaderManager loaderManager, @Nullable AttachmentClickedListener listener, int chatId) {
     super(context);
@@ -117,7 +113,7 @@ public class AttachmentTypeSelector extends PopupWindow {
   }
 
   public void show(@NonNull Activity activity, final @NonNull View anchor) {
-    if (Permissions.hasAll(activity, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+    if (Permissions.hasAll(activity, Permissions.galleryPermissions())) {
       recentRail.setVisibility(View.VISIBLE);
       loaderManager.restartLoader(1, null, recentRail);
     } else {

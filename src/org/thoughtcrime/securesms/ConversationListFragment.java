@@ -16,6 +16,7 @@
  */
 package org.thoughtcrime.securesms;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -50,6 +51,7 @@ import com.b44t.messenger.DcChat;
 import com.b44t.messenger.DcChatlist;
 import com.b44t.messenger.DcContext;
 import com.b44t.messenger.DcEvent;
+import com.b44t.messenger.DcMsg;
 import com.google.android.material.snackbar.Snackbar;
 
 import org.thoughtcrime.securesms.ConversationListAdapter.ItemClickListener;
@@ -60,6 +62,8 @@ import org.thoughtcrime.securesms.connect.DcEventCenter;
 import org.thoughtcrime.securesms.connect.DcHelper;
 import org.thoughtcrime.securesms.connect.DirectShareUtil;
 import org.thoughtcrime.securesms.mms.GlideApp;
+import org.thoughtcrime.securesms.permissions.Permissions;
+import org.thoughtcrime.securesms.util.Prefs;
 import org.thoughtcrime.securesms.util.RelayUtil;
 import org.thoughtcrime.securesms.util.SendRelayedMessageUtil;
 import org.thoughtcrime.securesms.util.Util;
@@ -86,7 +90,6 @@ public class ConversationListFragment extends Fragment
   public static final String ARCHIVE = "archive";
   public static final String RELOAD_LIST = "reload_list";
 
-  @SuppressWarnings("unused")
   private static final String TAG = ConversationListFragment.class.getSimpleName();
 
   private ActionMode                  actionMode;
@@ -95,10 +98,11 @@ public class ConversationListFragment extends Fragment
   private TextView                    emptySearch;
   private PulsingFloatingActionButton fab;
   private Locale                      locale;
-  private String                      queryFilter  = "";
+  private final String                queryFilter  = "";
   private boolean                     archive;
   private Timer                       reloadTimer;
   private boolean                     chatlistJustLoaded;
+  private boolean                     reloadTimerInstantly;
 
   @Override
   public void onCreate(Bundle icicle) {
@@ -171,23 +175,33 @@ public class ConversationListFragment extends Fragment
 
     if (getActivity().getIntent().getIntExtra(RELOAD_LIST, 0) == 1
         && !chatlistJustLoaded) {
+      Log.i(TAG, "🤠 resuming chatlist: loading chatlist");
       loadChatlist();
+      reloadTimerInstantly = false;
     }
     chatlistJustLoaded = false;
 
+    Log.i(TAG, "🤠 resuming chatlist: starting update timer");
     reloadTimer = new Timer();
     reloadTimer.scheduleAtFixedRate(new TimerTask() {
       @Override
       public void run() {
-        Util.runOnMain(() -> { list.getAdapter().notifyDataSetChanged(); });
+        Util.runOnMain(() -> {
+          Log.i(TAG, "🤠 update timer: refreshing chatlist");
+          list.getAdapter().notifyDataSetChanged();
+        });
       }
-    }, 60 * 1000, 60 * 1000);
+    }, reloadTimerInstantly? 0 : 60 * 1000, 60 * 1000);
   }
 
   @Override
   public void onPause() {
     super.onPause();
+
+    Log.i(TAG, "🤠 pausing chatlist: cancel update timer");
     reloadTimer.cancel();
+    reloadTimerInstantly = true;
+
     fab.stopPulse();
   }
 
@@ -256,7 +270,28 @@ public class ConversationListFragment extends Fragment
 
       @Override
       protected void onPostExecute(Void result) {
-        DozeReminder.maybeAskDirectly(getActivity());
+        Activity activity = ConversationListFragment.this.getActivity();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+          if (!Prefs.getBooleanPreference(activity, Prefs.ASKED_FOR_NOTIFICATION_PERMISSION, false)) {
+            Prefs.setBooleanPreference(activity, Prefs.ASKED_FOR_NOTIFICATION_PERMISSION, true);
+            Permissions.with(activity)
+              .request(Manifest.permission.POST_NOTIFICATIONS)
+              .ifNecessary()
+              .onAllGranted(() -> {
+                DozeReminder.maybeAskDirectly(getActivity());
+              })
+              .onAnyDenied(() -> {
+                final DcContext dcContext = DcHelper.getContext(activity);
+                DcMsg msg = new DcMsg(dcContext, DcMsg.DC_MSG_TEXT);
+                msg.setText("\uD83D\uDC49 "+activity.getString(R.string.notifications_disabled)+" \uD83D\uDC48\n\n"
+                  +activity.getString(R.string.perm_explain_access_to_notifications_denied));
+                dcContext.addDeviceMsg("android.notifications-disabled", msg);
+              })
+              .execute();
+          }
+        } else {
+          DozeReminder.maybeAskDirectly(getActivity());
+        }
       }
     }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, getActivity());
   }

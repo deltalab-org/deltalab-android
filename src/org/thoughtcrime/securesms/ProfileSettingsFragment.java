@@ -54,7 +54,7 @@ public class ProfileSettingsFragment extends Fragment
   private StickyHeaderDecoration listDecoration;
   private ProfileSettingsAdapter adapter;
   private ActionMode             actionMode;
-  private ActionModeCallback     actionModeCallback = new ActionModeCallback();
+  private final ActionModeCallback actionModeCallback = new ActionModeCallback();
 
 
   private Locale               locale;
@@ -143,8 +143,11 @@ public class ProfileSettingsFragment extends Fragment
   @Override
   public void onSettingsClicked(int settingsId) {
     switch(settingsId) {
-      case ProfileSettingsAdapter.SETTING_SEND_MESSAGE:
+      case ProfileSettingsAdapter.INFO_SEND_MESSAGE_BUTTON:
         onSendMessage();
+        break;
+      case ProfileSettingsAdapter.INFO_VERIFIED:
+        onVerifiedByClicked();
         break;
     }
   }
@@ -233,6 +236,18 @@ public class ProfileSettingsFragment extends Fragment
     getActivity().finish();
   }
 
+  private void onVerifiedByClicked() {
+    DcContact dcContact = dcContext.getContact(contactId);
+    if (dcContact.isVerified()) {
+      int verifierId = dcContact.getVerifierId();
+      if (verifierId != 0 && verifierId != DcContact.DC_CONTACT_ID_SELF && verifierId != contactId) {
+        Intent intent = new Intent(getContext(), ProfileActivity.class);
+        intent.putExtra(ProfileActivity.CONTACT_ID_EXTRA, verifierId);
+        startActivity(intent);
+      }
+     }
+  }
+
   private void onSendMessage() {
     DcContact dcContact = dcContext.getContact(contactId);
     int chatId = dcContext.createChatByContactId(dcContact.getId());
@@ -256,6 +271,8 @@ public class ProfileSettingsFragment extends Fragment
       menu.findItem(R.id.show_in_chat).setVisible(false);
       menu.findItem(R.id.save).setVisible(false);
       menu.findItem(R.id.share).setVisible(false);
+      menu.findItem(R.id.menu_resend).setVisible(false);
+      menu.findItem(R.id.menu_select_all).setVisible(false);
       mode.setTitle("1");
 
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

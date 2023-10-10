@@ -46,6 +46,7 @@ public class Prefs {
   private static final String ENTER_SENDS_PREF                 = "pref_enter_sends";
   private static final String PROMPTED_DOZE_MSG_ID_PREF        = "pref_prompted_doze_msg_id";
   public  static final String DOZE_ASKED_DIRECTLY              = "pref_doze_asked_directly";
+  public  static final String ASKED_FOR_NOTIFICATION_PERMISSION= "pref_asked_for_notification_permission";
   private static final String IN_THREAD_NOTIFICATION_PREF      = "pref_key_inthread_notifications";
   public  static final String MESSAGE_BODY_TEXT_SIZE_PREF      = "pref_message_body_text_size";
 
@@ -53,11 +54,10 @@ public class Prefs {
   public  static final String NOTIFICATION_PRIORITY_PREF       = "pref_notification_priority";
 
   public  static final String SYSTEM_EMOJI_PREF                = "pref_system_emoji";
+  public  static final String BUILTIN_CAMERA_PREF              = "pref_builtin_camera";
   public  static final String DIRECT_CAPTURE_CAMERA_ID         = "pref_direct_capture_camera_id";
   private static final String PROFILE_AVATAR_ID_PREF           = "pref_profile_avatar_id";
   public  static final String INCOGNITO_KEYBORAD_PREF          = "pref_incognito_keyboard";
-
-  public static final String SCREEN_LOCK         = "pref_android_screen_lock";
 
   private static final String PREF_CONTACT_PHOTO_IDENTIFIERS = "pref_contact_photo_identifiers";
 
@@ -74,14 +74,6 @@ public class Prefs {
     VibrateState(int id) { this.id = id; }
     public int getId() { return id; }
     public static VibrateState fromId(int id) { return values()[id]; }
-  }
-
-  public static boolean isScreenLockEnabled(@NonNull Context context) {
-    return getBooleanPreference(context, SCREEN_LOCK, false);
-  }
-
-  public static void setScreenLockEnabled(@NonNull Context context, boolean value) {
-    setBooleanPreference(context, SCREEN_LOCK, value);
   }
 
   public static void setDatabaseEncryptedSecret(@NonNull Context context, @NonNull String secret, int accountId) {
@@ -271,27 +263,31 @@ public class Prefs {
 
   // map
 
-  public static void setMapZoom(Context context, int chatId, double zoom) {
-    setLongPreference(context, MAP_ZOOM+chatId, Double.doubleToRawLongBits(zoom));
+  public static void setMapZoom(Context context, int accountId, int chatId, double zoom) {
+    setLongPreference(context, MAP_ZOOM+accountId+"."+chatId, Double.doubleToRawLongBits(zoom));
   }
 
-
-  public static double getMapZoom(Context context, int chatId) {
-    return Double.longBitsToDouble(0);
+  public static double getMapZoom(Context context, int accountId, int chatId) {
+    long zoom = getLongPreference(context, MAP_ZOOM+accountId+"."+chatId, Double.doubleToLongBits(MINIMUM_ZOOM));
+    return Double.longBitsToDouble(zoom);
   }
 
   // misc.
 
-  public static String getBackgroundImagePath(Context context) {
-    return getStringPreference(context, BACKGROUND_PREF, "");
+  public static String getBackgroundImagePath(Context context, int accountId) {
+    return getStringPreference(context, BACKGROUND_PREF+accountId, "");
   }
 
-  public static void setBackgroundImagePath(Context context, String path) {
-    setStringPreference(context, BACKGROUND_PREF, path);
+  public static void setBackgroundImagePath(Context context, int accountId, String path) {
+    setStringPreference(context, BACKGROUND_PREF+accountId, path);
   }
 
   public static boolean isSystemEmojiPreferred(Context context) {
     return getBooleanPreference(context, SYSTEM_EMOJI_PREF, false);
+  }
+
+  public static boolean isBuiltInCameraPreferred(Context context) {
+    return getBooleanPreference(context, BUILTIN_CAMERA_PREF, false);
   }
 
   public static boolean getAlwaysLoadRemoteContent(Context context) {

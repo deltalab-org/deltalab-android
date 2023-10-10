@@ -105,7 +105,6 @@ import org.thoughtcrime.securesms.permissions.Permissions;
 import org.thoughtcrime.securesms.providers.PersistentBlobProvider;
 import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.scribbles.ScribbleActivity;
-import org.thoughtcrime.securesms.util.DynamicLanguage;
 import org.thoughtcrime.securesms.util.DynamicTheme;
 import org.thoughtcrime.securesms.util.MediaUtil;
 import org.thoughtcrime.securesms.util.Prefs;
@@ -194,22 +193,12 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
   private ApplicationContext context;
   private Recipient  recipient;
   private DcContext  dcContext;
-  private DcChat     dcChat                = new DcChat(0);
+  private DcChat     dcChat                = new DcChat(0, 0);
   private int        chatId;
   private final boolean isSecureText          = true;
   private boolean    isDefaultSms             = true;
   private boolean    isSecurityInitialized    = false;
   private boolean successfulForwardingAttempt = false;
-
-
-  private final DynamicTheme       dynamicTheme    = new DynamicTheme();
-  private final DynamicLanguage    dynamicLanguage = new DynamicLanguage();
-
-  @Override
-  protected void onPreCreate() {
-    dynamicTheme.onCreate(this);
-    dynamicLanguage.onCreate(this);
-  }
 
   @Override
   protected void onCreate(Bundle state, boolean ready) {
@@ -306,15 +295,8 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
   }
 
   @Override
-  protected void onStart() {
-    super.onStart();
-  }
-
-  @Override
   protected void onResume() {
     super.onResume();
-    dynamicTheme.onResume(this);
-    dynamicLanguage.onResume(this);
     quickAttachmentDrawer.onResume();
 
     initializeEnabledCheck();
@@ -338,11 +320,6 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
     quickAttachmentDrawer.onPause();
     inputPanel.onPause();
     AudioSlidePlayer.stopAll();
-  }
-
-  @Override
-  protected void onStop() {
-    super.onStop();
   }
 
   @Override
@@ -870,19 +847,14 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
     composeText.setOnClickListener(composeKeyPressedListener);
     composeText.setOnFocusChangeListener(composeKeyPressedListener);
 
-    if (QuickAttachmentDrawer.isDeviceSupported(this)) {
-      quickAttachmentDrawer.setListener(this);
-      quickCameraToggle.setOnClickListener(new QuickCameraToggleListener());
-    } else {
-      quickCameraToggle.setVisibility(View.GONE);
-      quickCameraToggle.setEnabled(false);
-    }
+    quickAttachmentDrawer.setListener(this);
+    quickCameraToggle.setOnClickListener(new QuickCameraToggleListener());
 
     initializeBackground();
   }
 
   private void initializeBackground() {
-    String backgroundImagePath = Prefs.getBackgroundImagePath(this);
+    String backgroundImagePath = Prefs.getBackgroundImagePath(this, dcContext.getAccountId());
     Drawable background;
     if(!backgroundImagePath.isEmpty()) {
       background = Drawable.createFromPath(backgroundImagePath);
@@ -916,6 +888,7 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
       AccountManager.getInstance().switchAccount(context, accountId);
       dcContext = context.dcContext;
       fragment.dcContext = context.dcContext;
+      initializeBackground();
     }
     chatId = getIntent().getIntExtra(CHAT_ID_EXTRA, -1);
     if(chatId == DcChat.DC_CHAT_NO_CHAT)
@@ -974,7 +947,8 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
   }
 
   private void startContactChooserActivity() {
-    Intent intent = new Intent(ConversationActivity.this, BlockedAndShareContactsActivity.class);
+    Intent intent = new Intent(ConversationActivity.this, AttachContactActivity.class);
+    intent.putExtra(ContactSelectionListFragment.ALLOW_CREATION, false);
     startActivityForResult(intent, PICK_CONTACT);
   }
 
@@ -991,8 +965,8 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
   }
 
   private void addAttachmentContactInfo(Intent data) {
-    String name = data.getStringExtra(BlockedAndShareContactsActivity.SHARE_CONTACT_NAME_EXTRA);
-    String mail = data.getStringExtra(BlockedAndShareContactsActivity.SHARE_CONTACT_MAIL_EXTRA);
+    String name = data.getStringExtra(AttachContactActivity.NAME_EXTRA);
+    String mail = data.getStringExtra(AttachContactActivity.ADDR_EXTRA);
     composeText.append(name + "\n" + mail);
   }
 
@@ -1388,18 +1362,23 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
   private class QuickCameraToggleListener implements OnClickListener {
     @Override
     public void onClick(View v) {
-      if (!quickAttachmentDrawer.isShowing()) {
-        Permissions.with(ConversationActivity.this)
-                   .request(Manifest.permission.CAMERA)
-                   .ifNecessary()
-                   .withPermanentDenialDialog(getString(R.string.perm_explain_access_to_camera_denied))
-                   .onAllGranted(() -> {
-                     composeText.clearFocus();
-                     container.show(composeText, quickAttachmentDrawer);
-                   })
-                   .execute();
+      if (Prefs.isBuiltInCameraPreferred(ConversationActivity.this)
+       && QuickAttachmentDrawer.isDeviceSupported(ConversationActivity.this)) {
+        if (!quickAttachmentDrawer.isShowing()) {
+          Permissions.with(ConversationActivity.this)
+            .request(Manifest.permission.CAMERA)
+            .ifNecessary()
+            .withPermanentDenialDialog(getString(R.string.perm_explain_access_to_camera_denied))
+            .onAllGranted(() -> {
+              composeText.clearFocus();
+              container.show(composeText, quickAttachmentDrawer);
+            })
+            .execute();
+        } else {
+          container.hideAttachedInput(false);
+        }
       } else {
-        container.hideAttachedInput(false);
+        attachmentManager.capturePhoto(ConversationActivity.this, TAKE_PHOTO);
       }
     }
   }

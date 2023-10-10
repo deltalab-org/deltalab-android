@@ -33,9 +33,6 @@ import java.util.List;
  */
 public class ContactMultiSelectionActivity extends ContactSelectionActivity {
 
-  @SuppressWarnings("unused")
-  private final static String TAG = ContactMultiSelectionActivity.class.getSimpleName();
-
   @Override
   protected void onCreate(Bundle icicle, boolean ready) {
     getIntent().putExtra(ContactSelectionListFragment.MULTI_SELECT, true);
@@ -63,9 +60,6 @@ public class ContactMultiSelectionActivity extends ContactSelectionActivity {
     switch (item.getItemId()) {
       case R.id.menu_add_members:
         saveSelection();
-        finish();
-        return true;
-      case android.R.id.home:
         finish();
         return true;
     }

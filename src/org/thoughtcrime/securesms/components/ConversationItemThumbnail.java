@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
@@ -84,6 +85,14 @@ public class ConversationItemThumbnail extends FrameLayout {
     this.cornerMask   = new CornerMask(this);
 
     setTouchDelegate(thumbnail.getTouchDelegate());
+  }
+
+  public String getDescription() {
+    String desc = thumbnail.getDescription();
+    if (footer.getVisibility() == View.VISIBLE) {
+      desc += "\n" + footer.getDescription();
+    }
+    return desc;
   }
 
   @Override
@@ -183,6 +192,11 @@ public class ConversationItemThumbnail extends FrameLayout {
 
   public void setThumbnailClickListener(SlideClickListener listener) {
     thumbnail.setThumbnailClickListener(listener);
+  }
+
+  @Override
+  public boolean performClick() {
+    return thumbnail.performClick();
   }
 
   @UiThread

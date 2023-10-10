@@ -23,9 +23,6 @@ import java.util.Set;
 
 class ProfileGalleryAdapter extends StickyHeaderGridAdapter {
 
-  @SuppressWarnings("unused")
-  private static final String TAG = ProfileGalleryAdapter.class.getSimpleName();
-
   private final Context             context;
   private final GlideRequests       glideRequests;
   private final Locale              locale;
@@ -35,8 +32,8 @@ class ProfileGalleryAdapter extends StickyHeaderGridAdapter {
   private  BucketedThreadMedia media;
 
   private static class ViewHolder extends StickyHeaderGridAdapter.ItemViewHolder {
-    ThumbnailView imageView;
-    View          selectedIndicator;
+    final ThumbnailView imageView;
+    final View          selectedIndicator;
 
     ViewHolder(View v) {
       super(v);
@@ -46,7 +43,7 @@ class ProfileGalleryAdapter extends StickyHeaderGridAdapter {
   }
 
   private static class HeaderHolder extends StickyHeaderGridAdapter.HeaderViewHolder {
-    TextView textView;
+    final TextView textView;
 
     HeaderHolder(View itemView) {
       super(itemView);
@@ -121,6 +118,12 @@ class ProfileGalleryAdapter extends StickyHeaderGridAdapter {
     if (!selected.remove(mediaRecord)) {
       selected.add(mediaRecord);
     }
+    notifyDataSetChanged();
+  }
+
+  public void selectAll() {
+    selected.clear();
+    selected.addAll(media.getAll());
     notifyDataSetChanged();
   }
 

@@ -17,6 +17,7 @@
  */
 package org.thoughtcrime.securesms;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
@@ -30,6 +31,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
@@ -49,7 +51,6 @@ import org.thoughtcrime.securesms.preferences.ChatsPreferenceFragment;
 import org.thoughtcrime.securesms.preferences.CorrectedPreferenceFragment;
 import org.thoughtcrime.securesms.preferences.NotificationsPreferenceFragment;
 import org.thoughtcrime.securesms.preferences.widgets.ProfilePreference;
-import org.thoughtcrime.securesms.util.DynamicLanguage;
 import org.thoughtcrime.securesms.util.DynamicTheme;
 import org.thoughtcrime.securesms.util.Prefs;
 import org.thoughtcrime.securesms.qr.BackupTransferActivity;
@@ -65,9 +66,6 @@ import org.thoughtcrime.securesms.util.ScreenLockUtil;
 public class ApplicationPreferencesActivity extends PassphraseRequiredActionBarActivity
     implements SharedPreferences.OnSharedPreferenceChangeListener
 {
-  @SuppressWarnings("unused")
-  private static final String TAG = ApplicationPreferencesActivity.class.getSimpleName();
-
   private static final String PREFERENCE_CATEGORY_PROFILE        = "preference_category_profile";
   private static final String PREFERENCE_CATEGORY_NOTIFICATIONS  = "preference_category_notifications";
   private static final String PREFERENCE_CATEGORY_APPEARANCE     = "preference_category_appearance";
@@ -79,15 +77,6 @@ public class ApplicationPreferencesActivity extends PassphraseRequiredActionBarA
 
   public static final int REQUEST_CODE_SET_BACKGROUND            = 11;
 
-  private final DynamicTheme    dynamicTheme    = new DynamicTheme();
-  private final DynamicLanguage dynamicLanguage = new DynamicLanguage();
-
-  @Override
-  protected void onPreCreate() {
-    dynamicTheme.onCreate(this);
-    dynamicLanguage.onCreate(this);
-  }
-
   @Override
   protected void onCreate(Bundle icicle, boolean ready) {
     //noinspection ConstantConditions
@@ -96,13 +85,6 @@ public class ApplicationPreferencesActivity extends PassphraseRequiredActionBarA
     if (icicle == null) {
       initFragment(android.R.id.content, new ApplicationPreferenceFragment());
     }
-  }
-
-  @Override
-  public void onResume() {
-    super.onResume();
-    dynamicTheme.onResume(this);
-    dynamicLanguage.onResume(this);
   }
 
   @Override
@@ -137,7 +119,7 @@ public class ApplicationPreferencesActivity extends PassphraseRequiredActionBarA
       DynamicTheme.setDefaultDayNightMode(this);
       recreate();
     } else if (key.equals(Prefs.LANGUAGE_PREF)) {
-      recreate();
+      finish();
     }
   }
 
@@ -252,7 +234,7 @@ public class ApplicationPreferencesActivity extends PassphraseRequiredActionBarA
     }
 
     private class CategoryClickListener implements Preference.OnPreferenceClickListener {
-      private String category;
+      private final String category;
 
       CategoryClickListener(String category) {
         this.category = category;
@@ -264,7 +246,17 @@ public class ApplicationPreferencesActivity extends PassphraseRequiredActionBarA
 
         switch (category) {
         case PREFERENCE_CATEGORY_NOTIFICATIONS:
-          fragment = new NotificationsPreferenceFragment();
+          NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getActivity());
+          if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU || notificationManager.areNotificationsEnabled()) {
+            fragment = new NotificationsPreferenceFragment();
+          } else {
+            new AlertDialog.Builder(getActivity())
+              .setTitle(R.string.notifications_disabled)
+              .setMessage(R.string.perm_explain_access_to_notifications_denied)
+              .setPositiveButton(R.string.perm_continue, (dialog, which) -> getActivity().startActivity(Permissions.getApplicationSettingsIntent(getActivity())))
+              .setNegativeButton(android.R.string.cancel, null)
+              .show();
+          }
           break;
         case PREFERENCE_CATEGORY_CONNECTIVITY:
           startActivity(new Intent(getActivity(), ConnectivityActivity.class));
