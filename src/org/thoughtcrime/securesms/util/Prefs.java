@@ -272,7 +272,7 @@ public class Prefs {
   }
 
   public static boolean isSystemEmojiPreferred(Context context) {
-    return getBooleanPreference(context, SYSTEM_EMOJI_PREF, false);
+    return true;
   }
 
   public static boolean isBuiltInCameraPreferred(Context context) {
