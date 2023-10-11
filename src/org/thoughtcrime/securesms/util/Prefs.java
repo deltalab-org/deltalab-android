@@ -261,17 +261,6 @@ public class Prefs {
     return getStringPreference(context, LED_COLOR_PREF, "blue");
   }
 
-  // map
-
-  public static void setMapZoom(Context context, int accountId, int chatId, double zoom) {
-    setLongPreference(context, MAP_ZOOM+accountId+"."+chatId, Double.doubleToRawLongBits(zoom));
-  }
-
-  public static double getMapZoom(Context context, int accountId, int chatId) {
-    long zoom = getLongPreference(context, MAP_ZOOM+accountId+"."+chatId, Double.doubleToLongBits(MINIMUM_ZOOM));
-    return Double.longBitsToDouble(zoom);
-  }
-
   // misc.
 
   public static String getBackgroundImagePath(Context context, int accountId) {
