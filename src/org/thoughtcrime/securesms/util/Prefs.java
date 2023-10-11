@@ -275,10 +275,6 @@ public class Prefs {
     return true;
   }
 
-  public static boolean isBuiltInCameraPreferred(Context context) {
-    return getBooleanPreference(context, BUILTIN_CAMERA_PREF, false);
-  }
-
   public static boolean getAlwaysLoadRemoteContent(Context context) {
     return getBooleanPreference(context, Prefs.ALWAYS_LOAD_REMOTE_CONTENT,
       Prefs.ALWAYS_LOAD_REMOTE_CONTENT_DEFAULT);
