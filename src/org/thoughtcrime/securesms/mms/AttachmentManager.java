@@ -446,6 +446,10 @@ public class AttachmentManager {
   }
 
   public static void selectGallery(Activity activity, int requestCode) {
+    // to enable camera roll,
+    // we're asking for "gallery permissions" also on newer systems that do not strictly require that.
+    // (asking directly after tapping "attachment" would be not-so-good as the user may want to attach sth. else
+    // and asking for permissions is better done on-point)
     Permissions.with(activity)
                .request(Permissions.galleryPermissions())
                .ifNecessary()
@@ -466,6 +470,7 @@ public class AttachmentManager {
   public static void selectAudio(Activity activity, int requestCode) {
     Permissions.with(activity)
                .request(Manifest.permission.READ_EXTERNAL_STORAGE)
+               .alwaysGrantOnSdk30()
                .ifNecessary()
                .withPermanentDenialDialog(activity.getString(R.string.perm_explain_access_to_storage_denied))
                .onAllGranted(() -> selectMediaType(activity, "audio/*", null, requestCode))
