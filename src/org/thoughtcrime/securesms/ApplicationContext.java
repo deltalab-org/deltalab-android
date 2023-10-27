@@ -138,6 +138,10 @@ public class ApplicationContext extends MultiDexApplication {
     }
     // /migrating chat backgrounds
 
+    for (int accountId : allAccounts) {
+      dcAccounts.getAccount(accountId).setConfig(CONFIG_VERIFIED_ONE_ON_ONE_CHATS, "1");
+    }
+
     // set translations before starting I/O to avoid sending untranslated MDNs (issue #2288)
     DcHelper.setStockTranslations(this);
 

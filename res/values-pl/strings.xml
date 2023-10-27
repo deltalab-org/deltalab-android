@@ -406,7 +406,6 @@
     </plurals>
     <!-- The placeholder will be replaced by the name of the recipient in a one-to-one chat. -->
     <string name="chat_new_one_to_one_hint">Wyślij wiadomość. Nie szkodzi, jeśli %1$s nie korzysta z Delta Chat.</string>
-    <string name="chat_new_broadcast_hint">Na liście rozgłoszeniowej inne osoby będą otrzymywać wiadomości w swoich prywatnych czatach z Tobą.\n\nOdbiorcy nie będą o sobie nawzajem wiedzieć.</string>
     <string name="chat_new_group_hint">Napisz pierwszą wiadomość, by inni mogli odpowiedzieć w tej grupie.\n\n• Nie ma problemu, jeśli nie wszyscy członkowie korzystają z Delta Chat.\n\n• Dostarczenie pierwszej wiadomości może chwilę potrwać.</string>
     <string name="chat_record_slide_to_cancel">PRZESUŃ, BY ANULOWAĆ</string>
     <string name="chat_record_explain">Dotknij i przytrzymaj, aby nagrać wiadomość głosową, zwolnij, aby wysłać</string>
@@ -674,6 +673,8 @@
     <string name="pref_manage_keys">Zarządzaj prywatnymi kluczami</string>
     <string name="pref_use_system_emoji">Użyj emoji systemowych</string>
     <string name="pref_use_system_emoji_explain">Wyłącza wbudowaną obsługę emoji Delta Chat</string>
+    <string name="pref_use_inapp_camera">Użyj aparatu w aplikacji</string>
+    <string name="pref_use_inapp_camera_explain">Aparat w aplikacji ma zwykle mniej funkcji niż aparat systemowy</string>
     <string name="pref_app_access">Dostęp do aplikacji</string>
     <string name="pref_chats">Czaty</string>
     <string name="pref_in_chat_sounds">Dźwięki w czacie</string>
@@ -749,6 +750,9 @@
     <string name="emoji_objects">Obiekty</string>
     <string name="emoji_symbols">Symbole</string>
     <string name="emoji_flags">Flagi</string>
+
+    <!-- Reactions -->
+    <string name="reactions">Reakcje</string>
 
     <!-- automatically delete message -->
     <string name="delete_old_messages">Usuwanie starych wiadomości</string>
@@ -859,13 +863,6 @@
     <string name="ephemeral_timer_weeks_by_you">Ustawiono zegar znikających wiadomości na %1$s tyg.</string>
     <!-- %1$s will be replaced by the number of weeks (always >1) the timer is set to, %2$s will be replaced by name and address of the contact -->
     <string name="ephemeral_timer_weeks_by_other"> Użytkownik %2$s ustawił zegar znikających wiadomości na %1$s tyg.</string>
-    <string name="protection_enabled_by_you">Włączono ochronę czatu.</string>
-    <!-- %1$s will be replaced by name and address of the contact -->
-    <string name="protection_enabled_by_other">Ochrona czatu włączona przez %1$s.</string>
-    <string name="protection_disabled_by_you">Wyłączono ochronę czatu.</string>
-    <!-- %1$s will be replaced by name and address of the contact -->
-    <string name="protection_disabled_by_other">Ochrona czatu wyłączona przez %1$s.</string>
-
     <string name="devicemsg_self_deleted">Usunięto czat „Zapisane wiadomości”.\n\nℹ️ Aby ponownie użyć funkcji „Zapisane wiadomości”, utwórz nowy czat ze sobą.</string>
     <!-- %1$s will be replaced by the amount of storage already used, sth. as '500 MB'. If you want to use a percentage sign, type in two of them, eg. %1$s %% -->
     <string name="devicemsg_storage_exceeding">⚠️ Limit pamięci u twojego dostawcy wkrótce zostanie przekroczony, wykorzystano już %1$s%%.\n\nMożesz nie być w stanie otrzymywać wiadomości, gdy pamięć jest pełna.\n\n👉 Sprawdzić, czy możesz usunąć stare dane w interfejsie internetowym dostawcy i rozważyć włączenie opcji \"Ustawienia » Czaty i media » Usuwanie starych wiadomości\". W dowolnym momencie możesz sprawdzić swoje bieżące wykorzystanie pamięci w \"Ustawienia » Łączność\".</string>
@@ -924,6 +921,7 @@
     <string name="contact_not_verified">Nie można zweryfikować %1$s</string>
     <!-- Shown in contact profile. The placeholder will be replaced by the name of the contact that verified the contact shown. -->
     <string name="verified_by">Zweryfikowano przez %1$s</string>
+    <string name="verified_by_you">Zweryfikowane przez ciebie</string>
     <!-- translators: "setup" is the "encryption setup" here, as in "Autocrypt Setup Message" -->
     <string name="contact_setup_changed">Zmieniono konfigurację dla %1$s</string>
     <string name="verified_group_explain">Zweryfikowane grupy (eksperymentalne) zapewniają bezpieczeństwo przed aktywnymi atakami. Członkowie są weryfikowani za pomocą drugiego czynnika przez innych członków, a wiadomości są zawsze szyfrowane metodą end-to-end. </string>
@@ -943,6 +941,9 @@
     <string name="notify_name_and_message">Nazwa i wiadomość</string>
     <string name="notify_name_only">Tylko nazwa</string>
     <string name="notify_no_name_or_message">Brak nazwy lub wiadomości</string>
+    <string name="notifications_disabled">Powiadomienia wyłączone</string>
+
+
     <!-- permissions -->
     <string name="perm_required_title">Wymagane zezwolenie</string>
     <string name="perm_continue">Kontynuuj</string>
@@ -950,6 +951,8 @@
     <string name="perm_explain_access_to_mic_denied">Delta Chat wymaga zezwolenia użycia mikrofonu, aby wysyłać wiadomości audio, ale zostało ono trwale odrzucone. Przejdź do ustawień aplikacji, wybierz „Uprawnienia” i włącz „Mikrofon”.</string>
     <string name="perm_explain_access_to_storage_denied">Delta Chat wymaga uprawnienia do przechowywania, aby dołączyć lub wyeksportować zdjęcia, filmy lub dźwięk, ale zostało ono trwale odrzucone. Przejdź do menu ustawień aplikacji, wybierz „Uprawnienia” i włącz „Pamięć”.</string>
     <string name="perm_explain_access_to_location_denied">Delta Chat wymaga zezwolenia na lokalizację, aby dołączyć lokalizację, ale zostało ono trwale odrzucone. Przejdź do menu ustawień aplikacji, wybierz „Uprawnienia” i włącz „Lokalizacja”.</string>
+    <string name="perm_explain_access_to_notifications_denied">Aby odbierać powiadomienia, przejdź do „Ustawienia » Aplikacje » Delta Chat” i włącz „Powiadomienia”.</string>
+
     <!-- ImageEditorHud -->
     <string name="ImageEditorHud_draw_anywhere_to_blur">Rysuj gdziekolwiek, aby rozmyć</string>
     <string name="ImageEditorHud_add_text">Dodaj tekst</string>
@@ -1091,12 +1094,7 @@
 
     <!-- device messages for updates -->
     <!-- placeholder will be replaced by the URL https://get.delta.chat/#changelogs -->
-    <string name="update_1_36_android">Najciekawsze w wersji 1.36\n\n💻📱 Korzystaj z Delta Chat na wszystkich swoich urządzeniach w prosty sposób - wystarczy wykonać trzy proste kroki w \"Ustawienia » Dodaj kolejne urządzenie\" (eksperymentalna)\n\n🖼🔍 Czy kiedykolwiek szukałeś obrazu i nie mogłeś zapamiętać czatu? \"Wszystkie multimedia\" z menu głównego są twoje!\n\nCo jeszcze? Powiadomienia dla wszystkich kont, czyszczenie czatu i wiele więcej znajdziesz na stronie www %1$s</string>
-    <!-- placeholder will be replaced by the URL https://delta.chat/en/2023-03-27-third-independent-security-audit -->
-    <string name="update_1_36_audit">Nie rozmawiamy tutaj zbyt wiele o bezpieczeństwie, ale zapewniamy, że nam zależy: najnowsze dobre wieści znajdują się na stronie %1$s👌</string>
-    <!-- placeholder will be replaced by the URL https://get.delta.chat/#changelogs -->
     <string name="update_1_38_android">1.38 wydane:\n\n📎 Usunięto górny limit rozmiaru załączników\n\n🗜️ Obrazy PNG (zrzuty ekranu!) są teraz również kompresowane\n\n⌨️ Dla deweloperów: Lepsze aplikacje do czatów z sendToChat() i importFiles() (Co to jest Webxdc? → https://webxdc.org)\n\n… i więcej na %1$s</string>
     <!-- placeholder will be replaced by the URL https://get.delta.chat/#changelogs -->
     <string name="update_1_38_ios">1.38 wydane:\n\n🖼🔍 Czy kiedykolwiek szukałeś obrazu i nie pamiętałeś czatu? W takim razie przycisk „Wszystkie multimedia” jest Twój!\n\n🧹 „Wyczyść czat” z profili\n\n📎 Usunięto górny limit rozmiaru załączników\n\n🗜️ Obrazy PNG (zrzuty ekranu!) są teraz również kompresowane\n\n… i więcej na %1$s</string>
-
 </resources>
