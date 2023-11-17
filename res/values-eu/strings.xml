@@ -4,7 +4,7 @@
     <string name="app_name">Delta Chat</string>
     <string name="ok">Ados</string>
     <string name="cancel">Utzi</string>
-    <string name="yes">Bai</string>
+   <string name="yes">Bai</string>
     <string name="no">Ez</string>
     <string name="on">Bai</string>
     <string name="off">Ez</string>
@@ -99,7 +99,6 @@
     <string name="video">Bideoa</string>
     <string name="documents">Dokumentuak</string>
     <string name="contact">Kontaktua</string>
-    <string name="verified_contact">Egiaztatutako kontaktua</string>
     <string name="camera">Kamera</string>
     <string name="location">Kokalekua</string>
     <string name="gallery">Galeria</string>
@@ -127,7 +126,6 @@
     <string name="menu_new_contact">Kontaktu berria</string>
     <string name="menu_new_chat">Txat berria</string>
     <string name="menu_new_group">Talde berria</string>
-    <string name="menu_new_verified_group">Egiaztatutako talde berria</string>
     <string name="menu_send">Bidali</string>
     <string name="menu_toggle_keyboard">Txandakatu emoji teklatua</string>
     <string name="menu_edit_group">Editatu taldea</string>
@@ -280,7 +278,6 @@
     <string name="tab_docs_empty_hint">Txat honetan partekatutako dokumentuak, musika, eta bestelako fitxategiak agertuko dira hemen</string>
     <string name="media_preview">Multimediaren aurrebista</string>
     <string name="send_message">Bidali mezua</string>
-    <string name="welcome_intro1_message">Munduan erabiltzaile gehien dituen mezularitza aplikazioa. Librea eta independentea.</string>
     <string name="login_title">Hasi saioa</string>
     <string name="login_header">Hasi saioa zure zerbitzarian</string>
     <string name="login_explain">Badagoen e-mail kontu batekin saioa hasten</string>
@@ -429,7 +426,7 @@
     <string name="autocrypt_send_asm_title">Bidali Autocrypt ezarpen mezua</string>
     <string name="autocrypt_send_asm_explain_before">\"Autocrypt ezarpen mezua\" batek modu seguruan partekatzen du zure muturretik muturrerako ezarpena Autocryptekin bateragarriak diren beste aplikazioekin. Ezarpena hemen bistaratutako ezarpen kodearekin zifratuko  da, eta beste gailuan kode hau sartu beharko da.</string>
     <string name="autocrypt_send_asm_button">Bidali Autocrypt ezarpen mezua</string>
-    <string name="autocrypt_send_asm_explain_after">Zure ezarpena zuri bidali zaizu. Aldatu beste gailura eta ireki ezarpen mezua. Ezarpen kode bat eskatuko zaizu, Idatzi honako zenbaki hauek han:\n\n%1$s\n\nBehin bukatuta, zure beste gailua Autocrypt erabiltzeko prest egongo da.</string>
+    <string name="autocrypt_send_asm_explain_after">Zure ezarpena zuri bidali zaizu. Aldatu beste gailura eta ireki ezarpen mezua. Ezarpen kode bat eskatuko zaizu, Idatzi honako zenbaki hauek han.\n\nBehin bukatuta, zure beste gailua Autocrypt erabiltzeko prest egongo da.</string>
     <string name="autocrypt_prefer_e2ee">Hobetsi muturretik muturrerako zifratzea</string>
     <string name="autocrypt_asm_subject">Autocrypt ezarpen mezua</string>
     <string name="autocrypt_asm_general_body">Hau Autocrypt ezarpen mezua da, zure muturretik muturrerako ezarpena bezeroen artean pasatzeko erabilia.\n\n Zure ezarpena deszifratu eta erabiltzeko, ireki mezua Autocrypt onartzen duen bezero batean eta sartu gailu sortzailean agertutako ezarpen kodea.</string>
@@ -444,7 +441,6 @@
     <!-- system messages -->
     <string name="systemmsg_read_receipt_subject">Irakurragiria</string>
     <string name="systemmsg_read_receipt_body">Hau \"%1$s\" mezuaren irakurragiri bat da.\n\nHonek mezua jasotzailearen gailuan bistaratu dela esan nahi du, ez edukia irakurri dela.</string>
-    <string name="systemmsg_cannot_decrypt">Ezin da mezu hau deszifratu.\n\n• Mezuari erantzun diezaiokezu eta berriro bidaltzea eskatu.\n\n• Delta Chat berrinstalatu baduzu edo beste posta programa bat instalatu baduzu gailu honetan edo beste batean, AutoCrypt ezarpen mezua handik hona birbidaltzen saiatu zaitezke.</string>
     <!-- %1$s will be replaced by the old group name, %2$s will be replaced by the new group name -->
     <string name="group_name_changed_by_you">Nik: Taldearen izena \"%1$s\" izatetik \"%2$s\" izatera aldatu da</string>
     <!-- %1$s will be replaced by the old group name, %2$s will be replaced by the new group name, %3$s will be replaced by name and address of the contact who did the action. -->
@@ -492,8 +488,6 @@
     <string name="contact_not_verified">Ezin da %1$s egiaztatu</string>
     <!-- translators: "setup" is the "encryption setup" here, as in "Autocrypt Setup Message" -->
     <string name="contact_setup_changed">Aldatu %1$s(r)en ezarpena</string>
-    <string name="verified_group_explain">Egiaztatutako taldeek (esperimentala) eraso aktiboekiko babesa eskaintzen dute.
-Kideak beste kide batzuek egiatzen dituzte bigarren faktore batekin eta mezuak beti zifratzen dira muturretik muturrera.</string>
     <string name="notify_reply_button">Erantzun</string>
     <string name="notify_new_message">Mezu berria</string>
     <string name="notify_background_connection_enabled">Bigarren planoko konexioa gaituta</string>
@@ -513,7 +507,6 @@ Kideak beste kide batzuek egiatzen dituzte bigarren faktore batekin eta mezuak b
     <string name="encrypted_message">Zifratutako mezua</string>
 
     <string name="welcome_desktop">Ongi etorri Delta Chat-era</string>
-    <string name="login_known_accounts_title_desktop">Kontu ezagunak</string>
     <string name="global_menu_preferences_language_desktop">Hautatu hizkuntza...</string>
     <string name="global_menu_file_desktop">Fitxategia</string>
     <string name="global_menu_file_quit_desktop">Irten</string>
@@ -538,19 +531,12 @@ Kideak beste kide batzuek egiatzen dituzte bigarren faktore batekin eta mezuak b
     <string name="delete_message_desktop">Ezabatu mezua</string>
     <string name="more_info_desktop">Informazio gehiago</string>
     <string name="timestamp_format_m_desktop">MMM D</string>
-    <string name="encryption_info_desktop">Erakutsi zifratzeari buruzko informazioa</string>
     <string name="remove_desktop">Kendu</string>
     <string name="save_desktop">Gorde</string>
     <string name="name_desktop">Izena</string>
-    <string name="autocrypt_key_transfer_desktop">Autocrypt gakoaren transferentzia</string>
-    <string name="initiate_key_transfer_desktop">Autocrypt ezarpen mezu batek modu seguruan partekatzen du zure muturretik muturrerako ezarpena Autocryptekin bateragarriak diren beste aplikazioekin. Ezarpena hemen bistaratutako ezarpen kodearekin zifratuko  da, eta beste gailuan kode hau sartu beharko da.</string>
     <string name="select_group_image_desktop">Hautatu taldearen irudia</string>
-    <string name="imex_progress_title_desktop">Babes-kopia abian</string>
     <string name="export_backup_desktop">Esportatu babes-kopia</string>
-    <string name="show_key_transfer_message_desktop">Zure gakoa  bidali zaizu. Joan beste gailura eta ireki ezarpen mezua. Ezarpen kode bat eskatuko zaizu. Idatzi honako zenbaki hauek han. Behin eginda, zure beste gailua Autocrypt erabiltzeko prest egongo da.</string>
     <string name="autocrypt_correct_desktop">Ongi igorri da Autocrypt ezarpena!</string>
-    <string name="autocrypt_incorrect_desktop">Ezarpen kode okerra. Saiatu berriro.</string>
-    <string name="create_chat_error_desktop">Ezin izan da txata sortu.</string>
     <string name="forget_login_confirmation_desktop">Ezabatu erabiltzaile-izen hau? Dena ezabatuko da, muturretik muturrerako ezarpena, txatak, mezuak eta multimedia barne. Ekintza hau behin betikoa da eta ezin da desegin.</string>
     <string name="message_detail_sent_desktop">bidalita</string>
     <string name="message_detail_received_desktop">jasota</string>

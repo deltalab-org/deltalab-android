@@ -36,7 +36,6 @@ import org.thoughtcrime.securesms.qr.QrActivity;
 import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.util.IntentUtils;
 import org.thoughtcrime.securesms.util.FileUtils;
-import org.thoughtcrime.securesms.util.IntentUtils;
 import org.thoughtcrime.securesms.util.MediaUtil;
 
 import java.io.File;
@@ -255,6 +254,9 @@ public class DcHelper {
     // DC_INFO_PROTECTION_{EN|DIS}ABLED info message
     dcContext.setStockTranslation(170, context.getString(R.string.chat_protection_enabled_tap_to_learn_more));
     dcContext.setStockTranslation(171, context.getString(R.string.chat_protection_broken_tap_to_learn_more));
+
+    dcContext.setStockTranslation(172, context.getString(R.string.chat_new_group_hint));
+    dcContext.setStockTranslation(173, context.getString(R.string.member_x_added));
   }
 
   public static File getImexDir() {
@@ -452,22 +454,26 @@ public class DcHelper {
 
   public static void showVerificationBrokenDialog(Context context, String name) {
     new AlertDialog.Builder(context)
-            .setMessage(context.getString(R.string.chat_protection_broken_explanation, name))
-            .setNeutralButton(R.string.learn_more, (d, w) -> IntentUtils.showBrowserIntent(context, "https://staging.delta.chat/733/en/help#verificationbroken"))
-            .setNegativeButton(R.string.qrscan_title, (d, w) -> context.startActivity(new Intent(context, QrActivity.class)))
-            .setPositiveButton(R.string.ok, null)
-            .setCancelable(true)
-            .show();
+      .setMessage(context.getString(R.string.chat_protection_broken_explanation, name))
+      .setNeutralButton(R.string.learn_more, (d, w) -> openHelp(context, "#nocryptanymore"))
+      .setNegativeButton(R.string.qrscan_title, (d, w) -> context.startActivity(new Intent(context, QrActivity.class)))
+      .setPositiveButton(R.string.ok, null)
+      .setCancelable(true)
+      .show();
   }
 
   public static void showProtectionEnabledDialog(Context context) {
     new AlertDialog.Builder(context)
-            .setMessage(context.getString(R.string.chat_protection_enabled_explanation))
-            .setNeutralButton(R.string.learn_more, (d, w) -> IntentUtils.showBrowserIntent(context, "https://staging.delta.chat/733/en/help#verifiedchats"))
-            .setPositiveButton(R.string.ok, null)
-            .setCancelable(true)
-            .show();
-    // One day, it would be nice to point the user to the local help:
-    //context.startActivity(new Intent(context, LocalHelpActivity.class));
+      .setMessage(context.getString(R.string.chat_protection_enabled_explanation))
+      .setNeutralButton(R.string.learn_more, (d, w) -> openHelp(context, "#e2eeguarantee"))
+      .setPositiveButton(R.string.ok, null)
+      .setCancelable(true)
+      .show();
+  }
+
+  public static void openHelp(Context context, String section) {
+    Intent intent = new Intent(context, LocalHelpActivity.class);
+    if (section != null) { intent.putExtra(LocalHelpActivity.SECTION_EXTRA, section); }
+    context.startActivity(intent);
   }
 }

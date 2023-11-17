@@ -1,5 +1,6 @@
 package org.thoughtcrime.securesms.qr;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -14,6 +15,7 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import com.b44t.messenger.DcContext;
@@ -110,7 +112,7 @@ public class QrShowFragment extends Fragment implements DcEventCenter.DcEventDel
             Bitmap bitmap = Bitmap.createBitmap(WIDTH, HEIGHT, Bitmap.Config.ARGB_8888);
             Canvas canvas = new Canvas(bitmap);
             canvas.drawRGB(255, 255, 255);  // Clear background to white
-            SVG svg = SVG.getFromString(dcContext.getSecurejoinQrSvg(chatId));
+            SVG svg = SVG.getFromString(fixSVG(dcContext.getSecurejoinQrSvg(chatId)));
             svg.renderToCanvas(canvas);
             bitmap.compress(Bitmap.CompressFormat.PNG, 90, stream);
             stream.flush();
@@ -129,6 +131,19 @@ public class QrShowFragment extends Fragment implements DcEventCenter.DcEventDel
     public void copyQrData() {
         Util.writeTextToClipboard(getActivity(), DcHelper.getContext(getActivity()).getSecurejoinQr(chatId));
         Toast.makeText(getActivity(), getString(R.string.copied_to_clipboard), Toast.LENGTH_SHORT).show();
+    }
+
+    public void withdrawQr() {
+        Activity activity = getActivity();
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setMessage(activity.getString(R.string.withdraw_verifycontact_explain));
+        builder.setPositiveButton(R.string.withdraw_qr_code, (dialog, which) -> {
+                DcContext dcContext = DcHelper.getContext(activity);
+                dcContext.setConfigFromQr(dcContext.getSecurejoinQr(chatId));
+                activity.finish();
+        });
+        builder.setNegativeButton(R.string.cancel, null);
+        builder.create().show();
     }
 
     @Override

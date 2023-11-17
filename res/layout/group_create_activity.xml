@@ -32,55 +32,25 @@
             android:lines="1"
             android:maxLength="255"
             android:inputType="textAutoCorrect"
-            android:hint="@string/name_desktop" />
+            android:hint="@string/group_name" />
     </LinearLayout>
 
     <TextView
-        android:id="@+id/group_hints"
+        android:id="@+id/chat_hints"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="start"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
         android:textSize="18sp"
-        android:text="@string/verified_group_explain" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal">
-
-        <Button
-            style="@style/ButtonPrimary"
-            android:id="@+id/add_member_button"
-            android:layout_weight="1"
-            android:layout_gravity="fill_vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginBottom="15dp"
-            android:text="@string/group_add_members"/>
-
-        <Button
-            style="@style/ButtonPrimary"
-            android:id="@+id/verify_button"
-            android:layout_weight="1"
-            android:layout_gravity="fill_vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginBottom="15dp"
-            android:text="@string/qrshow_title"/>
-
-    </LinearLayout>
+        android:text="@string/chat_new_broadcast_hint" />
 
     <ListView android:id="@+id/selected_contacts_list"
+        android:layout_marginTop="16dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:dividerHeight="0dp"
+        android:divider="@null" />
 
 </LinearLayout>

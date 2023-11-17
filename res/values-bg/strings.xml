@@ -4,7 +4,7 @@
     <string name="app_name">Delta Chat</string>
     <string name="ok">OK</string>
     <string name="cancel">Отказ</string>
-    <string name="clear_search">Изчистване на търсенето</string>
+   <string name="clear_search">Изчистване на търсенето</string>
     <string name="yes">Да</string>
     <string name="no">Не</string>
     <string name="select">Избор</string>
@@ -29,6 +29,7 @@
     <string name="emoji">Emoji</string>
     <string name="attachment">Прикачен файл</string>
     <string name="back">Назад</string>
+    <!-- this string is deprecated; the new wording is "introduced by ..." -->
     <string name="verified">Проверен</string>
     <string name="close">Затваряне</string>
     <string name="forward">Напред</string>
@@ -48,7 +49,6 @@
     <string name="main_menu">Основно меню</string>
     <string name="start_chat">Започване на чат</string>
     <string name="show_full_message">Показване на пълното съобщение...</string>
-    <string name="show_full_message_in_browser">Показване на пълното съобщение в браузър...</string>
     <!-- Stay short here, say ~16 characters. The source string could also be "All Read", maybe that hint can make translations easier :) -->
     <string name="mark_all_as_read">Маркиране на всички като прочетени</string>
     <!-- Shortest text for "Mark as being read". In english, this could be "Read" (past tense of "to read"), in german, this could be "Gelesen". -->
@@ -153,7 +153,6 @@
     <string name="video">Видео</string>
     <string name="documents">Документи</string>
     <string name="contact">Контакт</string>
-    <string name="verified_contact">Проверен контакт</string>
     <string name="camera">Камера</string>
     <!-- As in "start a video recording" or "take a photo"; eg. the description of the "shutter button" in cameras -->
     <string name="capture">Заснемане</string>
@@ -169,7 +168,6 @@
     <string name="webxdc_app">Приложение</string>
     <!-- plural of "App"; used to present "Webxdc App" (https://webxdc.org) in a user friendly way. Please stay close to the original term and keep it short (it is used in menus with few screen space). -->
     <string name="webxdc_apps">Приложения</string>
-    <string name="files_and_webxdx_apps">Файлове и приложения</string>
     <string name="unknown">Непознат</string>
 
     <string name="green">Зелено</string>
@@ -195,9 +193,6 @@
     <string name="menu_new_contact">Нов контакт</string>
     <string name="menu_new_chat">Нов чат</string>
     <string name="menu_new_group">Нова група</string>
-    <!-- Use the same wording as "Subject" to help people coming from the e-mail context; eg. "Betreff" in German -->
-    <string name="new_group_or_subject">Нова група или тема</string>
-    <string name="menu_new_verified_group">Нова проверена група</string>
     <!-- consider keeping the term "broadcast" as in WhatsApp or Telegram -->
     <string name="broadcast_list">Списък за разпространение</string>
     <string name="broadcast_lists">Списъци за разпространение</string>
@@ -283,7 +278,6 @@
     <string name="source_code">Изходен код</string>
     <!-- Menu item beside an app/chat that adds an icon to the system's home screen. If the user taps that icon, the app/chat is opened directly. -->
     <string name="add_to_home_screen">Добавяне към началния екран</string>
-
     <string name="mute_for_one_hour">Спиране на звука за 1 час</string>
     <string name="mute_for_two_hours">Спиране на звука за 2 часа</string>
     <string name="mute_for_one_day">Спиране на звука за 1 ден</string>
@@ -524,7 +518,6 @@
     <!-- welcome and login -->
     <string name="welcome_chat_over_email">Чат през email.</string>
     <string name="scan_invitation_code">Сканиране на код за покана</string>
-    <string name="welcome_intro1_message">Приложението за обмен на съобщения с най-широка публика в света. Свободно и независимо.</string>
     <string name="login_title">Влизане</string>
     <string name="login_header">Влизане във Вашия акаунт за електронна поща</string>
     <string name="login_explain">Влизане със съществуващ акаунт за електронна поща</string>
@@ -549,8 +542,6 @@
     <string name="login_socks5_port">SOCKS5 порт</string>
     <string name="login_socks5_user">SOCKS5 потребител</string>
     <string name="login_socks5_password">SOCKS5 парола</string>
-    <!-- Translators: %1$s will be replaced by an e-mail address -->
-    <string name="login_oauth2_checking_addr">%1$s се проверява</string>
     <string name="login_info_oauth2_title">Да се продължи ли с опростената настройка?</string>
     <string name="login_info_oauth2_text">Въведеният адрес за електронна поща поддържа опростена настройка (OAuth 2.0).\n\nНа следващата стъпка, моля позволете на Delta Chat да действа в качеството си на избраното от Вас приложение за чат върху електронна поща.\n\nDelta Chat няма сървъри, Вашите данни стоят на Вашето устройство.</string>
     <string name="login_certificate_checks">Проверки на сертификатите</string>
@@ -699,7 +690,6 @@
     <string name="profile_image_delete">Изтриване на изображението на профила</string>
     <string name="pref_show_tray_icon">Показване на иконата в System Tray</string>
     <string name="pref_edit_profile">Редактиране на профил</string>
-
     <!-- Emoji picker and categories -->
     <string name="emoji_search_results">Резултати от търсенето</string>
     <string name="emoji_not_found">Не е открито Emoji</string>
@@ -743,7 +733,7 @@
     <string name="autocrypt_send_asm_title">Изпращане на съобщение за настройка на Autocrypt</string>
     <string name="autocrypt_send_asm_explain_before">Съобщението за настройка на Autocrypt споделя по сигурен начин Вашата настройка за криптиране \"от край до край\" с други съвместими с Autorcypt приложения.\n\nНастройката се криптира с код, който се показва тук и трябва да бъде въведен на другото устройство.</string>
     <string name="autocrypt_send_asm_button">Изпращане на съобщението за настройка на Autocrypt</string>
-    <string name="autocrypt_send_asm_explain_after">Изпратихте Вашата настройка до себе си. Отворете съобщението за настройка в другото устройство. Би трябвало да Ви бъде поискан код за настройка. Въведете следните цифри:\n\n%1$s</string>
+    <string name="autocrypt_send_asm_explain_after">Изпратихте Вашата настройка до себе си. Отворете съобщението за настройка в другото устройство. Би трябвало да Ви бъде поискан код за настройка. Въведете следните цифри:</string>
     <string name="autocrypt_prefer_e2ee">Да се предпочита криптиране \"от край до край\"</string>
     <string name="autocrypt_asm_subject">Съобщение за настройка на Autocrypt</string>
     <string name="autocrypt_asm_general_body">Това е съобщението за настройка на Autocrypt, чрез което се прехвърля Вашата настройка за криптиране \"от край до край\" между различни клиенти.\n\nЗа да декриптирате и използвате Вашата настройка, отворете съобщението в клиент, съвместим с Autocrypt, и въведете кода за настройка, представен на генериращото устройство.</string>
@@ -758,7 +748,6 @@
     <!-- system messages -->
     <string name="systemmsg_read_receipt_subject">Съобщението е отворено</string>
     <string name="systemmsg_read_receipt_body">Съобщението \"%1$s\", което изпратихте, беше показано на екрана на получателя.\n\nТова не е гаранция, че съдържанието му е прочетено.</string>
-    <string name="systemmsg_cannot_decrypt">Това съобщение не може да бъде декриптирано.\n\n• Може би ще помогне просто да отговорите на това съобщение и да поискате от подателя да го изпрати отново.\n\n• В случай, че сте преинсталирали Delta Chat или друга програма за електронна поща на това или друго устройство, бихте могли да изпратите съобщение за настройка на Autocrypt от там.</string>
     <string name="systemmsg_unknown_sender_for_chat">Неизвестен подател за този чат. Вижте \"информация\" за повече подробности.</string>
     <string name="systemmsg_subject_for_new_contact">Съобщение от %1$s</string>
     <string name="systemmsg_failed_sending_to">Неуспешно изпращане на съобщение до %1$s.</string>
@@ -878,11 +867,10 @@
     <string name="secure_join_replies">%1$s отговори, изчаква се да бъдете добавени към групата…</string>
     <string name="contact_verified">%1$s е проверен.</string>
     <string name="contact_not_verified">Не може да бъде проверен %1$s.</string>
-    <!-- Shown in contact profile. The placeholder will be replaced by the name of the contact that verified the contact shown. -->
+    <!-- Shown in contact profile. The placeholder will be replaced by the name of the contact that introduced the contact. -->
     <string name="verified_by">Проверен от%1$s</string>
     <!-- translators: "setup" is the "encryption setup" here, as in "Autocrypt Setup Message" -->
     <string name="contact_setup_changed">Настройката за %1$s е сменена.</string>
-    <string name="verified_group_explain">Проверените групи (експериментална възможност) предоставят защита срещу активни атаки. Членовете се проверяват посредством втори фактор от други членове и съобщенията винаги се криптират \"от край до край\".</string>
     <string name="copy_qr_data_success">URL адресът от QR кода е копиран в клипборда</string>
     <string name="mailto_dialog_header_select_chat">Изберете чат, към който да бъде пратено съобщението</string>
     <!-- first placeholder is the name of the chat -->
@@ -923,7 +911,6 @@
     <string name="about_offical_app_desktop">Това е официалното настолно приложение Delta Chat.</string>
     <string name="about_licensed_under_desktop">Този софтуер е лицензиран под GNU GPL версия 3. Изходният код е наличен в GitHub.</string>
     <string name="welcome_desktop">Добре дошли в Delta Chat</string>
-    <string name="login_known_accounts_title_desktop">Познати акаунти</string>
     <string name="global_menu_preferences_language_desktop">Език</string>
     <string name="global_menu_file_desktop">Файл</string>
     <string name="global_menu_file_quit_desktop">Напускане</string>
@@ -950,19 +937,12 @@
     <string name="delete_message_desktop">Изтриване на съобщение</string>
     <string name="more_info_desktop">Повече информация</string>
     <string name="timestamp_format_m_desktop">MMM D</string>
-    <string name="encryption_info_desktop">Показване на информация за криптирането</string>
     <string name="remove_desktop">Премахване</string>
     <string name="save_desktop">Запис</string>
     <string name="name_desktop">Име</string>
-    <string name="autocrypt_key_transfer_desktop">Прехвърляне на ключ на Autocrypt</string>
-    <string name="initiate_key_transfer_desktop">Съобщението за настройка на Autocrypt споделя по сигурен начин Вашата настройка за криптиране \"от край до край\" с други приложения, съвместими с Autocrypt. Настройката ще бъде криптирана с код, показан тук, който трябва да бъде въведен на другото устройство.</string>
     <string name="select_group_image_desktop">Изберете изображение за групата</string>
-    <string name="imex_progress_title_desktop">Прогрес в създаването на резервно копие</string>
     <string name="export_backup_desktop">Експорт на резервно копие</string>
-    <string name="show_key_transfer_message_desktop">Изпратихте Вашия ключ до себе си. Преминете на другото устройство и отворете съобщението за настройка. Би трябвало да Ви бъде поискан код за настройка. Въведете следните цифри:</string>
     <string name="autocrypt_correct_desktop">Найстроката на Autocrypt е прехвърлена.</string>
-    <string name="autocrypt_incorrect_desktop">Неправилен код за настройка. Моля, опитайте отново.</string>
-    <string name="create_chat_error_desktop">Неуспешно създаване на чат.</string>
     <string name="forget_login_confirmation_desktop">Да бъде ли изтрита тази регистрация? Всичко ще бъде изтрито, включително Вашата настройка за криптиране \"от край до край\", контакти, чатове, съобщения и медийни файлове. Това действие не може да бъде отменено.</string>
     <string name="account_info_hover_tooltip_desktop2">E-Mail: %1$s\nРазмер: %2$s\n Идентификатор на акаунт: %3$s</string>
     <string name="message_detail_sent_desktop">изпратено</string>
@@ -1045,9 +1025,4 @@
     <string name="perm_enable_bg_already_done">Вече разрешихте Delta Chat да получава съобщения във фонов режим.\n\nАко съобщенията все още не пристигат във фонов режим, моля проверете Вашите системни настройки.</string>
 
 
-    <!-- device messages for updates -->
-    <!-- placeholder will be replaced by the URL https://get.delta.chat/#changelogs -->
-    <string name="update_1_38_android">Излезе версия 1.38:\n\n📎 Премахната е горната граница на размера на прикачените файлове\n\n🗜️ Изображенията в PNG формат (екранни снимки!) вече също се компресират\n\n⌨️ За разработчици: По-добри приложения за чатове с помощта на sendToChat() и importFiles() (Какво е Webxdc? → https://webxdc.org)\n\n… и още на %1$s</string>
-    <!-- placeholder will be replaced by the URL https://get.delta.chat/#changelogs -->
-    <string name="update_1_38_ios">Излезе версия 1.38:\n\n🖼🔍 Случвало ли ви се е да търсите изображение и да не можете да си спомните чата? Тогава бутонът \"Всички медии\" е Ваш!\n\n🧹 \"Изчистване на чата\" от профилите\n\n📎 Премахната горна граница на размера на прикачените файлове\n\n🗜️ Изображенията в PNG формат (екранни снимки!) вече също се компресират\n\n… и още на %1$s</string>
-</resources>
+    </resources>

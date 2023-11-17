@@ -4,7 +4,7 @@
     <string name="app_name">Delta Chat</string>
     <string name="ok">Gerai</string>
     <string name="cancel">Atsisakyti</string>
-    <string name="clear_search">Išvalyti paiešką</string>
+   <string name="clear_search">Išvalyti paiešką</string>
     <string name="yes">Taip</string>
     <string name="no">Ne</string>
     <string name="on">Įjungta</string>
@@ -28,7 +28,9 @@
     <string name="attachment">Priedas</string>
     <string name="back">Atgal</string>
     <string name="close">Užverti</string>
+    <string name="close_window">Užverti langą</string>
     <string name="forward">Persiųsti</string>
+    <string name="later">Vėliau</string>
     <!-- "Resend" means "Sending the selected message(s) again to the same chat". The string is used in a menu and should be as short as possible. Resending may be needed after failures or to repost old messages to new members. -->
     <string name="resend">Siųsti iš naujo</string>
     <!-- Verb "to archive", as in "put a chat in the archive", not a noun "The Archive". -->
@@ -43,7 +45,6 @@
     <string name="main_menu">Pagrindinis meniu</string>
     <string name="start_chat">Pradėti pokalbį</string>
     <string name="show_full_message">Rodyti visą žinutę…</string>
-    <string name="show_full_message_in_browser">Rodyti visą žinutę naršyklėje…</string>
     <!-- Placeholder text when something is loading -->
     <string name="loading">Įkeliama…</string>
     <string name="hide">Slėpti</string>
@@ -53,6 +54,7 @@
     <string name="load_remote_content_ask">Nuotoliniai paveikslai gali būti naudojami, kad būtumėte sekami.\n\nŠis nustatymas taip pat leidžia šriftų įkėlimą ir kitą turinį. Netgi, jeigu jis yra išjungtas, gali būti, kad vis tiek matysite įterptus paveikslus ar paveikslus iš podėlio.\n\nĮkelti nuotolinius paveikslus?</string>
     <string name="always">Visada</string>
     <string name="once">Vieną kartą</string>
+    <string name="show_warning">Rodyti įspėjimą</string>
     <string name="show_password">Rodyti slaptažodį</string>
     <string name="hide_password">Slėpti slaptažodį</string>
     <string name="not_now">Ne dabar</string>
@@ -143,7 +145,6 @@
     <string name="video">Vaizdo įrašai</string>
     <string name="documents">Dokumentai</string>
     <string name="contact">Adresatas</string>
-    <string name="verified_contact">Patvirtintas adresatas</string>
     <string name="camera">Kamera</string>
     <string name="switch_camera">Perjungti kamerą</string>
     <string name="toggle_fullscreen">Perjungti viso ekrano veikseną</string>
@@ -156,7 +157,6 @@
     <string name="webxdc_app">Privati programėlė</string>
     <!-- plural of "App"; used to present "Webxdc App" (https://webxdc.org) in a user friendly way. Please stay close to the original term and keep it short (it is used in menus with few screen space). -->
     <string name="webxdc_apps">Privačios programėlės</string>
-    <string name="files_and_webxdx_apps">Failai ir privačios programėlės</string>
     <string name="unknown">Nežinoma</string>
 
     <string name="green">Žalia</string>
@@ -182,7 +182,6 @@
     <string name="menu_new_contact">Naujas adresatas</string>
     <string name="menu_new_chat">Naujas pokalbis</string>
     <string name="menu_new_group">Nauja grupė</string>
-    <string name="menu_new_verified_group">Nauja patvirtinta grupė</string>
     <string name="add_recipients">Pridėti gavėjus</string>
     <string name="menu_send">Siųsti</string>
     <string name="menu_toggle_keyboard">Perjungti šypsniukų klaviatūrą</string>
@@ -194,6 +193,8 @@
     <string name="menu_add_attachment">Pridėti priedą</string>
     <string name="menu_leave_group">Išeiti iš grupės</string>
     <string name="menu_delete_chat">Ištrinti pokalbį</string>
+    <!-- Command to delete all messages in a chat. The chat itself will not be deleted but will be empty afterwards, so make sure to be different from "Delete Chat" here. "Clear" is a verb here, "Empty Chat" would also be fine (eg. in German "Chat leeren") -->
+    <string name="clear_chat">Išvalyti pokalbį</string>
     <string name="ask_delete_named_chat">Ar tikrai norite ištrinti „%1$s“?</string>
     <string name="menu_delete_messages">Ištrinti žinutes</string>
     <string name="delete_contact">Ištrinti adresatą</string>
@@ -407,6 +408,13 @@
     <string name="send_message">Siųsti žinutę</string>
     <!-- Placeholder %1$s will be replaced by the name of the contact changing their address. Placeholders %2$s and %3$s will be replaced by old/new email addresses. -->
     <string name="aeap_addr_changed">%1$s pasikeitė adresą iš %2$s į %3$s</string>
+    <!-- Multi Device -->
+    <!-- "Second Device" can also be translated as "Another Device", if that is catchier in the destination language. However, make sure to use the term consistently. -->
+    <string name="multidevice_title">Pridėti antrąjį įrenginį</string>
+    <string name="multidevice_receiver_title">Pridėti kaip antrąjį įrenginį</string>
+    <string name="multidevice_open_settings_on_other_device">Pirmajame įrenginyje pereikite į „Nustatymai / Pridėti antrąjį įrenginį“ ir nuskenuokite ten rodomą kodą</string>
+    <!-- Shown beside progress bar, stay short -->
+    <string name="preparing_account">Ruošiama paskyra…</string>
     <!-- Connectivity -->
     <!-- Headline for the "Inbox" eg. in the "Connectivity" view -->
     <string name="incoming_messages">Gaunamosios žinutės</string>
@@ -426,8 +434,8 @@
     <!-- Subtitle in quota context of "Connetivity" view. Should be be plural always, no number is prefixed. -->
     <string name="messages">Žinutės</string>
     <!-- welcome and login -->
-    <string name="welcome_chat_over_email">Pokalbis per el. paštą.</string>
-    <string name="welcome_intro1_message">Pokalbių programa su plačiausia auditorija pasaulyje. Nemokama ir nepriklausoma.</string>
+    <string name="welcome_chat_over_email">Pokalbiai el. paštu.</string>
+    <string name="scan_invitation_code">Skenuoti pakvietimo kodą</string>
     <string name="login_title">Prisijungti</string>
     <string name="login_header">Prisijungti prie savo serverio</string>
     <string name="login_explain">Prisijungti naudojant esamą el. pašto paskyrą</string>
@@ -452,8 +460,6 @@
     <string name="login_socks5_port">SOCKS5 prievadas</string>
     <string name="login_socks5_user">SOCKS5 naudotojas</string>
     <string name="login_socks5_password">SOCKS5 slaptažodis</string>
-    <!-- Translators: %1$s will be replaced by an e-mail address -->
-    <string name="login_oauth2_checking_addr">Tikrinamas %1$s</string>
     <string name="login_info_oauth2_title">Tęsti, naudojant supaprastintą sąranką?</string>
     <string name="login_certificate_checks">Liudijimų patikrinimai</string>
     <string name="login_error_mail">Įveskite teisingą el. pašto adresą.</string>
@@ -583,7 +589,6 @@
     <string name="profile_image_delete">Ištrinti profilio paveikslą</string>
     <string name="pref_show_tray_icon">Rodyti dėklo piktogramą</string>
     <string name="pref_edit_profile">Taisyti profilį</string>
-
     <!-- Emoji picker and categories -->
     <string name="emoji_search_results">Paieškos rezultatai</string>
     <string name="emoji_not_found">Nerasta jokių šypsniukų</string>
@@ -596,6 +601,9 @@
     <string name="emoji_objects">Objektai</string>
     <string name="emoji_symbols">Simboliai</string>
     <string name="emoji_flags">Vėliavos</string>
+
+    <!-- Reactions -->
+    <string name="reactions">Reakcijos</string>
 
     <!-- automatically delete message -->
     <string name="delete_old_messages">Ištrinti senas žinutes</string>
@@ -621,7 +629,7 @@
     <string name="autocrypt_send_asm_title">Siųsti Autocrypt sąrankos žinutę</string>
     <string name="autocrypt_send_asm_explain_before">\"Autocrypt sąrankos žinutė\" saugiai bendrina jūsų ištisinę sąranką su kitomis su Autocrypt suderinamomis programomis.\n\nSąranka bus užšifruota sąrankos kodu, kuris yra rodomas čia ir privalės būti įvestas kitame įrenginyje.</string>
     <string name="autocrypt_send_asm_button">Siųsti Autocrypt sąrankos žinutę</string>
-    <string name="autocrypt_send_asm_explain_after">Jūsų sąranka buvo išsiųsta jums. Persijukite į kitą įrenginį ir atverkite sąrankos žinutę. Jūsų turėtų būti paprašyta sąrankos kodo. Į užklausą įrašykite šiuos skaitmenis:\n\n%1$s\n\nJums užbaigus, kitas įrenginys bus paruoštas naudoti Autocrypt.</string>
+    <string name="autocrypt_send_asm_explain_after">Jūsų sąranka buvo išsiųsta jums. Persijukite į kitą įrenginį ir atverkite sąrankos žinutę. Jūsų turėtų būti paprašyta sąrankos kodo. Į užklausą įrašykite šiuos skaitmenis.\n\nJums užbaigus, kitas įrenginys bus paruoštas naudoti Autocrypt.</string>
     <string name="autocrypt_prefer_e2ee">Teikti pirmenybę ištisiniam šifravimui</string>
     <string name="autocrypt_asm_subject">Autocrypt sąrankos žinutė</string>
     <string name="autocrypt_asm_general_body">Tai yra Autocrypt sąrankos žinutė, kuri yra naudojama perduoti jūsų ištisinę sąranką tarp klientų.\n\nNorėdami iššifruoti ir naudoti savo sąranką, atverkite žinutę su Autocrypt suderinamame kliente ir įveskite generuojančiame įrenginyje rodomą sąrankos kodą.</string>
@@ -636,7 +644,6 @@
     <!-- system messages -->
     <string name="systemmsg_read_receipt_subject">Pranešimas apie skaitymą</string>
     <string name="systemmsg_read_receipt_body">Tai yra pranešimas apie žinutės \"%1$s\" skaitymą.\n\nTai reiškia, kad žinutė buvo atvaizduota gavėjo įrenginyje, tačiau neužtikrina, kad jos turinys buvo perskaitytas.</string>
-    <string name="systemmsg_cannot_decrypt">Nepavyksta iššifruoti šios žinutės.\n\n• Galima, tiesiog, atsakyti į šią žinutę ir paprašyti siuntėjo dar kartą išsiųsti šią žinutę.\n\n• Tuo atveju, jeigu iš naujo įdiegėte Delta Chat ar kitą el. pašto programą šiame ar kitame įrenginyje, jūs galite pageidauti išsiųsti Autocrypt sąrankos žinutę iš to įrenginio.</string>
     <string name="systemmsg_subject_for_new_contact">Žinutė nuo %1$s</string>
     <!-- "left" in the meaning of "exited" -->
     <string name="group_left_by_you">Jūs išėjote iš grupės.</string>
@@ -648,8 +655,13 @@
     <string name="ephemeral_timer_disabled_by_you">Jūs išjungėte išnykstančių žinučių laikmatį.</string>
     <!-- %1$s will be replaced by name and address of the contact -->
     <string name="ephemeral_timer_disabled_by_other">%1$s išjungė išnykstančių žinučių laikmatį.</string>
+    <string name="learn_more">Sužinoti daugiau</string>
+
     <!-- %1%s will be replaced by date and time in some human-readable format -->
     <string name="devicemsg_bad_time">⚠️ Atrodo, kad jūsų įrenginyje yra nustatyta netiksli data ar laikas (%1$s).\n\nSuderinkite savo laikrodį ⏰🔧 kad užtikrintumėte, jog žinutės bus gaunamos teisingai.</string>
+    <!-- Some options as "Add Second Device" or "Backup" may require the system PIN/Fingerprint/Gesture/Etc. to be entered in a system dialog. This hint is added to the system dialog, below a title as "Add Second Device" or "Backup". -->
+    <string name="enter_system_secret_to_continue">Atrakinkite, norėdami tęsti</string>
+
     <!-- qr code stuff -->
     <string name="qr_code">QR kodas</string>
     <string name="load_qr_code_as_image">Įkelti QR kodą kaip paveikslą</string>
@@ -693,6 +705,8 @@
     <string name="notify_name_and_message">Vardą ir žinutę</string>
     <string name="notify_name_only">Tik vardą</string>
     <string name="notify_no_name_or_message">Jokio vardo ar žinutės</string>
+    <string name="notifications_disabled">Pranešimai išjungti</string>
+    <string name="new_messages">Naujos žinutės</string>
     <!-- permissions -->
     <string name="perm_required_title">Reikalingas leidimas</string>
     <string name="perm_continue">Tęsti</string>
@@ -709,7 +723,6 @@
 
     <string name="about_licensed_under_desktop">Ši programinė įranga yra licencijuota pagal GNU GPL versiją 3, o pirminis kodas yra prieinamas „GitHub“ internetinėje svetainėje.</string>
     <string name="welcome_desktop">Sveiki atvykę į Delta Chat</string>
-    <string name="login_known_accounts_title_desktop">Žinomos paskyros</string>
     <string name="global_menu_preferences_language_desktop">Pasirinkti kalbą...</string>
     <string name="global_menu_file_desktop">Failas</string>
     <string name="global_menu_file_quit_desktop">Išeiti</string>
@@ -725,7 +738,7 @@
     <string name="global_menu_view_developer_tools_desktop">Plėtotojo įrankiai</string>
     <string name="global_menu_help_desktop">Žinynas</string>
     <string name="global_menu_help_learn_desktop">Sužinokite daugiau apie Delta Chat</string>
-    <string name="global_menu_help_contribute_desktop">Talkinti Github svetainėje</string>
+    <string name="global_menu_help_contribute_desktop">Talkinti „Github“ svetainėje</string>
     <string name="global_menu_help_report_desktop">Pranešti apie klaidą</string>
     <string name="global_menu_help_about_desktop">Apie Delta Chat</string>
     <string name="global_menu_file_open_desktop">Atverti Delta Chat</string>
@@ -736,19 +749,12 @@
     <string name="delete_message_desktop">Ištrinti žinutę</string>
     <string name="more_info_desktop">Daugiau informacijos</string>
     <string name="timestamp_format_m_desktop">MMM D</string>
-    <string name="encryption_info_desktop">Rodyti šifravimo informaciją</string>
     <string name="remove_desktop">Šalinti</string>
     <string name="save_desktop">Išsaugoti</string>
     <string name="name_desktop">Vardas</string>
-    <string name="autocrypt_key_transfer_desktop">Autocrypt rakto perdavimas</string>
-    <string name="initiate_key_transfer_desktop">Autocrypt sąrankos žinutė saugiai bendrina jūsų ištisinę sąranką su kitomis su Autocrypt suderinamomis programomis. Sąranka bus užšifruota sąrankos kodu, kuris yra rodomas čia ir privalės būti įvestas kitame įrenginyje.</string>
     <string name="select_group_image_desktop">Pasirinkti grupės paveikslą</string>
-    <string name="imex_progress_title_desktop">Atsarginės kopijos eiga</string>
     <string name="export_backup_desktop">Eksportuoti atsarginę kopiją</string>
-    <string name="show_key_transfer_message_desktop">Jūsų raktas išsiųstas jums patiems. Persijunkite į kitą įrenginį ir atverkite sąrankos žinutę. Jūsų turėtų būti prašoma įvesti sąrankos kodą. Įveskite šiuos skaitmenis:</string>
     <string name="autocrypt_correct_desktop">Autocrypt sąranka sėkmingai perduota!</string>
-    <string name="autocrypt_incorrect_desktop">Neteisingas sąrankos kodas. Bandykite dar kartą.</string>
-    <string name="create_chat_error_desktop">Nepavyko sukurti pokalbio.</string>
     <string name="forget_login_confirmation_desktop">Ištrinti šį prisijungimą? Viskas bus ištrinta, įskaitant jūsų ištisinę sąranką, adresatus, pokalbius, žinutes ir mediją. Šis veiksmas yra galutinis ir negalės būti panaikintas.</string>
     <string name="account_info_hover_tooltip_desktop2">El. paštas: %1$s\nDydis: %2$s\nPaskyros Id: %3$s</string>
     <string name="message_detail_sent_desktop">išsiųsta</string>

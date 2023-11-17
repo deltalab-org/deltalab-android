@@ -89,21 +89,14 @@ public class NewConversationActivity extends ContactSelectionActivity {
   @Override
   public void onContactSelected(int specialId, String addr) {
     final DcContext dcContext = DcHelper.getContext(this);
-    if(specialId == DcContact.DC_CONTACT_ID_NEW_GROUP || specialId == DcContact.DC_CONTACT_ID_NEW_VERIFIED_GROUP) {
-      Intent intent = new Intent(this, GroupCreateActivity.class);
-      intent.putExtra(GroupCreateActivity.GROUP_CREATE_VERIFIED_EXTRA, specialId == DcContact.DC_CONTACT_ID_NEW_VERIFIED_GROUP);
-      startActivity(intent);
+    if(specialId == DcContact.DC_CONTACT_ID_NEW_GROUP) {
+      startActivity(new Intent(this, GroupCreateActivity.class));
     } else if(specialId == DcContact.DC_CONTACT_ID_NEW_BROADCAST_LIST) {
       Intent intent = new Intent(this, GroupCreateActivity.class);
       intent.putExtra(GroupCreateActivity.CREATE_BROADCAST, true);
       startActivity(intent);
     }
     else {
-      if(!dcContext.mayBeValidAddr(addr)) {
-        Toast.makeText(this, R.string.bad_email_address, Toast.LENGTH_LONG).show();
-        return;
-      }
-
       int contactId = dcContext.lookupContactIdByAddr(addr);
       if (contactId!=0 && dcContext.getChatIdByContactId(contactId)!=0) {
         openConversation(dcContext.createChatByContactId(contactId));

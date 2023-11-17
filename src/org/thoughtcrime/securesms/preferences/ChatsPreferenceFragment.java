@@ -29,9 +29,6 @@ import org.thoughtcrime.securesms.util.ScreenLockUtil;
 import org.thoughtcrime.securesms.util.Util;
 
 public class ChatsPreferenceFragment extends ListSummaryPreferenceFragment {
-  private static final String TAG = ChatsPreferenceFragment.class.getSimpleName();
-
-
   private ListPreference showEmails;
   private ListPreference mediaQuality;
   private ListPreference autoDownload;
@@ -271,12 +268,18 @@ public class ChatsPreferenceFragment extends ListSummaryPreferenceFragment {
             .ifNecessary()
             .withPermanentDenialDialog(getString(R.string.perm_explain_access_to_storage_denied))
             .onAllGranted(() -> {
-              new AlertDialog.Builder(getActivity())
+              final String addr = DcHelper.get(getActivity(), DcHelper.CONFIG_CONFIGURED_ADDRESS);
+              AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
                       .setTitle(R.string.pref_backup)
                       .setMessage(R.string.pref_backup_export_explain)
-                      .setNegativeButton(android.R.string.cancel, null)
-                      .setPositiveButton(R.string.pref_backup_export_start_button, (dialogInterface, i) -> startImex(DcContext.DC_IMEX_EXPORT_BACKUP))
-                      .show();
+                      .setNeutralButton(android.R.string.cancel, null)
+                      .setPositiveButton(getActivity().getString(R.string.pref_backup_export_x, addr), (dialogInterface, i) -> startImexOne(DcContext.DC_IMEX_EXPORT_BACKUP));
+              int[] allAccounts = DcHelper.getAccounts(getActivity()).getAll();
+              if (allAccounts.length > 1) {
+                String exportAllString = getActivity().getString(R.string.pref_backup_export_all, allAccounts.length);
+                builder.setNegativeButton(exportAllString, (dialogInterface, i) -> startImexAll(DcContext.DC_IMEX_EXPORT_BACKUP));
+              }
+              builder.show();
             })
             .execute();
   }

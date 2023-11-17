@@ -309,7 +309,7 @@ public class AdvancedPreferenceFragment extends ListSummaryPreferenceFragment
                 }
                 new AlertDialog.Builder(getActivity())
                   .setTitle(getActivity().getString(R.string.autocrypt_send_asm_title))
-                  .setMessage(getActivity().getString(R.string.autocrypt_send_asm_explain_after, scFormatted))
+                  .setMessage(getActivity().getString(R.string.autocrypt_send_asm_explain_after) + "\n\n" + scFormatted)
                   .setPositiveButton(android.R.string.ok, null)
                   .setCancelable(false) // prevent the dialog from being dismissed accidentally (when the dialog is closed, the setup code is gone forever and the user has to create a new setup message)
                   .show();
@@ -337,7 +337,7 @@ public class AdvancedPreferenceFragment extends ListSummaryPreferenceFragment
       .setTitle(R.string.pref_managekeys_import_secret_keys)
       .setMessage(getActivity().getString(R.string.pref_managekeys_import_explain, pathAsDisplayedToUser))
       .setNegativeButton(android.R.string.cancel, null)
-      .setPositiveButton(android.R.string.ok, (dialogInterface2, i2) -> startImex(DcContext.DC_IMEX_IMPORT_SELF_KEYS, imexPath, pathAsDisplayedToUser))
+      .setPositiveButton(android.R.string.ok, (dialogInterface2, i2) -> startImexOne(DcContext.DC_IMEX_IMPORT_SELF_KEYS, imexPath, pathAsDisplayedToUser))
       .show();
   }
 
@@ -371,7 +371,7 @@ public class AdvancedPreferenceFragment extends ListSummaryPreferenceFragment
                           .setTitle(R.string.pref_managekeys_export_secret_keys)
                           .setMessage(getActivity().getString(R.string.pref_managekeys_export_explain, DcHelper.getImexDir().getAbsolutePath()))
                           .setNegativeButton(android.R.string.cancel, null)
-                          .setPositiveButton(android.R.string.ok, (dialogInterface2, i2) -> startImex(DcContext.DC_IMEX_EXPORT_SELF_KEYS))
+                          .setPositiveButton(android.R.string.ok, (dialogInterface2, i2) -> startImexOne(DcContext.DC_IMEX_EXPORT_SELF_KEYS))
                           .show();
                     }
                     else {

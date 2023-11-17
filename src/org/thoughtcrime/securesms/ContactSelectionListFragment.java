@@ -17,24 +17,17 @@
 package org.thoughtcrime.securesms;
 
 
+import static org.thoughtcrime.securesms.util.RelayUtil.isRelayingMessageContent;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.Loader;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.ActionMode;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.util.SparseIntArray;
 import android.view.LayoutInflater;
@@ -44,6 +37,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.ActionMode;
+import androidx.fragment.app.Fragment;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.b44t.messenger.DcContact;
 import com.b44t.messenger.DcContext;
@@ -55,8 +58,10 @@ import org.thoughtcrime.securesms.connect.DcHelper;
 import org.thoughtcrime.securesms.contacts.ContactAccessor;
 import org.thoughtcrime.securesms.contacts.ContactSelectionListAdapter;
 import org.thoughtcrime.securesms.contacts.ContactSelectionListItem;
+import org.thoughtcrime.securesms.contacts.NewContactActivity;
 import org.thoughtcrime.securesms.mms.GlideApp;
 import org.thoughtcrime.securesms.permissions.Permissions;
+import org.thoughtcrime.securesms.qr.QrActivity;
 import org.thoughtcrime.securesms.util.Util;
 import org.thoughtcrime.securesms.util.ViewUtil;
 
@@ -64,8 +69,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-
-import static org.thoughtcrime.securesms.util.RelayUtil.isRelayingMessageContent;
 
 /**
  * Fragment for selecting a one or more contacts from a list.
@@ -83,6 +86,7 @@ public class ContactSelectionListFragment extends    Fragment
   public static final String SELECT_VERIFIED_EXTRA = "select_verified";
   public static final String ALLOW_CREATION = "allow_creation";
   public static final String PRESELECTED_CONTACTS = "preselected_contacts";
+  public static final int CONTACT_ADDR_RESULT_CODE = 61123;
 
   private DcContext dcContext;
 
@@ -278,13 +282,10 @@ public class ContactSelectionListFragment extends    Fragment
   @Override
   public Loader<DcContactsLoader.Ret> onCreateLoader(int id, Bundle args) {
     boolean allowCreation = getActivity().getIntent().getBooleanExtra(ALLOW_CREATION, true);
-    boolean addCreateContactLink = allowCreation;
+    boolean addCreateContactLink = allowCreation && !isSelectVerfied();
     boolean addCreateGroupLinks = allowCreation && !isRelayingMessageContent(getActivity()) && !isMulti();
 
     int listflags = DcContext.DC_GCL_ADD_SELF;
-    if(isSelectVerfied()) {
-      listflags = DcContext.DC_GCL_VERIFIED_ONLY;
-    }
     return new DcContactsLoader(getActivity(), listflags, cursorFilter, addCreateGroupLinks, addCreateContactLink, false);
   }
 
@@ -345,15 +346,29 @@ public class ContactSelectionListFragment extends    Fragment
       }
       int    specialId = contact.getSpecialId();
       String addr      = contact.getNumber();
-      if (!isMulti() || !selectedContacts.contains(addr))
-      {
-        if (isMulti()
-         && specialId== DcContact.DC_CONTACT_ID_NEW_CONTACT
-         && dcContext.lookupContactIdByAddr(addr)==0) {
-          if (dcContext.createContact(null, addr)==0) {
-            Toast.makeText(getActivity(), R.string.bad_email_address, Toast.LENGTH_LONG).show();
-            return;
+      if (!isMulti() || !selectedContacts.contains(addr)) {
+        if (specialId == DcContact.DC_CONTACT_ID_NEW_CONTACT) {
+          Intent intent = new Intent(getContext(), NewContactActivity.class);
+          if (dcContext.mayBeValidAddr(cursorFilter)) {
+            intent.putExtra(NewContactActivity.ADDR_EXTRA, cursorFilter);
           }
+          if (isMulti()) {
+            startActivityForResult(intent, CONTACT_ADDR_RESULT_CODE);
+          } else {
+            requireContext().startActivity(intent);
+          }
+          return;
+        }
+
+        if (isSelectVerfied() && !contact.getDcContact().isVerified()) {
+          new AlertDialog.Builder(getActivity())
+            .setMessage(R.string.verified_contact_required_explain)
+            .setNeutralButton(R.string.learn_more, (d, w) -> DcHelper.openHelp(getActivity(), "#howtoe2ee"))
+            .setNegativeButton(R.string.qrscan_title, (d, w) -> getActivity().startActivity(new Intent(getActivity(), QrActivity.class)))
+            .setPositiveButton(R.string.ok, null)
+            .setCancelable(true)
+            .show();
+            return;
         }
 
         selectedContacts.add(addr);
@@ -361,14 +376,7 @@ public class ContactSelectionListFragment extends    Fragment
         if (onContactSelectedListener != null) {
           onContactSelectedListener.onContactSelected(specialId, addr);
         }
-
-        if(isMulti() && specialId==DcContact.DC_CONTACT_ID_NEW_CONTACT) {
-          // do not check the "add contact" entry but add a new contact and check this. a reload makes this visible.
-          getLoaderManager().restartLoader(0, null, ContactSelectionListFragment.this);
-        }
-      }
-      else
-      {
+      } else {
         selectedContacts.remove(addr);
         contact.setChecked(false);
         if (onContactSelectedListener != null) {
@@ -405,6 +413,15 @@ public class ContactSelectionListFragment extends    Fragment
   @Override
   public void handleEvent(@NonNull DcEvent event) {
     if (event.getId()==DcContext.DC_EVENT_CONTACTS_CHANGED) {
+      getLoaderManager().restartLoader(0, null, ContactSelectionListFragment.this);
+    }
+  }
+
+  @Override
+  public void onActivityResult(int reqCode, int resultCode, final Intent data) {
+    super.onActivityResult(reqCode, resultCode, data);
+    if (resultCode == Activity.RESULT_OK && reqCode == CONTACT_ADDR_RESULT_CODE) {
+      selectedContacts.add(data.getStringExtra(NewContactActivity.ADDR_EXTRA));
       getLoaderManager().restartLoader(0, null, ContactSelectionListFragment.this);
     }
   }

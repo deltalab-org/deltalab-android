@@ -1,5 +1,140 @@
 # Delta Chat Android Changelog
 
+## v1.42.1
+2023-11
+
+* fix "Member added" message not being a system message sometimes
+* update translations and local help
+* update to core 1.131.4
+
+
+## v1.42.0
+2023-11
+
+* fix download button shown when download could be decrypted
+* using core 1.131.3
+
+
+## v1.41.9 Testrun
+2023-11
+
+* fix missing messages because of misinterpreted server responses (ignore EOF on FETCH)
+* fix: re-gossip keys if a group member changed setup
+* fix: skip sync when chat name is set to the current one
+* fix: ignore unknown sync items to provide forward compatibility
+  and to avoid creating empty message bubbles in "Saved Messages"
+* update translations and local help
+* update to core 1.131.3
+
+
+## v1.41.8 Testrun
+2023-11
+
+* use local help for guaranteed end-to-end encryption "Learn More" links
+* do not post "NAME verified" messages on QR scan success
+* improve system message wording
+* fix: allow to QR scan groups when 1:1 chat with the inviter is a contact request
+* fix: add "Setup Changed" message before the message
+* fix: read receipts created or unblock 1:1 chats sometimes
+* add Vietnamese translation, update other translations and local help
+* update to core 1.131.2
+
+
+## v1.41.7 Testrun
+2023-11
+
+* synchronize "Broadcast Lists" (experimental) across devices
+* add "Scan QR Code" button to "New Chat / New Contact" dialog
+* fix: do not skip actual message parts when group change messages are inserted
+* fix broken chat names (encode names in the List-ID to avoid SMTPUTF8 errors)
+* update translations
+* update to core 1.131.1
+
+
+## v1.41.6 Testrun
+2023-11
+
+* simplify adding new contacts: "New Chat / Add Contact" button is now always present
+* add a QR icon beside the "Show QR invite code" option
+* add info messages about implicitly added members
+* improve handling of various partly broken encryption states by adding a secondary verified key
+* fix: mark 1:1 chat as protected when joining a group
+* fix: raise lower auto-download limit to 160k
+* fix: remove Reporting-UA from read receipt
+* fix: do not apply group changes to special chats; avoid adding members to trashed chats
+* fix: protect better against duplicate UIDs reported by IMAP servers
+* fix more cases for the accidentally hidden title bar on android14
+* update provider database
+* update translations
+* update to core 1.130.0
+
+
+## v1.41.5 Testrun
+2023-11
+
+* sync Accept/Blocked, Archived, Pinned and Mute across devices
+* add "group created instructions" as info message to new chats
+* clone group in the group's profile menu
+* add hardcoded fallback DNS cache
+* improve group creation and make it more obvious that a group is created
+* auto-detect if a group with guaranteed end-to-end encryption can be created
+* more graceful ratelimit for .testrun.org subdomains
+* faster message detection on the server
+* fix accidentally hidden title bar on android14
+* fix: more reliable group consistency by always automatically downloading messages up to 160k
+* fix: properly abort backup process if there is some failure
+* fix: make sure, a QR scan succeeds if there is some leftover from a previously broken scan
+* fix: allow other guaranteed e2ee group recipients to be unverified, only check the sender verification
+* fix: switch to "Mutual" encryption preference on a receipt of encrypted+signed message
+* fix hang in receiving messages when accidentally going IDLE
+* fix: allow verified key changes via "member added" message
+* fix: partial messages do not change group state
+* fix: don't implicitly delete members locally, add absent ones instead
+* update translations
+* update to core 1.129.1
+
+
+## v1.41.3 Testrun
+2023-10
+
+* allow to export all backups together
+* "New Group" offers to create verified groups if all members are verified
+* verified groups: show all contacts when adding members and explain how to verify unverified ones
+* "QR Invite Code" is available after group creation in the group's profile
+* update translations
+* using core 1.127.2
+
+
+## v1.41.2 Testrun
+2023-10
+
+* guarantee end-to-end-encryption in one-to-one chats, if possible
+* if end-to-end-encryption cannot be guaranteed eg. due to key changes,
+  the chat requires a confirmation of the user
+* "verified groups" are no longer experimental
+* backup filenames include the account name now
+* "Broadcast Lists" (experimental) create their own chats on the receiver site
+* tapping the title bar always opens account switcher; from there you can open connectivity
+* add "Deactivate QR code" option when showing QR codes
+  (in addition to deactivate and reactivate QR codes by scanning them)
+* show name and e-mail address of verifiers
+* fix stale app on configuration screen if DNS is not available
+* fix: keep showing old email address if configuring a new one fails
+* fix starting chats from the system's phone app (by improving mailto: handling)
+* fix unresponsiveness when opening "Connectivity View" when offline
+* fix configure error with "Winmail Pro Mail Server"
+* fix: set maximal memory usage for the internal database
+* fix: allow setting a draft if verification is broken
+* fix joining verified group via QR if contact is not already verified
+* fix: sort old incoming messages below all outgoing ones
+* fix: do not mark non-verified group chats as verified when using securejoin
+* fix: show only chats where we can send to on forwarding or sharing
+* fix: improve removing accounts in case the filesystem is busy
+* fix: don't show a contact as verified if their key changed since the verification
+* update translations
+* update to core 1.127.2
+
+
 ## v1.41.1 Testrun
 2023-10
 

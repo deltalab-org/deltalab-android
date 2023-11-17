@@ -4,7 +4,7 @@
     <string name="app_name">Delta Chat</string>
     <string name="ok">Souhlas</string>
     <string name="cancel">Zrušit</string>
-    <string name="yes">Ano</string>
+   <string name="yes">Ano</string>
     <string name="no">Ne</string>
     <string name="select">Vyber</string>
     <string name="on">Zapnout</string>
@@ -130,7 +130,6 @@
     <string name="video">Video</string>
     <string name="documents">Dokumenty</string>
     <string name="contact">Kontakt</string>
-    <string name="verified_contact">Ověřený kontakt</string>
     <string name="camera">Kamera</string>
     <string name="location">Poloha</string>
     <string name="gallery">Galerie</string>
@@ -162,7 +161,6 @@
     <string name="menu_new_contact">Nový kontakt</string>
     <string name="menu_new_chat">Nový hovor</string>
     <string name="menu_new_group">Nová skupina</string>
-    <string name="menu_new_verified_group">Nová ověřená skupina</string>
     <string name="menu_send">Poslat</string>
     <string name="menu_toggle_keyboard">Přepni na smajlíky</string>
     <string name="menu_edit_group">Uprav skupinu</string>
@@ -373,7 +371,6 @@
     <string name="tab_docs_empty_hint">Documenty, hudba a další soubory sdílené v tomto hovoru budou zobrazeny zde.</string>
     <string name="media_preview">Náhled multimedia</string>
     <string name="send_message">Pošli zprávu</string>
-    <string name="welcome_intro1_message">Messenger s nejširší základnou na světě. Svobodný a nezávislý.</string>
     <string name="login_title">Přihlaš se</string>
     <string name="login_header">Přihlaš se na váš server</string>
     <string name="login_explain">Přihlásit se se stávajícím účtem pro e-mail.</string>
@@ -391,8 +388,6 @@
     <string name="login_smtp_port">SMTP port</string>
     <string name="login_smtp_security">SMTP zabezpečení</string>
     <string name="login_auth_method">Metoda autorizace</string>
-    <!-- Translators: %1$s will be replaced by an e-mail address -->
-    <string name="login_oauth2_checking_addr">Prohlížím %1$s</string>
     <string name="login_info_oauth2_title">Zkus zjednodušené nastavení?</string>
     <string name="login_info_oauth2_text">Zadaný e-mail podporuje zjednodušené nastavení (OAuth 2.0).\n\nV příštím kroku dej prosím Delta Chatu povolení chovat se jako chat přes e-mail. \n\nŽádné servery Delta Chat nemá, tvá data zůstávají na tvém přístroji.</string>
     <string name="login_certificate_checks">Kontroly certifikátu</string>
@@ -564,7 +559,7 @@
     <string name="autocrypt_send_asm_title">Pošli Nastavení Autocryptu</string>
     <string name="autocrypt_send_asm_explain_before">Pomocí Nastavení Autocryptu lze bezpečně sdílet nastavení šifrování této aplikace s jinou, která také používá Autocrypt.\n\nNastavení je zašifrované zobrazeným kódem, který musí být vložen i na druhém zařízení.</string>
     <string name="autocrypt_send_asm_button">Pošli Nastavení Autocryptu</string>
-    <string name="autocrypt_send_asm_explain_after">Nastavení se ti odeslalo. Vem si druhé zařízení a otevři v něm zprávu nastavení. Měl by jsi být dotázán na kód. Pak vlož následující čísla:\n\n%1$s</string>
+    <string name="autocrypt_send_asm_explain_after">Nastavení se ti odeslalo. Vem si druhé zařízení a otevři v něm zprávu nastavení. Měl by jsi být dotázán na kód. Pak vlož následující čísla:</string>
     <string name="autocrypt_prefer_e2ee">Upřednostňuj end-to-end šifrování</string>
     <string name="autocrypt_asm_subject">Nastavení Autocryptu</string>
     <string name="autocrypt_asm_general_body">Toto je Nastavení Autocryptu, kterým lze přenést nastavení šifrování mezi klienty.\n\nK dešifrování a použití nastavení musíte zprávu otevřít v druhém klientu s Autocryptem a tam zadat kód zobrazený na prvním přístroji.</string>
@@ -579,7 +574,6 @@
     <!-- system messages -->
     <string name="systemmsg_read_receipt_subject">Zpráva otevřena</string>
     <string name="systemmsg_read_receipt_body">Odeslaná zpráva \"%1$s\" byla příjemci zobrazena na jeho přístroji.\n\nNicméně přečtení obsahu není zaručeno.</string>
-    <string name="systemmsg_cannot_decrypt">Zprávu nelze dešifrovat.\n\n• Může pomoct jednoduchá odpověď odesílateli s požadavkem o znovuzaslání zprávy.\n\n• Pokud jde o novou instalaci Delta Chatu či jiného e-mailového programu na tomto nebo jiném zařízení, může být nutné poslat si z nich Nastavení Autocryptu.</string>
     <string name="systemmsg_unknown_sender_for_chat">Neznámý odesilatel v tomto hovoru. Více najdeš v Popisu.</string>
     <string name="systemmsg_subject_for_new_contact">Zpráva od %1$s</string>
     <string name="systemmsg_failed_sending_to">Odeslání zprávy pro %1$s selhalo.</string>
@@ -668,7 +662,6 @@
     <string name="contact_not_verified">Nelze ověřit %1$s.</string>
     <!-- translators: "setup" is the "encryption setup" here, as in "Autocrypt Setup Message" -->
     <string name="contact_setup_changed">Změněné nastavení pro %1$s.</string>
-    <string name="verified_group_explain">Ověřené skupiny (pokusná funkce) zabezpečuje proti aktivním útokům. Noví členové jsou ověřeni ostatními členy druhou cestou a zprávy jsou vždy šifrované end-to-end.</string>
     <string name="copy_qr_data_success">URL z QR kódu zkopírováno do mezipaměti</string>
     <string name="notify_reply_button">Odpověď</string>
     <string name="notify_new_message">Nová zpráva</string>
@@ -694,7 +687,6 @@
     <string name="about_offical_app_desktop">Toto je původní aplikace Delta Chat Desktop.</string>
     <string name="about_licensed_under_desktop">Tento software je pod licencí GNU GPL verze 3 a zdrojový kód je k mání na GitHubu.</string>
     <string name="welcome_desktop">Vítej v Delta Chatu</string>
-    <string name="login_known_accounts_title_desktop">Známé účty</string>
     <string name="global_menu_preferences_language_desktop">Jazyk</string>
     <string name="global_menu_file_desktop">Soubor</string>
     <string name="global_menu_file_quit_desktop">Ukončit</string>
@@ -719,19 +711,12 @@
     <string name="delete_message_desktop">Vymaž zprávu</string>
     <string name="more_info_desktop">Více podrobností</string>
     <string name="timestamp_format_m_desktop">MMM D</string>
-    <string name="encryption_info_desktop">Zobraz popis šifrování</string>
     <string name="remove_desktop">Odstranit</string>
     <string name="save_desktop">Uložit</string>
     <string name="name_desktop">Jméno</string>
-    <string name="autocrypt_key_transfer_desktop">Přenos klíče Autocryptu</string>
-    <string name="initiate_key_transfer_desktop">Nastavení Autocryptu zabezpečeně sdílí nastavení tvého šifrování s ostatními programy používající Autocrypt. Nastavení bude zašifrováno zobrazeným kódem, který musíš zadat i na tom druhém zařízení.</string>
     <string name="select_group_image_desktop">Vyber obrázek skupiny</string>
-    <string name="imex_progress_title_desktop">Stav zálohování</string>
     <string name="export_backup_desktop">Ulož zálohu</string>
-    <string name="show_key_transfer_message_desktop">Poslal jsi si svůj klíč. Přejdi k druhému zařízení a otevři zprávu s nastavením. Měla by se ti objevit výzva k zadání kódu. Pak opiš následující číslo:</string>
     <string name="autocrypt_correct_desktop">Nastavení Autocryptu přeneseno.</string>
-    <string name="autocrypt_incorrect_desktop">Nesprávný kód. Zkus to znovu, prosím.</string>
-    <string name="create_chat_error_desktop">Hovor nelze vytvořit.</string>
     <string name="forget_login_confirmation_desktop">Smazat toto přihlášení? Vše bude smazáno, včetně nastavení tvého end-to-end šifrování, kontaktů, hovorů, zpráv a multimedií. Tuto akci nelze vrátit zpět.</string>
     <string name="message_detail_sent_desktop">odesláno</string>
     <string name="message_detail_received_desktop">přijato</string>
