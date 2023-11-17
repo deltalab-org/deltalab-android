@@ -34,7 +34,6 @@ public abstract class BaseConversationItem extends LinearLayout
 
   protected final Context              context;
   protected final DcContext            dcContext;
-  protected Recipient                  conversationRecipient;
   protected final Rpc rpc;
   protected Recipient                  conversationRecipient;
 
