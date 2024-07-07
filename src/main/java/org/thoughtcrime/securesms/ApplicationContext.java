@@ -125,10 +125,6 @@ public class ApplicationContext extends MultiDexApplication {
 
     rpc.start();
 
-    for (int accountId : allAccounts) {
-      dcAccounts.getAccount(accountId).setConfig(CONFIG_VERIFIED_ONE_ON_ONE_CHATS, "1");
-    }
-
     // migrating chat backgrounds, added  04/10/23, can be removed after some versions
     String backgroundImagePath = Prefs.getStringPreference(this, "pref_chat_background", "");
     if (!backgroundImagePath.isEmpty()) {
