@@ -23,7 +23,10 @@ the following steps are done in a PR called `prep-VERSION` (no leading "v"):
    from <https://github.com/deltachat/deltachat-core-rust/blob/main/CHANGELOG.md>
    and <https://github.com/deltachat/deltachat-android/pulls?q=is%3Apr+is%3Aclosed+sort%3Aupdated-desc>.
    avoid technical terms, library versions etc. the changelog is for the end user.
-   do not forget to update/mention used core version and release month.
+   do not forget to update/mention used core version and release month.  
+   in case previous entries of the changelog refer to betas or to not officially released versions,
+   the entries can be summarized.
+   this makes it easier for the end user to follow changes by showing major changes atop
 
 4. add a device message to `ConversationListActivity::onCreate()` or remove the old one.
    do not repeat the CHANGELOG here: write what really is the ux outcome
@@ -69,7 +72,8 @@ on <https://play.google.com/apps/publish/>:
 
 9. a) open "Delta Chat/Release/Production"
       then "Create new release" and upload APK from above  
-   b) fill out "Release details/Release notes" (500 characters, summary can be reused for F-Droid),
+   b) fill out "Release details/Release notes" (500 chars), add the line
+      "These features will roll out over the coming days. Thanks for using Delta Chat!";
       release name should be default ("123 (1.2.3)")  
    c) click "Next", set "Rollout Percentage" to 1% (later 2%, 5%, 10%, 20%, 50%, 100%),
       click "Start rollout to Production"
@@ -103,6 +107,16 @@ on <https://developer.amazon.com/dashboard>:
     d) on "Step 2" page: "Does your app collect or transfer user data to third parties?" -> No, then "Next"
     e) on "Step 3" page: "Next"
     f) on "Step 4" page: "Submit app"
+
+
+## Release on Huawei AppGallery
+
+on <https://developer.huawei.com/consumer/en/appgallery>:
+
+13. a) go to "Upload your app / Android / Delta Chat / Update", again "Update" upper right
+    b) "Manage Packages / Upload", upload the APK from above, hit "Save"
+    c) Update "App Information / New Features", hit "Save", then "Next"
+    d) Hit "Submit"; on the next page, confirm version and language
 
 
 ## Releases on Apklis, Passkoocheh

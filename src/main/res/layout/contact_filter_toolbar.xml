@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:orientation="horizontal">
+
+        <LinearLayout android:id="@+id/toggle_container"
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent"
+                      android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/search_view"
+                style="@style/TextSecure.TitleTextStyle"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/email_address"
+                android:fontFamily="sans-serif"
+                android:gravity="center_vertical"
+                android:hint="@string/search"
+                android:ellipsize="end"
+                android:inputType="textPersonName"
+                android:textSize="18sp" />
+
+            <org.thoughtcrime.securesms.components.AnimatingToggle
+                android:id="@+id/button_toggle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:gravity="center"
+                android:visibility="invisible">
+
+                <ImageView android:id="@+id/search_clear"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:layout_gravity="center_vertical"
+                           android:gravity="center_vertical"
+                           android:clickable="true"
+                           android:visibility="gone"
+                           android:focusable="true"
+                           android:background="@drawable/circle_touch_highlight_background"
+                           android:contentDescription="@string/clear_search"
+                           android:src="@drawable/ic_clear_white_24dp" />
+
+            </org.thoughtcrime.securesms.components.AnimatingToggle>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</merge>

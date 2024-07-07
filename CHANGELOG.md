@@ -1,5 +1,249 @@
 # Delta Chat Android Changelog
 
+## v1.46.5
+2024-06
+
+* support webxdc apps with experimental realtime channels ("Settings / Advanced / Realtime Webxdc Channels")
+* fewer traffic in larger chatmail groups by allowing more than 50 recipients per time
+* log debug level (mostly foreign modules) only if "Settings / Advanced / Developer Mode" is enabled
+* fix: avoid asking to disable battery optimisations when creating the second profile
+* fix hangs on low/no network during onboarding
+* fix: cancel muting does not cancel selection in chatlist
+* fix migrated address losing verified status and key on experimental AEAP
+* fix: allow creation of groups by outgoing messages without recipients
+* fix: avoid group splits by preferring ID from encrypted header over references for new groups
+* fix: do not fail to send images with wrong extensions
+* fix: retry sending MDNs on temporary error
+* fix: do not miss new messages while expunging the folder
+* fix missing logging info lines
+* fix: remove group member locally even if sending fails
+* fix: revert group member addition if the corresponding message couldn't be sent
+* update translations and local help
+* update to core 1.140.2
+
+
+## v1.46.3
+2024-06
+
+* Disable FCM PUSH notification support for F-Droid and other non-Google-Play-builds
+* using core 1.139.5
+
+
+## v1.46.2
+2024-06
+
+* fix: create new profile when scanning/tapping QR codes outside "Add Profile"
+* update translations and local help
+* using core 1.139.5
+
+
+## v1.46.1
+2024-05
+
+* new onboarding: you can create a new profile with one tap on "Create New Profile" -
+  or use an existing login or second-device-setup as usual
+* use FCM PUSH notification if supported by providers (as chatmail) and by the operating system
+* do not ask for disabling "battery optimisations" when PUSH notifications are working
+* add an option to disable PUSH notifications
+* contacts can be attached as "Cards" at "Attach / Contact";
+  when the receiver taps the cards, guaranteed end-to-end encrypted can be established
+* "Profiles" are names as such throughout the app;
+  note that these profiles exist on the device only, there is nothing persisted on the server
+* adding contacts manually at "New Chat / New Contact / Add Contact Manually"
+* send any emoji as reaction
+* show reactions in summaries
+* nicer summaries by using some emojis for attachment types
+* pin/archive/etc chats directly from search result
+* new map for - still experimental - location streaming (enable at "Settings / Advanced")
+* ask for system unlock before accessing "password & account"
+* advanced settings resorted, you'll also find "password & account" and "show classic emails" there
+* improve resilience by adding references to the last three messages
+* one-to-one chats are read-only during reasonable run of securejoin
+* if securejoin is taking longer than expected, a warning is shown and messages can be sent
+* improve resilience by including more entries in DNS fallback cache
+* improve anonymous mailing lists by not adding hostname to Message-ID
+* harden share-to-delta
+* add second device's troubleshooting is always available offline now
+* hide folder options if not supported by the used account
+* allow to view password (after entering system secret)
+* device update message is added as unread only for the first account
+* share log to other chats or apps
+* use colors for info/warning/error in the log
+* fix: preserve upper-/lowercase of links from HTML-messages
+* fix: rescan folders on "Watch Sent Folder" changes
+* fix sometimes wrong sender name in "Message Info"
+* fix: do not send avatar in securejoin messages before contact verification
+* fix: avoid being re-added to groups just left
+* fix: do not auto-delete webxdc apps that have recent updates
+* fix: improve moving messages on gmail
+* fix: improve chat assignments of not downloaded messages
+* fix: do not create ad-hoc groups from partial downloads
+* fix: improve connectivity on startup by adding backoff for IMAP connections
+* fix: mark contact request messages as seen on IMAP server
+* fix: convert images to RGB8 before encoding into JPEG to fix sending of large RGBA images
+* fix showing large PNG files
+* fix: do not convert large GIF to JPEG
+* fix receiving Autocrypt Setup Messages from K-9
+* fix: delete expired locations and POIs with deleted chats
+* fix: send locations more reliable
+* fix: use last known location if it is recent enough
+* fix: do not fail to send encrypted quotes to unencrypted chats, replace quote by "..." instead
+* fix: always use correct "Saved Messages" icon when the chat is recreated
+* fix: add white background to transparent avatars
+* fix crashes when exporting or importing huge accounts
+* fix: remove leading whitespace from subject
+* fix problem with sharing the same key by several accounts
+* fix busy looping eg. during key import
+* fix remote group membership changes always overriding local ones
+* fix hint when adding a webxdc shortcut to the home page
+* fix webxdc links for securejoin
+* fix sending uncompressed images (bug introduced in beta 1.45 beta series)
+* fix: hide not useful menu options in the QR screens
+* fix scanning invite codes from the "New Chat" screen
+* fix: use the last header of multiple ones with the same name; this is the one DKIM was using
+* fix migration of legacy databases
+* fix: on onboarding, keep entered name and avatar when scanning QR codes or going for other options
+* fix broken "..." ellipsis for small screens
+* fix: do not mark the message with locations as seen
+* fix startup crash on android4
+* fix location streaming crash introduced in 1.45 beta
+* update translations and local help
+* update to core 1.139.5
+
+
+## v1.44.0
+2024-03
+
+* sync self-avatar and self-signature text across devices
+* remove webxdc sending limit
+* recognize "Trash" folder by name in case it is not flagged as such by the server
+* send group avatars inline so that they do not appear as unexpected attachments
+* "Settings / Advanced / Send statistics to Delta Chat's developers"
+  now include number of protected/encrypted/unencrypted chats
+* fix sending sync messages on updating self-name etc.
+* fix sometimes slow reconnects
+* more bug fixes
+* update translations and local help
+* update to core 1.136.2
+
+
+## v1.43.1 Testrun
+2024-02
+
+* add "Settings / Advanced / Send statistics to Delta Chat's developers" to draft a message with statistic;
+  the message is only sent if the user hits the "Send" button
+* add device message if outgoing messages are undecryptable
+* "Settings / Advanced / Read System Address Book" is remembered per-account
+* add link to troubleshooting for "Add as Second Device" on welcome screen and update troubleshooting
+* fix compatibility issue with 1.42 when using "Add Second Device" or backups
+* fix sometimes mangled links
+* fix sometimes wrongly marked gossiped keys
+* fix: guarantee immediate message deletion if "Delete Messages from Server" is set to "At once"
+* fix: Never allow a message timestamp to be a lot in the future
+* fix: make IMAP folder handling more resilient
+* update translations and local help
+* update to core 1.135.0
+
+
+## v1.43.0 Testrun
+2024-02
+
+* add "Reactions": long tap a message to react to it ❤️
+* reactions from others are shown below the messages
+* tap a reaction below a message to get reaction details
+* sharing QR code now shares "Invite Link":
+  if tapped by with Delta Chat users, Delta Chat opens; otherwise the browser opens;
+  the server does not get any information about the link details (as "Fragment" is not sent to server)
+* copying/pasting QR code data now also supports invite links
+* when using multiple accounts,
+  the avatar in the upper left corner now shows the number of unread messages in other account
+* updated "welcome message" now focuses about how to get in contact
+* add meaningful info message if provider does not allow unencrypted messages
+* long-tapping chatlist items now allow to mute/unmute chats directly
+* ask for system unlock secret before opening "Password & Account"
+* add 'Learn More' to ephemeral messages dialog
+* mark data as being "fragile", supporting systems now allows the data to be kept, making reinstalls easier
+* new option "Settings / Advanced / Read System Address Book":
+  when enabled, the address book addresses are added to the "New Chat" activity
+* faster reconnects when switching from a bad or offline network to a working network
+* add "From:" to protected headers for signed-only messages generated by some apps
+* sync user actions for ad-hoc groups across devices
+* sync contact creation/rename across devices
+* encrypt read receipts
+* only try to configure non-strict TLS checks if explicitly set
+* accept i.delta.chat as well as openpgp4fpr: links
+* force a display name to be set when using an instant onboarding QR code
+* focus on name and state for guaranteed e2ee chats; email address and other data are available in the profile
+* improve navigation on account creation by adding a title and a back button to the welcome screen
+* fix: delete resent messages on receiver side
+* fix: do not drop unknown report attachments, such as TLS reports
+* fix: be graceful with systems mangling the qr-code-date (macOS, iOS)
+* fix unexpected line breaks in messages (by using Quoted-Printable MIME)
+* fix: avoid retry sending for servers not returning a response code in time (force BCC-self)
+* fix partially downloaded messages getting stuck in "Downloading..."
+* fix inconsistent QR scan states (track forward and backward verification separately, mark 1:1 chat as verified as early as possible)
+* fix duplicated messages for some providers as "QQ Mail"
+* fix: do not remove contents from unencrypted Schleuder mailing lists messages
+* fix: reset message error when scheduling resending
+* fix marking some one-to-one chats as guaranteed
+* fix: avoid multiple resending of messages on slow SMTP servers
+* fix: more reliable connectivity information
+* fix: delete received outgoing messages from SMTP queue
+* fix timestamp of guaranteed e2ee info message for correct message ordering after backup restore
+* fix: add padlock to empty part if the whole message is empty
+* fix IDLE timeout renewal on keepalives and reduce it to 5 minutes
+* fix: fail fast on LIST errors to avoid busy loop when connection is lost
+* fix: improve checking if all members of a chat are verified
+* fix: same "green checkmark" message order on all platforms
+* fix CI by increasing TCP timeouts from 30 to 60 seconds
+* update translations and local help
+* update to core 1.134.0
+
+
+## v1.42.6
+2023-11
+
+* sync changes on "Your Profile Name", "Show Class Mails", "Read Receipts" options across devices
+* remove receiver limit on .xdc size
+* fix decryption errors when using multiple private keys
+* fix more log in errors for providers as 163.com; this was introduced in 1.41
+* fix: database locked errors on webxdc updates
+* update translations and local help
+* update to core 1.131.9
+
+
+## v1.42.4
+2023-11
+
+* fix battery draining due to active IMAP loop on some providers; this was introduced in 1.41
+* fix log in error on some providers as 163.com; this was introduced in 1.41
+* fix "Learn More" buttons that opened the help always in english
+* update local help
+* update to core 1.131.7
+
+
+## v1.42.3
+2023-11
+
+* fix: avoid infinite loop by failing fast on IMAP FETCH parsing errors
+* update translations
+* update to core 1.131.6
+
+
+## v1.42.2
+2023-11
+
+* fix contact creation using outdated names sometimes
+* fix: do not replace the message with an error in square brackets
+  when the sender is not a member of the protected group
+* fix: compare addresses on QR code scans and at similar places case-insensitively
+* fix: normalize addresses to lower case to catch unrecoverable typos and other rare errors
+* fix: fetch contact addresses in a single query
+* fix: sync chat name to other devices
+* update translations and local help
+* update to core 1.131.5
+
+
 ## v1.42.1
 2023-11
 

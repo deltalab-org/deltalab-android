@@ -1,0 +1,862 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <!-- common strings without special context -->
+    <string name="app_name">Delta Chat</string>
+    <string name="ok">Souhlas</string>
+    <string name="cancel">Zrušit</string>
+   <!-- the word "or" to separate blocks in the user interface that are mutually exclusive -->
+    <string name="or_separator">nebo</string>
+    <string name="clear_search">Vyčistit vyhledávání</string>
+    <string name="yes">Ano</string>
+    <string name="no">Ne</string>
+    <string name="select">Vyber</string>
+    <string name="on">Zapnout</string>
+    <string name="off">Vypnout</string>
+    <string name="def">Výchozí</string>
+    <string name="default_value">Výchozí (%1$s)</string>
+    <string name="default_value_as_above">Výchozí (jako výše)</string>
+    <string name="custom">Vlastní</string>
+    <string name="none">Žádný</string>
+    <string name="automatic">Samočinně</string>
+    <string name="strict">Přísný</string>
+    <string name="open">Otevřít</string>
+    <string name="download">Stáhnout</string>
+    <string name="downloading">Stahuji...</string>
+    <string name="open_attachment">Otevřít přílohu</string>
+    <string name="join">Připojit se</string>
+    <string name="rejoin">Připojit zpět</string>
+    <string name="delete">Vymazat</string>
+    <string name="info">Popis</string>
+    <string name="update">Aktualizovat</string>
+    <string name="emoji">Smajlíky</string>
+    <string name="attachment">Příloha</string>
+    <string name="back">Zpět</string>
+    <!-- this string is deprecated; the new wording is "introduced by ..." -->
+    <string name="verified">Ověřeno</string>
+    <string name="close">Zavřít</string>
+    <string name="close_window">Zavřít okno</string>
+    <string name="forward">Přeposlat</string>
+    <string name="create">Vytvořit</string>
+    <string name="later">Později</string>
+    <!-- "Resend" means "Sending the selected message(s) again to the same chat". The string is used in a menu and should be as short as possible. Resending may be needed after failures or to repost old messages to new members. -->
+    <string name="resend">Přeposlat</string>
+    <!-- Verb "to archive", as in "put a chat in the archive", not a noun "The Archive". -->
+    <string name="archive">Archivuj</string>
+    <!-- Verb "to unarchive", as in "remove a chat from the archive", opposite of the previous string -->
+    <string name="unarchive">Rozbal</string>
+    <string name="mute">Umlčet</string>
+    <string name="ephemeral_messages">Samomazací zpráva</string>
+    <string name="ephemeral_messages_hint">Tato nastavení platí pro všechny účastníky Delta Chatu. Nicméně ostatní mohou kopírovat, uložit, a přeposlat zprávy, nebo používat jiné e-mailové programy.</string>
+    <string name="save">Ulož</string>
+    <string name="chat">Chat</string>
+    <string name="media">Multimedia</string>
+    <string name="profile">Profil</string>
+    <string name="main_menu">Hlavní menu</string>
+    <string name="start_chat">Začni chat</string>
+    <string name="show_full_message">Zobraz celou zprávu…</string>
+    <!-- Stay short here, say ~16 characters. The source string could also be "All Read", maybe that hint can make translations easier :) -->
+    <string name="mark_all_as_read">Označit vše jako přečtené</string>
+    <!-- Shortest text for "Mark as being read". In english, this could be "Read" (past tense of "to read"), in german, this could be "Gelesen". -->
+    <string name="mark_as_read_short">Číst</string>
+    <!-- Placeholder text when something is loading -->
+    <string name="loading">Nahrávám...</string>
+    <string name="hide">Schovat</string>
+    <string name="activate">Aktivovat</string>
+    <string name="load_remote_content">Nahraj vzdálené obrázky</string>
+    <!-- Possible answers to the question are: Never, Always, Once -->
+    <string name="load_remote_content_ask">Vzdálené obrázky mohou umožnit sledování vaší činnosti.\n\nNastavení také povolí stahování fontů a dalšího obsahu. Obrázky z vyrovnávací paměti nebo součásti zprávy uvidíš i při vyptutí tohoto nastavení.\n\nNahrávat vzdálené obrázky?</string>
+    <string name="always">Vždy</string>
+    <string name="always_load_remote_images">Vždy načíst vzdálené obrázky</string>
+    <string name="once">Jednou</string>
+    <string name="show_warning">Zobrazit varování</string>
+    <string name="show_password">Zobraz heslo</string>
+    <string name="hide_password">Skrýt heslo</string>
+    <string name="not_now">Teď ne</string>
+    <string name="never">Nikdy</string>
+    <string name="one_moment">Okamžik ...</string>
+    <string name="done">Hotovo</string>
+    <string name="undo">Zpět</string>
+    <string name="offline">Nepřipojený</string>
+    <!-- For the next view or as "continue". Should be as short as possible. -->
+    <string name="next">Další</string>
+    <string name="error">Chyba</string>
+    <string name="error_x">Chyba %1$s</string>
+    <string name="no_app_to_handle_data">Neznámá aplikace pro tento typ dat.</string>
+    <string name="no_browser_installed">Žádná instalace prohlížeče</string>
+    <string name="file_not_found">Nemohu najít %1$s</string>
+    <string name="copied_to_clipboard">Zkopírováno do mezipaměti</string>
+    <string name="contacts_headline">Kontakty</string>
+    <string name="email_address">Emailová adresa</string>
+    <string name="bad_email_address">Neplatný e-mail.</string>
+    <string name="password">Heslo</string>
+    <string name="existing_password">Stávající heslo</string>
+    <string name="now">Nyní</string>
+    <!-- Headline for destructive actions with no undo. Could also be "Caution" or "Warning". -->
+    <string name="danger">Nebezbečí</string>
+    <string name="today">Dnes</string>
+    <string name="yesterday">Včera</string>
+    <string name="this_week">Tento týden</string>
+    <string name="this_month">Tento měsíc</string>
+    <string name="last_week">Minulý týden</string>
+    <string name="last_month">Minulý měsíc</string>
+    <!-- Refers to the time a contact was last seen. Shown below contact name in the profile. The placeholder will be replaced by date or time, resulting in "Last seen at 12:13 AM" or "Last seen Nov 12" -->
+    <string name="last_seen_at">Naposledy viděn v %1$s</string>
+    <!-- Refers to the time a contact was last seen. Shown below contact name in the profile. The placeholder will be replaced by a relative point in time as "3 minutes ago" (see https://momentjs.com for more examples and languages)-->
+    <string name="last_seen_relative">Naposledy viděn %1$s</string>
+    <string name="last_seen_unknown">Naposledy viděn: Neznámý</string>
+    <!-- Shown beside messages that are "N minutes old". Prefer short strings, or well-known abbreviations. -->
+    <plurals name="n_minutes">
+        <item quantity="one">%d minuta</item>
+        <item quantity="few">%d minuty</item>
+        <item quantity="many">%d minut</item>
+        <item quantity="other">%d minut</item>
+    </plurals>
+    <!-- Shown beside messages that are "N hours old". Prefer short strings, or well-known abbreviations. -->
+    <plurals name="n_hours">
+        <item quantity="one">%d hodina</item>
+        <item quantity="few">%d hodiny</item>
+        <item quantity="many">%d hodin</item>
+        <item quantity="other">%d hodin</item>
+    </plurals>
+    <plurals name="n_chats">
+        <item quantity="one">%d hovor</item>
+        <item quantity="few">%d hovory</item>
+        <item quantity="many">%d hovorů</item>
+        <item quantity="other">%dChaty</item>
+    </plurals>
+    <plurals name="n_contacts">
+        <item quantity="one">%d kontakt</item>
+        <item quantity="few">%d kontakty</item>
+        <item quantity="many">%d kontaktů</item>
+        <item quantity="other">%d kontaktů</item>
+    </plurals>
+    <plurals name="n_messages">
+        <item quantity="one">%d zpráva</item>
+        <item quantity="few">%d zprávy</item>
+        <item quantity="many">%d zpráv</item>
+        <item quantity="other">%d zpráv</item>
+    </plurals>
+    <plurals name="n_members">
+        <item quantity="one">%d člen</item>
+        <item quantity="few">%d členové</item>
+        <item quantity="many">%d členů</item>
+        <item quantity="other">%d členů</item>
+    </plurals>
+    <string name="self">Já</string>
+    <string name="draft">Rozepsané</string>
+    <string name="image">Obrázek</string>
+    <!-- Used in summaries as "Draft: Reply", similar as "Draft: Image". Use a noun here, not a verb (not: "to reply") -->
+    <string name="reply_noun">Odpověď</string>
+    <string name="gif">GIF</string>
+    <!-- "Stickers" as known from other messengers; in some languages, the English "Sticker" is fine. -->
+    <string name="sticker">Nálepka</string>
+    <string name="add_to_sticker_collection">Přidat do sbírky nálepek </string>
+    <string name="add_stickers_instructions">Chcete-li přidat nálepky, klepněte na „Otevřít složku nálepek“, vytvořte podsložku pro balíček nálepek a přetáhněte tam soubory obrázků a nálepek</string>
+    <string name="open_sticker_folder">Otevřete složku nálepek</string>
+    <string name="images">Obrázky</string>
+    <string name="audio">Zvukový záznam</string>
+    <string name="voice_message">Hlasová zpráva</string>
+    <string name="forwarded">Přeposláno</string>
+    <string name="forwarded_message">Přeposlaná zpráva</string>
+    <!-- %1$s will be replaced by the name or the e-mail address of the person who forwards the message -->
+    <string name="forwarded_by">Přeposlal %1$s</string>
+    <string name="video">Video</string>
+    <string name="documents">Dokumenty</string>
+    <string name="contact">Kontakt</string>
+    <string name="camera">Kamera</string>
+    <!-- As in "start a video recording" or "take a photo"; eg. the description of the "shutter button" in cameras -->
+    <string name="capture">Zachyťte</string>
+    <string name="switch_camera">Přepnout fotoaparát</string>
+    <string name="toggle_fullscreen">Přepni na režim celé obrazovky </string>
+    <string name="location">Poloha</string>
+    <string name="locations">Umístění</string>
+    <string name="gallery">Galerie</string>
+    <string name="images_and_videos">Obrázky a videa</string>
+    <string name="file">Soubor</string>
+    <string name="files">Soubory</string>
+    <!-- "App" is used to present "Webxdc App" (https://webxdc.org) in a user friendly way. Please stay close to the original term and keep it short (it is used in menus with few screen space). -->
+    <string name="webxdc_app">Aplikace</string>
+    <!-- plural of "App"; used to present "Webxdc App" (https://webxdc.org) in a user friendly way. Please stay close to the original term and keep it short (it is used in menus with few screen space). -->
+    <string name="webxdc_apps">Aplikace</string>
+    <string name="unknown">Neznámá</string>
+
+    <string name="green">Zelená</string>
+    <string name="red">Červená</string>
+    <string name="blue">Modrá</string>
+    <string name="orange">Oranžová</string>
+    <string name="cyan">Azurová</string>
+    <string name="purple">Purpurová</string>
+    <string name="magenta">Fialová</string>
+    <string name="white">Bílá</string>
+
+    <string name="zoom">Zvětšit</string>
+    <string name="extra_small">Velmi malá</string>
+    <string name="small">Malá</string>
+    <string name="normal">Normální</string>
+    <string name="large">Velká</string>
+    <string name="extra_large">Velmi velká</string>
+
+    <string name="fast">Rychle</string>
+    <string name="slow">Pomalu</string>
+
+    <!-- menu labels (or icon, buttons...) -->
+    <string name="menu_new_contact">Nový kontakt</string>
+    <string name="menu_new_chat">Nový chat</string>
+    <string name="menu_new_group">Nová skupina</string>
+    <string name="clone_chat">Kopíruj chat</string>
+    <!-- consider keeping the term "broadcast" as in WhatsApp or Telegram -->
+    <string name="broadcast_list">Seznam vysílání</string>
+    <string name="broadcast_lists">Seznam vysílání</string>
+    <string name="new_broadcast_list">Nový seznam vysílání </string>
+    <string name="add_recipients">Přidat příjemce </string>
+    <string name="edit_broadcast_list">Upravit seznam vysílání </string>
+    <string name="broadcast_list_name">Název seznamu vysílání </string>
+    <string name="please_enter_broadcast_list_name">Zadejte název seznamu vysílání. </string>
+    <string name="menu_send">Poslat</string>
+    <string name="menu_toggle_keyboard">Přepni na smajlíky</string>
+    <string name="menu_edit_group">Uprav skupinu</string>
+    <string name="menu_group_name_and_image">Název a obrázek skupiny</string>
+    <string name="menu_show_global_map">Ukaž všechny polohy</string>
+    <string name="menu_archive_chat">Archivuj chat</string>
+    <string name="menu_unarchive_chat">Rozbal chat</string>
+    <string name="menu_add_attachment">Přidat přílohu</string>
+    <string name="menu_leave_group">Opustit skupinu</string>
+    <string name="menu_delete_chat">Vymaž chat</string>
+    <!-- Command to delete all messages in a chat. The chat itself will not be deleted but will be empty afterwards, so make sure to be different from "Delete Chat" here. "Clear" is a verb here, "Empty Chat" would also be fine (eg. in German "Chat leeren") -->
+    <string name="clear_chat">Vyčisti chat</string>
+    <string name="ask_delete_named_chat">Skutečně úplně vymazat \"%1$s\"?</string>
+    <string name="menu_delete_messages">Vymaž zprávy</string>
+    <string name="delete_contact">Vymaž kontakt</string>
+    <string name="menu_delete_location">Smazat tuto polohu?</string>
+    <string name="menu_message_details">Podrobnosti zprávy</string>
+    <string name="menu_copy_to_clipboard">Kopíruj do mezipaměti</string>
+    <string name="menu_copy_selection_to_clipboard">Kopíruj výběr</string>
+    <string name="menu_copy_link_to_clipboard">Kopíruj odkaz</string>
+    <string name="menu_copy_text_to_clipboard">Zkopírujte text </string>
+    <string name="menu_copy_image_to_clipboard">Zkopírujte obrázek</string>
+    <string name="menu_copy_email_to_clipboard">Zkopírujte E-Mail</string>
+    <string name="paste_from_clipboard">Vložit z mezipaměti</string>
+    <string name="ask_copy_unopenable_link_to_clipboard">Odkaz \"%1$d\" nelze otevřít ve webovém prohlížeči. Chcete místo toho zkopírovat odkaz do schránky? </string>
+    <string name="menu_forward">Přeposlat zprávu</string>
+    <string name="menu_reply">Odpověz na zprávu</string>
+    <string name="menu_mute">Umlčet upozornění</string>
+    <string name="menu_unmute">Zruš umlčení</string>
+    <string name="menu_export_attachment">Ulož přílohu</string>
+    <string name="menu_export_attachments">Exportujte přílohy</string>
+    <string name="menu_all_media">Všechna multimedia</string>
+    <!-- Command to jump to the original message corresponding to a gallery image or document -->
+    <string name="show_in_chat">Ukaž v chatu</string>
+    <string name="show_app_in_chat">Zobrazit aplikaci v chatu</string>
+    <string name="menu_share">Sdílet</string>
+    <!-- Verb "to block sth." usually a mailing list or a contact, not a noun -->
+    <string name="block">Zablokovat</string>
+    <string name="menu_block_contact">Zablokuj kontakt</string>
+    <string name="menu_unblock_contact">Odblokuj kontakt</string>
+    <string name="accept">Přijmout</string>
+    <string name="menu_play">Přehrát</string>
+    <string name="menu_pause">Přerušit</string>
+    <string name="menu_scroll_to_bottom">Posuň až dolů</string>
+    <string name="menu_scroll_to_top">Posuň až nahoru</string>
+    <string name="menu_help">Nápověda</string>
+    <string name="what_is_webxdc">Co je Webxdc? </string>
+    <string name="privacy_policy">Pravidla pro soukromí</string>
+    <string name="menu_select_all">Vyber vše</string>
+    <string name="select_chat">Vyber chat</string>
+    <string name="select_more">Vyber více</string>
+    <string name="menu_edit_name">Uprav jméno</string>
+    <string name="menu_settings">Nastavení</string>
+    <string name="menu_advanced">Pokročilá</string>
+    <string name="menu_view_profile">Zobraz profil</string>
+    <string name="menu_zoom_in">Přiblížit</string>
+    <string name="menu_zoom_out">Oddálit</string>
+    <string name="menu_save_log">Uložit záznam běhu</string>
+    <string name="menu_more_options">Více možností</string>
+    <string name="menu_learn_spelling">Naučte se pravopis</string>
+    <string name="menu_chat_audit_log">Audit chat protokolu</string>
+    <string name="jump_to_message">Přejít na zprávu</string>
+    <string name="copy_json">Zkopírujte JSON</string>
+    <string name="replace_draft">Nahraďte koncept</string>
+    <string name="title_share_location">Sdílet polohu se všemi členy skupiny</string>
+    <string name="device_talk">Zprávy přístroje</string>
+    <string name="device_talk_subtitle">Samovytvořené zprávy</string>
+    <string name="device_talk_explain">Zprávy v tomto hovoru jsou vytvořeny aplikací Delta Chat. Její tvůrci tak informují o aktualizacích a potížích při používání.</string>
+    <string name="edit_contact">Uprav kontakt</string>
+    <!-- Verb "to pin", making something sticky, not a noun or appreviation for "pin number". -->
+    <string name="pin_chat">Připíchni chat</string>
+    <!-- Opposite of "Pin chat", removing the sticky-state from a chat. -->
+    <string name="unpin_chat">Odpíchni chat</string>
+    <!-- Verb "to pin", making something sticky, not a noun or appreviation for "pin number". -->
+    <string name="pin">Připíchnout</string>
+    <!-- Opposite of "Pin chat", removing the sticky-state from a chat. -->
+    <string name="unpin">Odpíchnout</string>
+    <string name="ConversationFragment_quoted_message_not_found">Původní zprávu nelze najít</string>
+    <string name="reply_privately">Odpověz soukromě</string>
+    <string name="mute_for_one_hour">Umlčet na 1 hodinu</string>
+    <string name="mute_for_two_hours">Umlčet na 2 hodiny</string>
+    <string name="mute_for_one_day">Umlčet na 1 den</string>
+    <string name="mute_for_seven_days">Umlčet na 7 dní</string>
+    <string name="mute_forever">Umlčet na pořád</string>
+
+    <string name="share_location_for_5_minutes">na 5 minut</string>
+    <string name="share_location_for_30_minutes">na 30 minut</string>
+    <string name="share_location_for_one_hour">na 1 hodinu</string>
+    <string name="share_location_for_two_hours">na 2 hodiny</string>
+    <string name="share_location_for_six_hours">na 6 hodin</string>
+
+    <plurals name="ask_send_following_n_files_to">
+        <item quantity="one">Pošli následující soubor na %s?</item>
+        <item quantity="few">Pošli následující %d soubory na %s?</item>
+        <item quantity="many">Pošli následujících %d souborů na %s?</item>
+        <item quantity="other">Pošli následujících %d souborů na %s?</item>
+    </plurals>
+    <string name="file_saved_to">Soubor uložen do \"%1$s\".</string>
+
+    <string name="videochat">Video hovor</string>
+    <string name="videochat_invite_user_to_videochat">Pozvi %1$s na video hovor?</string>
+    <string name="videochat_invite_user_hint">Toto vyžaduje odpovídající prohlížeč na obou koncích.</string>
+    <string name="videochat_contact_invited_hint">%1$s pozván na video hovor.</string>
+    <string name="videochat_you_invited_hint">Pozval jsi na video hovor.</string>
+    <string name="videochat_tap_to_join">Připoj se stiskem</string>
+    <string name="videochat_tap_to_open">Otevři stiskem</string>
+    <string name="videochat_instance">Připravený video hovor</string>
+    <string name="videochat_instance_placeholder">Tvůj připravený video hovor</string>
+    <string name="videochat_instance_from_qr">Použít \"%1$s\" k pozvání na video hovory?\n\nPokud nastaveno, můžete začít video hovor v každém chatu jeden na jednoho. Toto nahradí jakékoli předchozí nastavení video hovorů.</string>
+    <string name="videochat_invitation">Výzva k video hovoru</string>
+    <string name="videochat_invitation_body">Jste vyzváni k video hovoru, připojte se stiskem %1$s</string>
+
+    <!-- get confirmations -->
+    <string name="ask_leave_group">Opravdu opustit tuto skupinu?</string>
+    <plurals name="ask_delete_chat">
+        <item quantity="one">Vymazat %d hovor? Pak už jej neuvidíte v seznamu hovorů, ale jeho zprávy zůstanou na serveru.</item>
+        <item quantity="few">Vymazat %d hovory? Pak už je neuvidíte v seznamu hovorů, ale jejich zprávy zůstanou na serveru.</item>
+        <item quantity="many">Vymazat %d hovorů? Pak už je neuvidíte v seznamu hovorů, ale jejich zprávy zůstanou na serveru.</item>
+        <item quantity="other">Vymazat %d hovorů? Pak už je neuvidíte v seznamu hovorů, ale jejich zprávy zůstanou na serveru.</item>
+    </plurals>
+    <plurals name="ask_delete_messages">
+        <item quantity="one">Vymaž %d zprávu zde i ze serveru?</item>
+        <item quantity="few">Vymaž %d zprávy zde i ze serveru?</item>
+        <item quantity="many">Vymaž %d zpráv zde i ze serveru?</item>
+        <item quantity="other">Vymaž %d zpráv zde i ze serveru?</item>
+    </plurals>
+    <string name="ask_forward">Přepošli zprávy na adresu %1$s?</string>
+    <string name="ask_forward_multiple">Přepošli zprávy do %1$d chatů?</string>
+    <string name="ask_export_attachment">Uložit přílohu? Uložení příloh je zpřístupní ostatním aplikacím na tomto přístroji.\n\nPokračovat?</string>
+    <string name="ask_block_contact">Zablokovat tento kontakt? Další zprávy od tohoto kontaktu již nebudete přijímat.</string>
+    <string name="ask_unblock_contact">Odblokovat tento kontakt? Zprávy od tohoto kontaktu budete opět přijímat.</string>
+    <string name="ask_delete_contacts">Vymazat kontakty?\n\nKontakty v nastavených chatech a kontakty ze systémového adresáře nelze nadobro vymazat.</string>
+    <string name="ask_delete_contact">Vymazat kontakt %1$s?\n\nKontakty v nastavených chatech a kontakty ze systémového adresáře nelze nadobro vymazat.</string>
+    <string name="cannot_delete_contacts_in_use">Kontakty v nastavených chatech nelze vymazat</string>
+    <string name="ask_start_chat_with">Chat s %1$s?</string>
+    <string name="ask_delete_value">Vymazat %s?</string>
+    <!-- %1$s is replaced by a comma-separated list of names -->
+    <string name="ask_remove_members">Odstranit %1$s ze skupiny?</string>
+    <string name="open_url_confirmation">Otevřít tento odkaz?</string>
+
+
+    <!-- contact list -->
+    <string name="contacts_title">Kontakty</string>
+    <string name="contacts_enter_name_or_email">Zadej jméno nebo e-mail</string>
+    <string name="contacts_type_email_above">Zadej e-mail nahoře</string>
+    <string name="contacts_empty_hint">Žádné kontakty</string>
+
+
+    <!-- chatlist and chat view -->
+    <plurals name="chat_archived">
+        <item quantity="one">%d hovor archivován</item>
+        <item quantity="few">%d hovory archivovány</item>
+        <item quantity="many">%d hovorů archivováno</item>
+        <item quantity="other">%d chaty archivovány</item>
+    </plurals>
+    <plurals name="chat_unarchived">
+        <item quantity="one">%d hovor rozbalen</item>
+        <item quantity="few">%d hovory rozbaleny</item>
+        <item quantity="many">%d hovorů rozbaleno</item>
+        <item quantity="other">%d chaty rozbaleny</item>
+    </plurals>
+    <string name="chat_archived_chats_title">Archivované chaty</string>
+    <string name="chat_please_enter_message">Zadejte zprávu, prosím.</string>
+    <string name="chat_camera_unavailable">Kamera je nedostupná.</string>
+    <string name="chat_unable_to_record_audio">Nelze nahrávatt zvuk.</string>
+    <plurals name="chat_n_new_messages">
+        <item quantity="one">%d nová zpráva</item>
+        <item quantity="few">%d nové zprávy</item>
+        <item quantity="many">%d nových zpráv</item>
+        <item quantity="other">%d nových zpráv</item>
+    </plurals>
+    <string name="chat_new_broadcast_hint">V seznamu vysílání budou příjemci dostávat zprávy v chatu pouze pro čtení s vámi.</string>
+    <string name="chat_new_group_hint">Napiš první zprávu a umožni ostatním odpovídat do této skupiny.\n\n• Nevadí pokud všichni členové nemají Delta Chat.\n\n• Doručení první zprávy může trvat déle.</string>
+    <string name="chat_record_slide_to_cancel">Zrušit tahem</string>
+    <string name="chat_record_explain">K nahrání hlasové zprávy stiskni a drž mikrofon, uvolni pro odeslání.</string>
+    <string name="chat_no_chats_yet_title">Prázdná schránka.\nStiskem \"+\" založ nový chat.</string>
+    <!-- deprecated -->
+    <string name="chat_no_chats_yet_hint">Založ chat s jakýmkoli uživatelem Delta Chatu a s jakýmkoli e-mailem.</string>
+    <string name="chat_all_archived">Všechny chaty archivovány.\nStiskem \"+\" založ nový chat.</string>
+    <string name="chat_share_with_title">Sdílet s</string>
+    <string name="chat_input_placeholder">Zpráva</string>
+    <string name="chat_archived_label">Archivováno</string>
+    <string name="chat_no_messages">Žádná zpráva.</string>
+    <string name="chat_self_talk_subtitle">Zprávy poslané sobě</string>
+    <string name="archive_empty_hint">Zde se zobrazí archivované chaty.</string>
+    <string name="saved_messages">Uložené zprávy</string>
+    <string name="saved_messages_explain">• Přepošli si sem zprávy pro jednoduchý přístup\n\n• Dělej si poznámky textové i hlasové\n\n• Přiložená multimedia se hned uloží</string>
+    <!-- Should match "Saved" from "Saved messages" -->
+    <string name="saved">Uloženo</string>
+    <string name="retry_send">Opakuj pokus o zaslání zprávy</string>
+    <!-- reasons for a disabled message composer -->
+    <string name="messaging_disabled_not_in_group">Nelze psát protože nejsi členem této skupiny. O přidání požádej jiného člena.</string>
+    <string name="cannot_display_unsuported_file_type">Nelze zobrazit tento typ souboru: %s</string>
+    <string name="attachment_failed_to_load">Nezdařilo se načíst přílohu</string>
+    <!-- mailing lists -->
+    <string name="mailing_list">Hromadná zpráva</string>
+    <!-- this is a warning that is shown when one tries to send something to a chat that is not yet accepted. -->
+    <string name="accept_request_first">Nejprve prosím přijměte žádost o chat.</string>
+    <!-- map -->
+    <string name="filter_map_on_time">Zobraz polohu v časovém rámci</string>
+    <string name="show_location_traces">Ukaž trasy</string>
+    <string name="add_poi">Pošli polohu zájmu</string>
+
+    <!-- chat audit log -->
+    <string name="chat_audit_log_empty_message">Zde se zobrazují systémové zprávy pro tento chat</string>
+    <string name="chat_audit_log_title">Protokol auditu pro chat %1$s</string>
+    <string name="chat_audit_log_description">Zobrazuje pouze systémové a informační zprávy; užitečné pro nalezení posledních akcí chatu bez procházení mnoha zpráv. </string>
+
+    <!-- search -->
+    <string name="search">Hledej</string>
+    <string name="search_in_chat">Vyhledávat v chatu</string>
+    <string name="search_explain">Vyhledávat chaty, kontakty a zprávy</string>
+    <string name="search_no_result_for_x">Žádný výsledek pro \"%s\"</string>
+
+
+    <!-- create/edit groups, contact/group profile -->
+    <string name="group_name">Název skupiny</string>
+    <string name="group_avatar">Obrázek skupiny</string>
+    <string name="remove_group_image">Odstraň obrázek skupiny</string>
+    <string name="change_group_image">Změň obrázek skupiny</string>
+    <string name="group_create_button">Vytvoř skupinu</string>
+    <string name="group_please_enter_group_name">Vlož název skupiny, prosím.</string>
+    <string name="group_add_members">Přidej člena</string>
+    <string name="group_self_not_in_group">Pro tuto aktivitu musíš být členem této skupiny.</string>
+    <string name="profile_encryption">Šifrování</string>
+    <string name="profile_shared_chats">Sdílené chaty</string>
+    <string name="related_chats">Související chaty</string>
+    <string name="tab_contact">Kontakt</string>
+    <string name="tab_group">Skupina</string>
+    <string name="tab_gallery">Galerie</string>
+    <string name="tab_docs">Dokumenty</string>
+    <string name="tab_links">Odkazy</string>
+    <string name="tab_map">Mapa</string>
+    <string name="tab_gallery_empty_hint">Obrázky a videa sdílené v tomto chatu budou zobrazeny zde.</string>
+    <string name="tab_docs_empty_hint">Dokumenty, hudba a další soubory sdílené v tomto chatu budou zobrazeny zde.</string>
+    <string name="tab_image_empty_hint">Zde se zobrazí obrázky sdílené v tomto chatu.</string>
+    <string name="tab_video_empty_hint">Zde se zobrazí videa sdílená v tomto chatu.</string>
+    <string name="tab_audio_empty_hint">Zde se zobrazí zvukové soubory a hlasové zprávy sdílené v tomto chatu.</string>
+    <string name="tab_webxdc_empty_hint">Zde se zobrazí aplikace sdílené v tomto chatu.</string>
+    <string name="tab_all_media_empty_hint">Zde se zobrazí média sdílená v jakémkoli chatu.</string>
+    <string name="media_preview">Náhled multimedia</string>
+    <string name="send_message">Pošli zprávu</string>
+    <string name="multidevice_install_dc_on_other_device">Nainstalujte si Delta Chat do druhého zařízení (https://get.delta.chat)</string>
+    <!-- "I Already Have a Login / Add as Second Device” should be the same text as defined by the keys onboarding_alternative_logins and multidevice_receiver_title -->
+    <string name="multidevice_tap_scan_on_other_device">Spusťte Delta Chat, klepněte na „Přidat jako druhé zařízení“ a naskenujte zde zobrazený kód</string>
+    <string name="login_title">Přihlaš se</string>
+    <!-- for classic email, we use the classical term "Account" -->
+    <string name="login_header">Přihlaš se na váš server</string>
+    <!-- for classic email, we use the classical term "Account" -->
+    <string name="login_explain">Přihlásit se se stávajícím účtem pro e-mail.</string>
+    <string name="login_subheader">Pro standardní poskytovatele jsou nastavení dopněna samočinně. Někdy je potřeba umožnit IMAP ve webovém rozhraní nastavení. Obraťte se na poskytovatele e-mailu nebo přátele.</string>
+    <string name="login_no_servers_hint">Delta Chat nemá žádné vlastní servery, tvá data zůstávají na tvém přístroji.</string>
+    <string name="login_inbox">Příchozí</string>
+    <string name="login_imap_login">IMAP uživatelské jméno</string>
+    <string name="login_imap_server">IMAP server</string>
+    <string name="login_imap_port">IMAP port</string>
+    <string name="login_imap_security">IMAP zabezpečení</string>
+    <string name="login_outbox">Odchozí</string>
+    <string name="login_smtp_login">SMTP uživatelské jméno</string>
+    <string name="login_smtp_password">SMTP heslo</string>
+    <string name="login_smtp_server">SMTP server</string>
+    <string name="login_smtp_port">SMTP port</string>
+    <string name="login_smtp_security">SMTP zabezpečení</string>
+    <string name="login_auth_method">Metoda autorizace</string>
+    <string name="login_info_oauth2_title">Zkus zjednodušené nastavení?</string>
+    <string name="login_info_oauth2_text">Zadaný e-mail podporuje zjednodušené nastavení (OAuth 2.0).\n\nV příštím kroku dej prosím Delta Chatu povolení chovat se jako chat přes e-mail. \n\nŽádné servery Delta Chat nemá, tvá data zůstávají na tvém přístroji.</string>
+    <string name="login_certificate_checks">Kontroly certifikátu</string>
+    <string name="login_error_mail">Zadej platný e-mail, prosím</string>
+    <string name="login_error_server">Zedej platný server / IP adresu, prosím</string>
+    <string name="login_error_port">Zadej platný port (1-65535), prosím</string>
+    <string name="login_error_required_fields">Zadej platný e-mail a heslo</string>
+    <string name="import_backup_title">Nahrát zálohu</string>
+    <string name="import_backup_ask">Záloha nalezena v \"%1$s\"\n\nChceš nahrát  k používání všechna jeho data a nastavení?</string>
+    <string name="import_backup_no_backup_found">Žádná záloha nebyla nalezena. \n\nZkopíruj zálohu do \"%1$s\" a zkus to znovu. Případně, stiskni \"Start messaging\"  a pokračuj s běžným postupem pro nastavení.</string>
+    <!-- Translators: %1$s will be replaced by the e-mail address -->
+    <string name="login_error_cannot_login">Přihlášení jako \"%1$s\" selhalo. Zkontrolujte si prosím ještě jednou e-mail a heslo.</string>
+    <!-- TLS certificate checks -->
+    <string name="accept_invalid_certificates">Přijmout neplatné certifikáty</string>
+    <string name="used_settings">Použité nastavení</string>
+    <string name="switch_account">Přepni účet</string>
+    <string name="add_account">Přidej účet</string>
+    <string name="delete_account">Vymaž účet</string>
+    <string name="delete_account_ask">Skutečně vymazat data tvého účtu?</string>
+    <string name="delete_account_explain_with_name">Všechna data účtu \"%s\" budou z tohoto zařízení vymazána, včetně nastavení end-to-end šifrování, kontaktů, hovorů, zpráv a multimédií. Tento úkon nelze vrátit zpět.</string>
+    <string name="try_connect_now">Teď se zkus připojit</string>
+    <!-- Translations: %1$s will be replaced by a more detailed error message -->
+    <string name="configuration_failed_with_error">Nastavení selhalo. Chyba: %1$s</string>
+
+    <!-- share and forward messages -->
+    <!-- Translators: shown above a chat/contact list when selecting recipients to forward messages -->
+    <string name="forward_to">Přeposlat komu ...</string>
+    <string name="share_multiple_attachments">Poslat %1$d soubory do zvoleného chatu?\n\nSoubory budou zachovány v původní velikosti. Obrázky a videa nebudou překódována.</string>
+    <string name="share_multiple_attachments_multiple_chats">Poslat %1$d soubor(y) do %2$d chatu?\n\nSoubory budou zachovány v původní velikosti. Obrázky a videa nebudou překódována.</string>
+    <string name="share_text_multiple_chats">Poslat tento text do %1$d chatů?\n\n\"%2$s\"</string>
+    <string name="share_abort">Sdílení přerušeno díky chybějícím oprávnění.</string>
+
+
+    <!-- preferences -->
+    <string name="pref_using_custom">Nastaven vlastní: %s</string>
+    <string name="pref_using_default">Nastaven výchozí: %s</string>
+    <string name="pref_profile_info_headline">Přehled účtu</string>
+    <string name="pref_profile_photo">Obrázek profilu</string>
+    <string name="pref_blocked_contacts">Blokované kontakty</string>
+    <string name="blocked_empty_hint">Zablokované kontakty se zobrazí zde.</string>
+    <!-- for classic email, we use the classical term "Account" -->
+    <string name="pref_password_and_account_settings">Heslo a účet</string>
+    <string name="pref_who_can_see_profile_explain">Tvůj profilový obrázek a jméno budou zobrazeny vedle zpráv poslaných ostatním uživatelům. Data která jsou již jednou odeslaná nelze smazat ani odstranit. </string>
+    <string name="pref_your_name">Tvé jméno</string>
+    <!-- Translators: Visible only to recipients who DO NOT use Delta Chat, so it's the last line in an E-mail and not a "Status". -->
+    <string name="pref_default_status_label">Text s podpisem</string>
+    <string name="pref_enter_sends">Nový řádek odesílá</string>
+    <string name="pref_enter_sends_explain">Stisk klávesy pro nový řádek odešle zprávu</string>
+    <string name="pref_outgoing_media_quality">Kvalita odeslaných multimedií</string>
+    <string name="pref_outgoing_balanced">Vyvážená</string>
+    <string name="pref_outgoing_worse">Horší kvalita, malá velikost</string>
+    <string name="pref_vibrate">Chvění</string>
+    <string name="pref_screen_security">Zabezpečení obrazovky</string>
+    <!-- Translators: Must indicate that there is no guarantee as the system may not honor our request. -->
+    <string name="pref_screen_security_explain">Požaduj blokaci sejmutí obrazovky v seznamu Nedávné a uvnitř aplikace</string>
+    <string name="pref_screen_security_please_restart_hint">K použití nastavení zabezpečení obrazovky restartuj aplikaci.</string>
+    <string name="pref_notifications">Upozornění</string>
+    <string name="pref_notifications_show">Zobraz</string>
+    <string name="pref_notifications_priority">Přednost</string>
+    <string name="pref_notifications_explain">Povol systémová upozornění pro nové zprávy</string>
+    <string name="pref_show_notification_content">Zobraz obsah zprávy v rámci upozornění</string>
+    <string name="pref_show_notification_content_explain">Zobraz odesilatele a první slova zprávy v rámci upozornění</string>
+    <string name="pref_led_color">LED barvy</string>
+    <string name="pref_sound">Zvuk</string>
+    <string name="pref_silent">Ticho</string>
+    <string name="pref_privacy">Soukromí</string>
+    <string name="pref_chats_and_media">Chaty a multimédia</string>
+    <string name="pref_system_default">Podle systému</string>
+    <!-- Translators: as in "opposite of dark" -->
+    <string name="pref_light_theme">Světlý</string>
+    <string name="pref_dark_theme">Tmavý</string>
+    <string name="pref_appearance">Vzhled</string>
+    <string name="pref_theme">Vzor vzhledu</string>
+    <string name="pref_language">Jazyk</string>
+    <string name="pref_incognito_keyboard">Chráněná klávesnice</string>
+    <!-- Translators: Must indicate that there is no guarantee as the system may not honor our request. -->
+    <string name="pref_incognito_keyboard_explain">Požaduj klávesnici s vypnutým učením slov</string>
+    <string name="pref_read_receipts">Číst potvrzení</string>
+    <string name="pref_read_receipts_explain">Při vypnutém čtení potvrzení se nezobrazí potvrzení o příjetí od ostatních.</string>
+    <string name="pref_manage_keys">Správa klíčů</string>
+    <string name="pref_use_system_emoji">Použij systémové smajlíky</string>
+    <string name="pref_use_system_emoji_explain">Vypni vestavěné smajlíky Data Chatu</string>
+    <string name="pref_show_system_contacts_explain">Nabídka vytvoření chatů s kontakty z adresáře. Někteří poskytovatelé potřebují nejprve nastavení šifrování typu end-to-end. </string>
+    <string name="pref_app_access">Přístup aplikace</string>
+    <string name="pref_chats">Chaty</string>
+    <string name="pref_in_chat_sounds">Zvuky v rámci chatu</string>
+    <string name="pref_message_text_size">Velikost písma zprávy</string>
+    <string name="pref_view_log">Zobrazit záznam běhu</string>
+    <string name="pref_saved_log">Záznam běhu uložen do složky \"Downloads\"</string>
+    <string name="pref_save_log_failed">Uložení záznamu běhu selhalo</string>
+    <string name="pref_log_header">Záznam běhu</string>
+    <string name="pref_other">Ostatní</string>
+    <string name="pref_backup">Záloha</string>
+    <string name="pref_backup_explain">Zálohuj chaty na vnější úložiště</string>
+    <string name="pref_backup_export_explain">Záloha ti pomůže nastavit novou instalaci na tomto či jiném zařízení.\n\nZáloha obsahuje všechny zprávy, kontakty a chaty, a tvé end-to-end Autocrypt nastavení. Soubor se zálohou uchovej na bezpečném místě nebo jej co nejdřív vymaž.</string>
+    <string name="pref_backup_export_start_button">Začni zálohovat</string>
+    <string name="pref_backup_written_to_x">Záloha úspěšně zapsána v \"%1$s\"</string>
+    <string name="pref_managekeys_menu_title">Správa klíčů</string>
+    <string name="pref_managekeys_export_secret_keys">Ulož tajné klíče</string>
+    <string name="pref_managekeys_export_explain">Uložit tajné klíče do \"%1$s\"?</string>
+    <string name="pref_managekeys_import_secret_keys">Nahraj tajné klíče</string>
+    <string name="pref_managekeys_import_explain">Nahrát tajné klíče z \"%1$s\"?\n\n• Stávající klíče nebudou vymazány\n\n• Klíče nahrané jako poslední budou použity jako výchozí pokud jméno souboru nebsahuje slovo \"legacy\".</string>
+    <string name="pref_managekeys_secret_keys_exported_to_x">Tajné klíče úspěšně zapsány v \"%1$s\".</string>
+    <string name="pref_managekeys_secret_keys_imported_from_x">Tajné klíče nahrány z \"%1$s\".</string>
+    <!-- No need to translate "Wallpaper" literally. Chose what is common in your language for a "Wallpaper" or a "Background". Avoid adding the term "image" here, as the "Wallpaper" may also be just a single color. -->
+    <string name="pref_background">Pozadí</string>
+    <string name="pref_background_btn_default">Výchozí obrázek</string>
+    <string name="pref_background_btn_gallery">Vyber z galerie</string>
+    <string name="pref_imap_folder_handling">Používání složky IMAP</string>
+    <string name="pref_imap_folder_warn_disable_defaults">Při vypnutí této možnosti se ujisti, že server a tvé ostatní klientské aplikace mají odpovídající nastavení.\n\nJinak může vše přestat fungovat.</string>
+    <string name="pref_watch_sent_folder">Sleduj Odchozí složku</string>
+    <string name="pref_send_copy_to_self">Posílat si kopie</string>
+    <string name="pref_auto_folder_moves">Samočinně přesouvat do složky DeltaChat </string>
+    <string name="pref_auto_folder_moves_explain">Zprávy chatů jsou přesouvány, aby nezahlcovali Příchozí složku</string>
+    <string name="pref_only_fetch_mvbox_title">Pouze načíst ze složky DeltaChat</string>
+    <string name="pref_only_fetch_mvbox_explain">Ostatní složky ignorujte. Vyžaduje, aby váš server přesunul zprávy chatu do složky DeltaChat. </string>
+    <string name="pref_show_emails">Zobrazuj běžné e-maily</string>
+    <string name="pref_show_emails_no">Ne, pouze chaty</string>
+    <string name="pref_show_emails_accepted_contacts">Pro přijaté kontakty</string>
+    <string name="pref_show_emails_all">Vše</string>
+    <string name="pref_experimental_features">Pokusné funkce </string>
+    <string name="pref_on_demand_location_streaming">Streamování polohy na vyžádání</string>
+    <string name="pref_background_default">Výchozí pozadí</string>
+    <string name="pref_background_default_color">Výchozí barva</string>
+    <string name="pref_background_custom_image">Vlastní obrázek</string>
+    <string name="pref_background_custom_color">Vlastní barva</string>
+    <string name="export_aborted">Ukládání přerušeno.</string>
+    <string name="profile_image_select">Vyber profilový obrázek</string>
+    <string name="select_your_new_profile_image">Vyber svůj nový profilový obrázek</string>
+    <string name="profile_image_delete">Vymaž obrázek profilu</string>
+    <!-- Emoji picker and categories -->
+    <string name="emoji_search_results">Výsledky hledání</string>
+    <string name="emoji_not_found">Smajlíky nenalezeny</string>
+    <string name="emoji_recent">Nedávno použité</string>
+    <string name="emoji_people">Lidé &amp; Tělo</string>
+    <string name="emoji_nature">Zvířata &amp; Příroda</string>
+    <string name="emoji_foods">Jídlo &amp; Pití</string>
+    <string name="emoji_activity">Aktivita</string>
+    <string name="emoji_places">Cestování &amp; Místa</string>
+    <string name="emoji_objects">Objekty</string>
+    <string name="emoji_symbols">Symboly</string>
+    <string name="emoji_flags">Vlajky</string>
+
+    <!-- automatically delete message -->
+    <string name="delete_old_messages">Vymaž staré zprávy</string>
+    <string name="autodel_device_title">Vymaž zprávy z přístroje</string>
+    <string name="autodel_server_title">Vymaž zprávy ze serveru</string>
+    <!-- %1$d will be replaced by the number of messages, you can assume plural/lots here. %2$s will be replaced by a timespan option. -->
+    <string name="autodel_device_ask">Skutečně smazat %1$d zprávy a všechny v budoucnu stažené zprávy \"%2$s\"?\n\n• Toto zahrnuje všechna multimedia\n\n• Zprávy budou smazány bez ohledu na jejich přečtení\n\n• \"Uložené zprávy\" budou z místního mazání vynechány</string>
+    <!-- %1$d will be replaced by the number of messages, you can assume plural/lots here. %2$s will be replaced by a timespan option. -->
+    <string name="autodel_server_ask">Skutečně smazat %1$d zprávy a všechny v budoucnu stažené zprávy \"%2$s\"?\n\n⚠️ Toto zahrnuje e-maily, multimédia a \"Uložené zprávy\" ve všech složkách na serveru\n\n⚠️ Nepoužívej tuto funkci pokud chceš nechat data na serveru\n\n⚠️ Nepoužívej tuto funkci pokud máš i jiné e-mailové programy mimo Delta Chat</string>
+    <!-- shown below enabled autodel_server-option, should be a summary of autodel_server_ask and remind about the impact -->
+    <string name="autodel_server_enabled_hint">Toto zahrnuje e-maily, multimedia a \"Uložené zprávy\" ve všech složkách na serveru. Nepoužívej tuto funkci pokud chceš nechat data na serveru, nebo pokud máš i jiné e-mailové programy mimo Delta Chat</string>
+    <string name="autodel_confirm">Rozumím. Vymaž všechny zprávy</string>
+    <!-- "At once" in the meaning of "Immediately", without any intervening time. -->
+    <string name="autodel_at_once">Ihned</string>
+    <string name="after_30_seconds">Po 30ti sekundách</string>
+    <string name="after_1_minute">Po 1 minutě</string>
+    <string name="after_5_minutes">Po 5 minutách</string>
+    <string name="after_30_minutes">Po 30 minutách</string>
+    <string name="autodel_after_1_hour">Po 1 hodině</string>
+    <string name="autodel_after_1_day">Po 1 dni</string>
+    <string name="autodel_after_1_week">Po 1 týdnu</string>
+    <string name="autodel_after_4_weeks">Po 4 týdnech</string>
+    <string name="after_5_weeks">Po 5 týdnech</string>
+    <string name="autodel_after_1_year">Po 1 roce</string>
+
+    <!-- autocrypt -->
+    <!-- deprecated, used "Encryption" if a headline is needed -->
+    <string name="autocrypt">Autocrypt</string>
+    <!-- deprecated, the button "Send Autocrypt Setup Message" is enough -->
+    <string name="autocrypt_explain">Autocrypt je nový, otevřený technický popis samočinného end-to-end šifrování.\n\nNastavení šifrování se vytváří samočinně dle potřeby a mužeš si ho přenášet mezi zařízeními zasláním zprávy s Nastavením Autocryptu.</string>
+    <string name="autocrypt_send_asm_title">Pošli Nastavení Autocryptu</string>
+    <string name="autocrypt_send_asm_explain_before">Pomocí Nastavení Autocryptu lze bezpečně sdílet nastavení šifrování této aplikace s jinou, která také používá Autocrypt.\n\nNastavení je zašifrované zobrazeným kódem, který musí být vložen i na druhém zařízení.</string>
+    <string name="autocrypt_send_asm_button">Pošli Nastavení Autocryptu</string>
+    <string name="autocrypt_send_asm_explain_after">Nastavení se ti odeslalo. Vem si druhé zařízení a otevři v něm zprávu nastavení. Měl by jsi být dotázán na kód. Pak vlož následující čísla:</string>
+    <string name="autocrypt_prefer_e2ee">Upřednostňuj end-to-end šifrování</string>
+    <string name="autocrypt_asm_subject">Nastavení Autocryptu</string>
+    <string name="autocrypt_asm_general_body">Toto je Nastavení Autocryptu, kterým lze přenést nastavení šifrování mezi klienty.\n\nK dešifrování a použití nastavení musíte zprávu otevřít v druhém klientu s Autocryptem a tam zadat kód zobrazený na prvním přístroji.</string>
+    <string name="autocrypt_asm_click_body">Nastavení Autocryptu umožňuje přenést nastavení šifrování mezi klienty.\n\nK dešifrování a použití tohoto nastavení stisknětě / klikněte na tuto zprávu</string>
+    <string name="autocrypt_continue_transfer_title">Nastavení Autocryptu</string>
+    <string name="autocrypt_continue_transfer_please_enter_code">Zadej kód zobrazený na jiném přístroji, prosím.</string>
+    <string name="autocrypt_continue_transfer_succeeded">Nastavení šifrování bylo přeneseno. Toto zařízení je připraveno k užívání Autocryptu se stejným nastavením jako předchozí zařízení.</string>
+    <string name="autocrypt_continue_transfer_retry">Zkus znovu</string>
+    <string name="autocrypt_bad_setup_code">Neplatný kód. Zkus to znovu, prosím.\n\nPokud neznáš kód, zkus z prvního přístroje poslat Nastavení Autocryptu znovu.</string>
+
+
+    <!-- system messages -->
+    <string name="systemmsg_read_receipt_subject">Zpráva otevřena</string>
+    <string name="systemmsg_read_receipt_body">Odeslaná zpráva \"%1$s\" byla příjemci zobrazena na jeho přístroji.\n\nNicméně přečtení obsahu není zaručeno.</string>
+    <string name="systemmsg_cannot_decrypt">Tuto zprávu nelze dešifrovat.\n\n• Už teď by mohlo pomoci jednoduše odpovědět na tuto zprávu a požádat odesílatele, aby zprávu poslal znovu.\n\n• Pokud jste právě přeinstalovali Delta Chat, bude nejlepší, když znovu nastavíte Delta Chat a zvolíte \"Přidat jako druhé zařízení\" nebo importujete zálohu. </string>
+    <string name="systemmsg_unknown_sender_for_chat">Neznámý odesílatel tohoto chatu. Další podrobnosti naleznete v části „informace“. </string>
+    <string name="systemmsg_subject_for_new_contact">Zpráva od %1$s</string>
+    <string name="systemmsg_failed_sending_to">Odeslání zprávy pro %1$s selhalo.</string>
+    <!-- %1$s will be replaced by the old group name, %2$s will be replaced by the new group name -->
+    <string name="group_name_changed_by_you">Názen skupiny změněn z \"%1$s\" na \"%2$s\" ode mě.</string>
+    <!-- %1$s will be replaced by the old group name, %2$s will be replaced by the new group name, %3$s will be replaced by name and address of the contact who did the action. -->
+    <string name="group_name_changed_by_other">Názen skupiny změněn z \"%1$s\" na \"%2$s\" od %3$s.</string>
+    <string name="group_image_changed_by_you">Obrázek skupiny změněn ode mě.</string>
+    <!-- %1$s will be replaced by name and address of the contact who did the action -->
+    <string name="group_image_changed_by_other">Obrázek skupiny změněn od %1$s.</string>
+    <!-- %1$s will be replaced by name and address of the contact added to the group -->
+    <string name="add_member_by_you">Člen %1$s byl přidán ode mě.</string>
+    <!-- %1$s will be replaced by name and address of the contact added to the group, %2$s will be replaced by name and address of the contact who did the action -->
+    <string name="add_member_by_other">Člen %1$s byl přidán od %2$s.</string>
+    <!-- %1$s will be replaced by name and address of the contact removed from the group -->
+    <string name="remove_member_by_you">Člen %1$s byl odebrán ode mě.</string>
+    <!-- %1$s will be replaced by name and address of the contact removed from the group, %2$s will be replaced by name and address of the contact who did the action -->
+    <string name="remove_member_by_other">Člen %1$s byl odebrán od %2$s.</string>
+    <string name="group_image_deleted_by_you">Obrázek skupiny smazán ode mě.</string>
+    <!-- %1$s will be replaced by name and address of the contact -->
+    <string name="group_image_deleted_by_other">Obrázek skupiny smazán od %1$s.</string>
+    <string name="ephemeral_timer_disabled_by_you">Časovač samomazacích zpráv je vypnut ode mě.</string>
+    <!-- %1$s will be replaced by name and address of the contact -->
+    <string name="ephemeral_timer_disabled_by_other">Časovač samomazacích zpráv je vypnut od %1$s.</string>
+    <!-- %1$s will be replaced by the number of seconds (always >1) the timer is set to -->
+    <string name="ephemeral_timer_seconds_by_you">Časovač samomazacích zpráv je na %1$s s ode mě.</string>
+    <!-- %1$s will be replaced by the number of seconds (always >1) the timer is set to, %2$s will be replaced by name and address of the contact -->
+    <string name="ephemeral_timer_seconds_by_other">Časovač samomazacích zpráv je na %1$s s od %2$s.</string>
+    <string name="ephemeral_timer_1_minute_by_you">Časovač samomazacích zpráv na 1 minutu ode mě.</string>
+    <!-- %1$s will be replaced by name and address of the contact -->
+    <string name="ephemeral_timer_1_minute_by_other">Časovač samomazacích zpráv na 1 minutu od %1$s.</string>
+    <string name="ephemeral_timer_1_hour_by_you">Časovač samomazacích zpráv na 1 hodinu ode mě.</string>
+    <!-- %1$s will be replaced by name and address of the contact -->
+    <string name="ephemeral_timer_1_hour_by_other">Časovač samomazacích zpráv na 1 hodinu od %1$s.</string>
+    <string name="ephemeral_timer_1_day_by_you">Časovač samomazacích zpráv na 1 den ode mě.</string>
+    <!-- %1$s will be replaced by name and address of the contact -->
+    <string name="ephemeral_timer_1_day_by_other">Časovač samomazacích zpráv na 1 den od %1$s.</string>
+    <string name="ephemeral_timer_1_week_by_you">Časovač samomazacích zpráv na 1 týden ode mě.</string>
+    <!-- %1$s will be replaced by name and address of the contact -->
+    <string name="ephemeral_timer_1_week_by_other">Časovač samomazacích zpráv na 1 týden od %1$s.</string>
+    <!-- %1$s will be replaced by the number of minutes (always >1) the timer is set to -->
+    <string name="ephemeral_timer_minutes_by_you">Samomazací zprávy vyprší po %1$s minutách ode mě.</string>
+    <!-- %1$s will be replaced by the number of minutes (always >1) the timer is set to, %2$s will be replaced by name and address of the contact -->
+    <string name="ephemeral_timer_minutes_by_other">Samomazací zprávy vyprší po %1$s minutách od %2$s.</string>
+    <!-- %1$s will be replaced by the number of hours (always >1) the timer is set to -->
+    <string name="ephemeral_timer_hours_by_you">Samomazací zprávy vyprší po %1$s hodinách ode mě.</string>
+    <!-- %1$s will be replaced by the number of hours (always >1) the timer is set to, %2$s will be replaced by name and address of the contact -->
+    <string name="ephemeral_timer_hours_by_other">Samomazací zprávy vyprší po %1$s hodinách od %2$s.</string>
+    <!-- %1$s will be replaced by the number of days (always >1) the timer is set to -->
+    <string name="ephemeral_timer_days_by_you">Samomazací zprávy vyprší po %1$s dnech ode mě.</string>
+    <!-- %1$s will be replaced by the number of days (always >1) the timer is set to, %2$s will be replaced by name and address of the contact -->
+    <string name="ephemeral_timer_days_by_other">Samomazací zprávy vyprší po %1$s dnech od %2$s.</string>
+    <!-- %1$s will be replaced by the number of weeks (always >1) the timer is set to -->
+    <string name="ephemeral_timer_weeks_by_you">Samomazací zprávy vyprší po %1$s týdnech ode mě.</string>
+    <!-- %1$s will be replaced by the number of weeks (always >1) the timer is set to, %2$s will be replaced by name and address of the contact -->
+    <string name="ephemeral_timer_weeks_by_other">Samomazací zprávy vyprší po %1$s týdnech od %2$s.</string>
+    <string name="chat_protection_enabled_explanation">Nyní je zaručeno, že všechny zprávy v tomto chatu jsou šifrovány end-to-end.\n\nŠifrování end-to-end udržuje zprávy soukromé mezi vámi a vašimi partnery v chatu. Nedokáže je přečíst ani váš poskytovatel e-mailu.</string>
+    <string name="invalid_unencrypted_tap_to_learn_more">⚠️%1$svyžaduje end-to-end šifrování, které pro tento chat ještě není nastaveno. Klepnutím se dozvíte více. </string>
+    <string name="devicemsg_self_deleted">Smazali jste chat „Uložené zprávy“.\n\nℹ️ Chcete-li znovu použít funkci „Uložené zprávy“, vytvořte si nový chat. </string>
+    <string name="devicemsg_update_reminder">⚠️ Vaše verze Delta Chatu může být zastaralá.\n\nTo může způsobit problémy, protože vaši partneři v chatu používají novější verze – a vám chybí nejnovější funkce 😳\nAktualizace najdete na https://get.delta.chat nebo v obchodě s aplikacemi . </string>
+
+    <!-- qr code stuff -->
+    <string name="qr_code">QR kód</string>
+    <string name="load_qr_code_as_image">Nahraj QR kód z obrázku</string>
+    <string name="qrscan_title">Vyfoť QR kód</string>
+    <string name="qrscan_hint">Nastav kameru na QR kód.</string>
+    <string name="qrscan_failed">QR kód nelze přečíst</string>
+    <string name="qrscan_ask_join_group">Chceš se přidat ke skupině \"%1$s\"?</string>
+    <string name="qrscan_fingerprint_mismatch">Poslední rozpoznaný otisk pro %1$s neodpovídá sejmutému otisku.</string>
+    <string name="qrscan_no_addr_found">Tento QR kód obsahuje otisk, ale žádný e-mail.\n\nK ověření nezávislou cestou nejprve vytvořte šifrované připojení k příjemci.</string>
+    <string name="qrscan_contains_text">Text z QR kódu:\n\n%1$s</string>
+    <string name="qrscan_contains_url">URL z QR kódu:\n\n%1$s</string>
+    <string name="qrscan_fingerprint_label">Otisk</string>
+    <string name="qrshow_title">Zvací QR kód</string>
+    <string name="qrshow_x_joining">%1$s se připojil.</string>
+    <string name="qrshow_x_verified">%1$s ověřen.</string>
+    <string name="qrshow_x_has_joined_group">%1$s se připojil ke skupině.</string>
+    <string name="qrshow_join_group_title">Zvací QR kód</string>
+    <!-- This text is shown inside the "QR code card" with very limited space; please formulate the text as short as possible therefore. The placeholder will be replaced by the group name, eg. "Scan to join group \"Testing group\"" -->
+    <string name="qrshow_join_group_hint">K připojení ke skupině \"%1$s\" vyfoť kód.</string>
+    <string name="qrshow_join_contact_title">Zvací QR kód</string>
+    <!-- This text is shown inside the "QR code card" with very limited space; please formulate the text as short as possible therefore. The placeholder will be replaced by name and address eg. "Scan to chat with Alice (alice@example.org)" -->
+    <string name="qrshow_join_contact_hint">K navázání spojení s %1$s vyfoť kód.</string>
+    <string name="qrshow_join_contact_no_connection_toast">Nejsi připojen k Internetu. Nastavení QR kódem nelze provést. </string>
+    <string name="qraccount_ask_create_and_login">Vytvořit nový e-mail na \"%1$s\" a připojit se k němu?</string>
+    <string name="qraccount_ask_create_and_login_another">Vytvořit nový e-mail na \"%1$s\" a připojit se k němu?\n\nTvůj původní ůčet nebude smazán. Použij \"Přepni účet\" k přepnutí na jiný účet.</string>
+    <string name="qraccount_qr_code_cannot_be_used">Sejmutý QR kód neumožňuje nastavení nového účtu.</string>
+    <!-- deprecated -->
+    <string name="qraccount_use_on_new_install">Sejmutý QR kód je k nastavení nového účtu. Tento QR kód můžeš použít když budeš provádět novou instalaci Delta Chatu.</string>
+    <string name="contact_verified">%1$s ověřen.</string>
+    <string name="contact_not_verified">Nelze ověřit %1$s.</string>
+    <!-- translators: "setup" is the "encryption setup" here, as in "Autocrypt Setup Message" -->
+    <string name="contact_setup_changed">Změněné nastavení pro %1$s.</string>
+    <string name="copy_qr_data_success">URL z QR kódu zkopírováno do mezipaměti</string>
+    <string name="mailto_dialog_header_select_chat">Vyberte chat, kterému chcete zprávu odeslat </string>
+    <string name="notify_reply_button">Odpověď</string>
+    <string name="notify_new_message">Nová zpráva</string>
+    <string name="notify_background_connection_enabled">Spojení na pozadí je zapnuto</string>
+    <string name="notify_priority_high">Vysoké</string>
+    <string name="notify_priority_max">Max</string>
+    <string name="notify_name_and_message">Jméno a zpráva</string>
+    <string name="notify_name_only">Pouze jméno</string>
+    <string name="notify_no_name_or_message">Ani jméno ani zpráva</string>
+    <string name="n_messages_in_m_chats">%1$d zprávy v %2$dchatech </string>
+
+
+    <!-- permissions -->
+    <string name="perm_required_title">Vyžaduj povolení</string>
+    <string name="perm_continue">Pokračuj</string>
+    <string name="perm_explain_access_to_camera_denied">Pro focení a filmování jdi do nastavení aplikace, pokračuj do \"Povolení\", a tam povol Kameru.</string>
+    <string name="perm_explain_access_to_mic_denied">K posílání zvukových zpráv jdi do nastavení aplikace, pokračuj do Povolení, a tam povol Mikrofon.</string>
+    <string name="perm_explain_access_to_storage_denied">Pro příjem a posílání souborů jdi do nastavení aplikace, pokračuj do Povolení, a tam povol Ukládání.</string>
+    <string name="perm_explain_access_to_location_denied">K posílání polohy jdi do nastavení aplikace, pokračuj do Povolení, a tam povol Polohu.</string>
+    <string name="perm_explain_access_to_notifications_denied">Chcete-li dostávat oznámení, přejděte na „Nastavení systému / Aplikace / Delta Chat“ a povolte „Oznámení“. </string>
+
+    <!-- ImageEditorHud -->
+    <string name="ImageEditorHud_draw_anywhere_to_blur">Kreslením rozmazávej</string>
+    <!-- dc_str_* resources -->
+    <string name="encrypted_message">Šifrovaná zpráva</string>
+
+    <!-- strings introduced on desktop. we want to share strings between the os, in general, please do not add generic strings here -->
+    <string name="about_offical_app_desktop">Toto je původní aplikace Delta Chat Desktop.</string>
+    <string name="about_licensed_under_desktop">Tento software je pod licencí GNU GPL verze 3 a zdrojový kód je k mání na GitHubu.</string>
+    <string name="welcome_desktop">Vítej v Delta Chatu</string>
+    <string name="global_menu_preferences_language_desktop">Jazyk</string>
+    <string name="global_menu_file_desktop">Soubor</string>
+    <string name="global_menu_file_quit_desktop">Ukončit</string>
+    <string name="global_menu_edit_desktop">Upravit</string>
+    <string name="global_menu_edit_undo_desktop">Zpět</string>
+    <string name="global_menu_edit_redo_desktop">Znovu</string>
+    <string name="global_menu_edit_cut_desktop">Vykroj</string>
+    <string name="global_menu_edit_copy_desktop">Kopíruj</string>
+    <string name="global_menu_edit_paste_desktop">Vlož</string>
+    <string name="global_menu_view_desktop">Zobrazit</string>
+    <string name="global_menu_view_floatontop_desktop">Vždy na vrchu</string>
+    <string name="global_menu_view_developer_desktop">Vývojář</string>
+    <string name="global_menu_view_developer_tools_desktop">Nástroje pro vývojáře</string>
+    <string name="global_menu_help_desktop">Nápověda</string>
+    <string name="global_menu_help_learn_desktop">Víc podrobností o Delta Chatu</string>
+    <string name="global_menu_help_contribute_desktop">Přispěj na GitHubu</string>
+    <string name="global_menu_help_report_desktop">Nahlaš problém</string>
+    <string name="global_menu_help_about_desktop">O aplikaci Delta Chat</string>
+    <string name="global_menu_file_open_desktop">Otevřít Delta Chat</string>
+    <string name="no_chat_selected_suggestion_desktop">Vyber chat, nebo vytvoř nový chat</string>
+    <string name="write_message_desktop">Napiš zprávu</string>
+    <string name="encryption_info_title_desktop">Popis šifrování</string>
+    <string name="delete_message_desktop">Vymaž zprávu</string>
+    <string name="more_info_desktop">Více podrobností</string>
+    <string name="timestamp_format_m_desktop">MMM D</string>
+    <string name="remove_desktop">Odstranit</string>
+    <string name="save_desktop">Uložit</string>
+    <string name="name_desktop">Jméno</string>
+    <string name="select_group_image_desktop">Vyber obrázek skupiny</string>
+    <string name="export_backup_desktop">Ulož zálohu</string>
+    <string name="autocrypt_correct_desktop">Nastavení Autocryptu přeneseno.</string>
+    <string name="forget_login_confirmation_desktop">Smazat toto přihlášení? Vše bude smazáno, včetně nastavení tvého end-to-end šifrování, kontaktů, hovorů, zpráv a multimédii. Tuto akci nelze vrátit zpět.</string>
+    <string name="message_detail_sent_desktop">odesláno</string>
+    <string name="message_detail_received_desktop">přijato</string>
+    <string name="menu.view.developer.open.log.folder">Otevři složku se záznamem běhu</string>
+    <string name="menu.view.developer.open.current.log.file">Otevři stávající záznam běhu</string>
+    <string name="explain_desktop_minimized_disabled_tray_pref" tools:ignore="TypographyDashes">Ikonu na panelu nelze deaktivovat, protože Delta Chat byl spuštěn s možností --minimized.</string>
+    <string name="switch_between_chats">Přepínání mezi chaty</string>
+    <!-- accessibility, the general idea is to use the normal strings for accessibility hints wherever possible -->
+    <string name="a11y_delivery_status_error">Stav doručení: Chyba</string>
+    <string name="a11y_encryption_padlock">Zámek šifrování</string>
+    <string name="a11y_delivery_status_sending">Stav doručení: Odesílám</string>
+    <string name="a11y_delivery_status_draft">Stav doručení: Rozepsané</string>
+    <string name="a11y_delivery_status_delivered">Stav doručení: Doručeno</string>
+    <string name="a11y_delivery_status_read">Stav doručení: Otevřeno</string>
+    <string name="a11y_delivery_status_invalid">Neplatný stav doručení</string>
+    <string name="a11y_message_context_menu_btn_label">Akce se zprávou</string>
+    <string name="a11y_background_preview_label">Náhled pozadí</string>
+    <string name="a11y_disappearing_messages_activated">Samomazací zprávy jsou zapnuty</string>
+
+    <string name="import_device_contacts_hint">Chcete-li chatovat s kontakty ze svého zařízení, otevřete Nastavení a povolte „Kontakty“.</string>
+    <!-- iOS webxdc selector -->
+    <string name="webxdc_selector_empty_hint">Zde se zobrazí aplikace přijaté nebo odeslané v libovolném chatu. „Soubory“ zobrazuje právě stažené aplikace. </string>
+    <!-- iOS permissions, copy from "deltachat-ios/Info.plist", which is used on missing translations in "deltachat-ios/LANG.lproj/InfoPlist.strings" -->
+    <string name="InfoPlist_NSCameraUsageDescription">Delta Chat využívá kameru k focení, filmování a snímání QR kódů.</string>
+    <string name="InfoPlist_NSContactsUsageDescription">Delta Chat používá tvé kontakty k zobrazení e-mailů na které můžeš psát. Delta Chat nemá žádné vlastní servery - tvé kontakty se nikam noposílají.</string>
+    <string name="InfoPlist_NSLocationAlwaysAndWhenInUseUsageDescription">Delta Chat potřebuje oprávnění ke sdílení vaší polohy po dobu, kdy jste povolili sdílení polohy. </string>
+    <string name="InfoPlist_NSLocationWhenInUseUsageDescription">Delta Chat potřebuje oprávnění ke sdílení vaší polohy po dobu, kdy jste povolili sdílení polohy. </string>
+    <string name="InfoPlist_NSMicrophoneUsageDescription">Delta Chat používá mikrofon k nahrávání hlasových zpráv a k filmování se zvukem.</string>
+    <string name="InfoPlist_NSPhotoLibraryUsageDescription">Delta Chat tě nechá vybrat, které fotky z tvé galerie chceš poslat.</string>
+    <string name="InfoPlist_NSPhotoLibraryAddUsageDescription">Delta Chat chce uložit obrázky do tvé galerie fotek.</string>
+
+
+    <string name="pref_background_notifications_rationale">K udržení spojení s e-mailovým serverem a přijímání zpráv na pozadí vyber v následujícím kroce nedbání optimalizací baterie.\n\nDelta Chat používá jen málo zdroje a snaží se šetřit tvou baterii.</string>
+    <!-- disabling "Reliable service" will hide a the maybe annoying permanent-notification with the drawback that new-message-notifications get potentially unreliable -->
+    <string name="perm_enable_bg_reminder_title">Stiskni zde a přijímání zpráv bude probíhat při chodu Delta Chatu na pozadí.</string>
+    <string name="perm_enable_bg_already_done">Přijímání zpráv na pozadí je Delta Chatu již povoleno.\n\nV případě nepřicházení nových zpráv si prosím zkontroluj své systémové nastavení.</string>
+
+    </resources>

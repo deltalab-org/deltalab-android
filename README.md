@@ -8,6 +8,8 @@ The APK can also be downloaded from [get.delta.chat](https://get.delta.chat).
 For the core library and other common info, please refer to the
 [Delta Chat Core Library](https://github.com/deltachat/deltachat-core-rust).
 
+For general contribution hints, please refer to [CONTRIBUTING.md](./CONTRIBUTING.md).
+
 <img alt="Screenshot Chat List" src="docs/images/2019-01-chatlist.png" width="298" /> <img alt="Screenshot Chat View" src="docs/images/2019-01-chat.png" width="298" />
 
 
@@ -224,6 +226,14 @@ You have 2 ways to do this:
    ```
 
 2. Or set them via environment variables.
+
+# Translations
+
+Android metadata and changelogs are translated using [Weblate](https://hosted.weblate.org/projects/deltachat/android-metadata/).
+
+<a href="https://hosted.weblate.org/engage/deltachat/">
+<img src="https://hosted.weblate.org/widget/deltachat/android-metadata/svg-badge.svg" alt="Translation status" />
+</a>
 
 # Credits
 
