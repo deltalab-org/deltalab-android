@@ -80,6 +80,8 @@ import org.thoughtcrime.securesms.util.LongClickCopySpan;
 import org.thoughtcrime.securesms.util.LongClickMovementMethod;
 import org.thoughtcrime.securesms.util.MarkdownUtil;
 import org.thoughtcrime.securesms.util.MediaUtil;
+import org.thoughtcrime.securesms.util.Prefs;
+import org.thoughtcrime.securesms.util.TextSelectionActionModeCallback;
 import org.thoughtcrime.securesms.util.Util;
 import org.thoughtcrime.securesms.util.ViewUtil;
 import org.thoughtcrime.securesms.util.views.Stub;

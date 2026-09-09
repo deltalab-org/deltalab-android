@@ -8,6 +8,12 @@
         android:summary="@string/pref_enter_sends_explain"
         android:title="@string/pref_enter_sends" />
 
+    <org.thoughtcrime.securesms.components.SwitchPreferenceCompat
+        android:defaultValue="false"
+        android:key="pref_text_selection"
+        android:summary="@string/pref_text_selection_explain"
+        android:title="@string/pref_text_selection" />
+
     <ListPreference
         android:key="pref_compression"
         android:title="@string/pref_outgoing_media_quality"

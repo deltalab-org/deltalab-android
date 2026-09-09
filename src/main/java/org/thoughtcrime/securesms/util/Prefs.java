@@ -42,6 +42,7 @@ public class Prefs {
   private static final String CHAT_RINGTONE = "pref_chat_ringtone_"; // followed by chat-id
   public static final String SCREEN_SECURITY_PREF = "pref_screen_security";
   private static final String ENTER_SENDS_PREF = "pref_enter_sends";
+  private static final String TEXT_SELECTION_PREF = "pref_text_selection";
   private static final String PROMPTED_DOZE_MSG_ID_PREF = "pref_prompted_doze_msg_id";
   private static final String STATS_DEVICE_MSG_ID_PREF = "pref_stats_device_msg_id";
   private static final String UPDATE_MSG_PREF = "pref_update_msg";
@@ -140,6 +141,10 @@ public class Prefs {
 
   public static boolean isEnterSendsEnabled(Context context) {
     return getBooleanPreference(context, ENTER_SENDS_PREF, false);
+  }
+
+  public static boolean isTextSelectionEnabled(Context context) {
+    return getBooleanPreference(context, TEXT_SELECTION_PREF, false);
   }
 
   public static boolean isPasswordDisabled(Context context) {
